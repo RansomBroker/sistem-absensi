@@ -57,6 +57,7 @@ $mata_kuliah = ambil_mata_kuliah_berdasarkan_id($_GET['id']);
         </div>
         <!-- End of Content Wrapper -->
 
+        <?php include "footer.php"?>
     </div>
     <!-- End of Page Wrapper -->
 
