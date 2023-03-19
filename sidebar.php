@@ -1,5 +1,5 @@
 <!-- Sidebar -->
-        <ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
+        <ul class="navbar-nav bg-gradient-warning sidebar sidebar-dark accordion" id="accordionSidebar">
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
                 <div class="sidebar-brand-icon rotate-n-15">
@@ -20,7 +20,7 @@
             </li>-->
 
             <li class="nav-item <?php if ((isset($_GET['halaman']) && $_GET['halaman'] == 'mata-kuliah'))  :?> active <?php endif;?>">
-                <a class="nav-link" href="index.php?halaman=dashboard">
+                <a class="nav-link" href="mata-kuliah.php?halaman=mata-kuliah">
                     <i class="fa fa-book" aria-hidden="true"></i>
                     <span>Mata Kuliah</span>
                 </a>
