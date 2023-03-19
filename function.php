@@ -68,7 +68,7 @@ function login($form){
             $_SESSION['id']=$username_in_db ['id'];
             $_SESSION['username']=$username_in_db ['username'];
             $_SESSION['role']=$role_in_db['role']; 
-			redirect('Location:index.php');
+			return redirect('index.php');
 		} else{
             set_flash_massage('login_failed','Username atau password tidak ditemukan');
         }
