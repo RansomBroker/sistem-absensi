@@ -1,5 +1,6 @@
 <?php
 session_start();
+include "function.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -8,7 +9,7 @@ session_start();
 
     <?php include "head.php"?>
 
-    <title>SPK</title>
+    <title>Kelola Mata Kuliah</title>
 
     <?php include "css.php"?>
 </head>
@@ -36,16 +37,39 @@ session_start();
 
                 <div class="card card-body row">
                     <a href="tambah-mata-kuliah.php" class="btn btn-warning col-lg-4 col-12">Tambah mata Kuliah</a>
+
+                    <?php if (get_flash_name('berhasil_tambah_mata_kuliah') != ""):?>
+                        <div class="alert alert-success my-3">
+                            <?= get_flash_message('berhasil_tambah_mata_kuliah')?>
+                        </div>
+                    <?php endif;?>
+                    <?php if (get_flash_name('gagal_tambah_mata_kuliah') != ""):?>
+                        <div class="alert alert-danger my-3">
+                            <?= get_flash_message('gagal_tambah_mata_kuliah')?>
+                        </div>
+                    <?php endif;?>
+
                     <div class="col-12 col-lg-12 mt-4">
                         <h5 class="fw-bold">List Mata Kuliah</h5>
                         <div class="table-responsive">
-                            <table class="table table-striped table-hover">
+                            <table class="table table-striped table-hover table-bordered" id="table-mata-kuliah">
                                 <thead>
                                     <tr>
                                         <th>Aksi</th>
                                         <th>Nama Mata Kuliah</th>
                                     </tr>
                                 </thead>
+                                <tbody>
+                                    <?php foreach (ambil_data_mata_kuliah() as $mata_kuliah):?>
+                                        <tr>
+                                            <td>
+                                                <a href="edit-mata-kuliah.php?id=<?=$mata_kuliah['id']?>" class="btn btn-success">Edit</a>
+                                                <a href="hapus-mata-kuliah.php?id=<?=$mata_kuliah['id']?>" class="btn btn-danger">Hapus</a>
+                                            </td>
+                                            <td><?= $mata_kuliah['nama']?></td>
+                                        </tr>
+                                    <?php endforeach;?>
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -85,6 +109,11 @@ session_start();
     </div>
 
     <?php include "js.php"?>
+    <script>
+        $(document).ready(function () {
+            let tabelMataKuliah = $("#table-mata-kuliah").DataTable();
+        })
+    </script>
 
 </body>
 

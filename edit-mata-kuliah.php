@@ -2,9 +2,11 @@
 session_start();
 include "function.php";
 
-if (isset($_POST['submit-mata-kuliah'])) {
-    tambah_mata_kuliah($_POST);
+if (isset($_POST['edit-mata-kuliah'])) {
+    edit_mata_kuliah($_POST);
 }
+
+$mata_kuliah = ambil_mata_kuliah_berdasarkan_id($_GET['id']);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,7 +15,7 @@ if (isset($_POST['submit-mata-kuliah'])) {
 
     <?php include "head.php"?>
 
-    <title>Tambah Mata Kuliah</title>
+    <title>Edit Mata Kuliah</title>
 
     <?php include "css.php"?>
 </head>
@@ -41,11 +43,12 @@ if (isset($_POST['submit-mata-kuliah'])) {
 
                 <div class="card card-body">
                     <form action="" method="POST">
+                        <input type="hidden" value="<?= $mata_kuliah['id']?>" name="id">
                         <div class="form-group">
                             <label class="form-label">Nama Mata Kuliah <sup class="text-danger">*</sup></label>
-                            <input type="text" name="nama-mata-kuliah" class="form-control" required>
+                            <input type="text" name="nama-mata-kuliah" class="form-control" value="<?= $mata_kuliah['nama']?>" required>
                         </div>
-                        <button name="submit-mata-kuliah" class="btn btn-warning w-100">Tambah Mata Kuliah baru</button>
+                        <button name="edit-mata-kuliah" class="btn btn-warning w-100">Edit Mata Kuliah</button>
                     </form>
                 </div>
             </div>

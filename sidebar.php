@@ -20,7 +20,7 @@
             </li>-->
 
             <li class="nav-item <?php if ((isset($_GET['halaman']) && $_GET['halaman'] == 'mata-kuliah'))  :?> active <?php endif;?>">
-                <a class="nav-link" href="index.php?halaman=dashboard">
+                <a class="nav-link" href="mata-kuliah.php?halaman=mata-kuliah">
                     <i class="fa fa-book" aria-hidden="true"></i>
                     <span>Mata Kuliah</span>
                 </a>
