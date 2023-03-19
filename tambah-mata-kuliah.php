@@ -54,6 +54,7 @@ if (isset($_POST['submit-mata-kuliah'])) {
         </div>
         <!-- End of Content Wrapper -->
 
+        <?php include "footer.php"?>
     </div>
     <!-- End of Page Wrapper -->
 
