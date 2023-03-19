@@ -80,6 +80,7 @@ include "function.php";
         </div>
         <!-- End of Content Wrapper -->
 
+        <?php include "footer.php"?>
     </div>
     <!-- End of Page Wrapper -->
 
