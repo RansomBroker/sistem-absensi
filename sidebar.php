@@ -5,7 +5,7 @@
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">SPK</div>
+                <div class="sidebar-brand-text mx-3">Sistem Absensi</div>
             </a>
 
             <!-- Divider -->
@@ -18,6 +18,13 @@
                     <span>Dashboard</span>
                 </a>
             </li>-->
+
+            <li class="nav-item <?php if ((isset($_GET['halaman']) && $_GET['halaman'] == 'mata-kuliah'))  :?> active <?php endif;?>">
+                <a class="nav-link" href="index.php?halaman=dashboard">
+                    <i class="fa fa-book" aria-hidden="true"></i>
+                    <span>Mata Kuliah</span>
+                </a>
+            </li>
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
