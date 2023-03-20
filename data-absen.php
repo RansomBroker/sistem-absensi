@@ -1,12 +1,6 @@
 <?php
 session_start();
 include "function.php";
-
-if (isset($_POST['edit-mata-kuliah'])) {
-    edit_mata_kuliah($_POST);
-}
-
-$mata_kuliah = ambil_mata_kuliah_berdasarkan_id($_GET['id']);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,7 +9,7 @@ $mata_kuliah = ambil_mata_kuliah_berdasarkan_id($_GET['id']);
 
     <?php include "head.php"?>
 
-    <title>Edit Mata Kuliah</title>
+    <title>Kelola Mata Kuliah</title>
 
     <?php include "css.php"?>
 </head>
@@ -38,18 +32,30 @@ $mata_kuliah = ambil_mata_kuliah_berdasarkan_id($_GET['id']);
             <!-- Begin Page Content -->
             <div class="container-fluid">
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h1 class="h3 mb-0 text-gray-800">Tambah Mata Kuliah</h1>
+                    <h1 class="h3 mb-0 text-gray-800">Kelola Absensi</h1>
                 </div>
 
-                <div class="card card-body">
-                    <form action="" method="POST">
-                        <input type="hidden" value="<?= $mata_kuliah['id']?>" name="id">
-                        <div class="form-group">
-                            <label class="form-label">Nama Mata Kuliah <sup class="text-danger">*</sup></label>
-                            <input type="text" name="nama-mata-kuliah" class="form-control" value="<?= $mata_kuliah['nama']?>" required>
+                <div class="card card-body row">
+                    <a href="tambah-absensi.php" class="btn btn-warning col-lg-4 col-12">Tambah Absensi</a>
+
+                    <?php if (get_flash_name('berhasil_tambah_absensi') != ""):?>
+                        <div class="alert alert-success my-3">
+                            <?= get_flash_message('berhasil_tambah_absensi')?>
                         </div>
-                        <button name="edit-mata-kuliah" class="btn btn-warning w-100">Edit Mata Kuliah</button>
-                    </form>
+                    <?php endif;?>
+                    <?php if (get_flash_name('gagal_tambah_absensi') != ""):?>
+                        <div class="alert alert-danger my-3">
+                            <?= get_flash_message('gagal_tambah_absensi')?>
+                        </div>
+                    <?php endif;?>
+
+                    <div class="col-12 col-lg-12 mt-4">
+                        <h5 class="fw-bold">List Absensi</h5>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover table-bordered" id="table-absensi">
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -87,6 +93,11 @@ $mata_kuliah = ambil_mata_kuliah_berdasarkan_id($_GET['id']);
     </div>
 
     <?php include "js.php"?>
+    <script>
+        $(document).ready(function () {
+
+        })
+    </script>
 
 </body>
 
