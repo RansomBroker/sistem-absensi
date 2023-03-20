@@ -26,6 +26,13 @@
                 </a>
             </li>
 
+            <li class="nav-item <?php if ((isset($_GET['halaman']) && $_GET['halaman'] == 'data-absen'))  :?> active <?php endif;?>">
+                <a class="nav-link" href="data-absen.php?halaman=data-absen">
+                    <i class="fa fa-calendar" aria-hidden="true"></i>   
+                    <span>Data Absen</span>
+                </a>
+            </li>
+
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 
