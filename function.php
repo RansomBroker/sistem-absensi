@@ -25,3 +25,27 @@ function login($form){
 	}
 
 }
+
+function tambah_absensi($form) {
+    global  $connection;
+    $nama_mata_kuliah = htmlspecialchars(stripcslashes($form['nama-mata-kuliah']));
+    $waktu_masuk = $form['waktu-masuk'];
+    $waktu_keluar = $form['waktu-keluar'];
+    $tanggal_absensi = $form['tanggal-absensi'];
+    $waktu_dispensasi = $form['waktu-dispensasi'];
+
+    $connection->query("
+        INSERT INTO 
+            jadwal_presensi (nama, jam_masuk, jam_keluar, tgl_absen, waktu_dispensasi)
+        VALUES ('$nama_mata_kuliah', '$waktu_masuk', '$waktu_keluar', '$tanggal_absensi', '$waktu_dispensasi')    
+    ");
+
+    if ($connection->affected_rows > 0) {
+        set_flash_message('berhasil_tambah_absen', 'Berhasil menambahkan data absen');
+    } else {
+        set_flash_message('gagal_tambah_absen', 'Gagal menambahkan data absen');
+    }
+
+    return redirect('data-absen.php?halaman=data-absen');
+
+}

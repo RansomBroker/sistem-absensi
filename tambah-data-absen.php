@@ -1,6 +1,10 @@
 <?php
 session_start();
 include "function.php";
+
+if (isset($_POST['tambah-absensi'])) {
+    tambah_absensi($_POST);
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -9,7 +13,7 @@ include "function.php";
 
     <?php include "head.php"?>
 
-    <title>Kelola Mata Kuliah</title>
+    <title>Tambah Absen</title>
 
     <?php include "css.php"?>
 </head>
@@ -31,31 +35,31 @@ include "function.php";
 
             <!-- Begin Page Content -->
             <div class="container-fluid">
-                <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h1 class="h3 mb-0 text-gray-800">Kelola Absensi</h1>
-                </div>
-
                 <div class="card card-body row">
-                    <a href="tambah-data-absen.php" class="btn btn-warning col-lg-4 col-12">Tambah Absensi</a>
-
-                    <?php if (get_flash_name('berhasil_tambah_absen') != ""):?>
-                        <div class="alert alert-success my-3">
-                            <?= get_flash_message('berhasil_tambah_absen')?>
+                    <h5 class="card-title"> Tambah Absensi</h5>
+                    <form action="" method="POST">
+                        <div class="form-group">
+                            <label for="" class="form-label">Nama Mata Kuliah <sup class="text-danger">*</sup></label>
+                            <input type="text" name="nama-mata-kuliah" class="form-control" required>
                         </div>
-                    <?php endif;?>
-                    <?php if (get_flash_name('gagal_tambah_absen') != ""):?>
-                        <div class="alert alert-danger my-3">
-                            <?= get_flash_message('gagal_tambah_absen')?>
+                        <div class="form-group">
+                            <label for="" class="form-label">Waktu Masuk <sup class="text-danger">*</sup></label>
+                            <input name="waktu-masuk" class="time form-control" required>
                         </div>
-                    <?php endif;?>
-
-                    <div class="col-12 col-lg-12 mt-4">
-                        <h5 class="fw-bold">List Absensi</h5>
-                        <div class="table-responsive">
-                            <table class="table table-striped table-hover table-bordered" id="table-absensi">
-                            </table>
+                        <div class="form-group">
+                            <label for="" class="form-label">Waktu Keluar <sup class="text-danger">*</sup></label>
+                            <input name="waktu-keluar" class="time form-control" required>
                         </div>
-                    </div>
+                        <div class="form-group">
+                            <label for="" class="form-label">Tanggal Absensi<sup class="text-danger">*</sup></label>
+                            <input type="date" name="tanggal-absensi" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="form-label">Waktu Dispensasi <sup class="text-danger">*</sup></label>
+                            <input type="number" name="waktu-dispensasi" class="form-control" required>
+                        </div>
+                        <button class="btn btn-warning w-100" name="tambah-absensi" >Tambah Absensi</button>
+                    </form>
                 </div>
             </div>
 
@@ -95,7 +99,17 @@ include "function.php";
     <?php include "js.php"?>
     <script>
         $(document).ready(function () {
-
+            $('.time').timepicker({
+                timeFormat: 'HH:mm:ss ',
+                interval: 1,
+                minTime: '6',
+                maxTime: '11:59pm',
+                defaultTime: '06:00',
+                startTime: '00:00',
+                dynamic: false,
+                dropdown: true,
+                scrollbar: true
+            });
         })
     </script>
 
