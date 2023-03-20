@@ -2,8 +2,8 @@
         <ul class="navbar-nav bg-gradient-warning sidebar sidebar-dark accordion" id="accordionSidebar">
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
-                <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-laugh-wink"></i>
+                <div >
+                    <img src="img/logi-poltek.jpg" width="55" class="img-profile rounded-circle"alt="logo">
                 </div>
                 <div class="sidebar-brand-text mx-3">Sistem Absensi</div>
             </a>
