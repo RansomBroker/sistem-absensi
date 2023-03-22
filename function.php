@@ -17,10 +17,10 @@ function login($form){
             $_SESSION['login']=true;
             $_SESSION['id']=$username_in_db ['id'];
             $_SESSION['username']=$username_in_db ['username'];
-            $_SESSION['role']=$role_in_db['role']; 
+            $_SESSION['role']=$username_in_db['role']; 
 			return redirect('index.php');
 		} else{
-            set_flash_massage('login_failed','Username atau password tidak ditemukan');
+            set_flash_message('login_failed','Username atau password tidak ditemukan');
         }
 	}
 
@@ -72,17 +72,17 @@ function update_data_user($form){
 		$connection->query("UPDATE users
 		SET
 			username='$username',
-			has_password='$has_password',
+			password='$has_password',
 			role='$role'
 		WHERE id = '$id'
 		");
 	}
 	
 	if ($connection->affected_rows > 0) {
-		set_flash_message('add_success', 'Berhasil melakukan pendaftaran');
+		set_flash_message('add_success', 'Berhasil Ubah Data User');
 		redirect('user.php');
 	} else {
-		set_flash_message('add_failed', 'Gagal melakukan pendaftaran');
+		set_flash_message('add_failed', 'Berhasil Ubah Data User');
 	}
 
 }
@@ -95,40 +95,61 @@ function ambil_data_user_by_id($id) {
 	return $users;
 }
 
-function profile($form){
+function update_admin_profile($form){
 	global $connection;
 
-	$nim= htmlspecialchars(strtolower(stripcslashes($form['nim'])));
+	$id=$form['id'];
+	$nama= htmlspecialchars(strtolower(stripcslashes($form['nama'])));
+	$username= htmlspecialchars(strtolower(stripcslashes($form['username'])));
+
+	$connection->query("UPDATE users
+		SET
+			nama='$nama',
+			username='$username'
+		WHERE id = '$id'
+	");
+}
+
+function update_dosen_profile($form){
+	global $connection;
+
+	$id=$form['id'];
+	$nomor_induk= htmlspecialchars(strtolower(stripcslashes($form['nomor_induk'])));
+	$nama= htmlspecialchars(strtolower(stripcslashes($form['nama'])));
+	$connection->query("UPDATE users
+		SET
+			nomor_induk='$nomor_induk',
+			nama='$nama'
+		WHERE id = '$id'
+	");
+}
+
+function  update_mahasiswa_profile($form){
+	global $connection;
+
+	$id=$form['id'];
+	$nomor_induk= htmlspecialchars(strtolower(stripcslashes($form['nomor_induk'])));
 	$nama= htmlspecialchars(strtolower(stripcslashes($form['nama'])));
 	$kelas= htmlspecialchars(strtolower(stripcslashes($form['kelas'])));
 	$tempat_lahir= htmlspecialchars(strtolower(stripcslashes($form['tempat_lahir'])));
-	$tanggal_lahir = htmlspecialchars(strtolower(stripcslashes($form['tanggal_lahir'])));
+	$tgl_lahir = htmlspecialchars(strtolower(stripcslashes($form['tgl_lahir'])));
+	$angkatan= htmlspecialchars(strtolower(stripcslashes($form['angkatan'])));
 	$alamat = htmlspecialchars(strtolower(stripcslashes($form['alamat'])));
 	$moto_hidup = htmlspecialchars(strtolower(stripcslashes($form['moto_hidup'])));
 	$kemampuan_pribadi = htmlspecialchars(strtolower(stripcslashes($form['kemampuan_pribadi'])));
 
-	$mysql = $connection->query("SELECT *FROM profile");
-    	$result=$mysql;
-    	$row_cnt = $result->num_rows;
-
-	if($row_cnt>0){
-		$data_profile = $connection->query("SELECT * FROM profile")->fetch_assoc();
-		$id = $profile['id'];
-		$connection->query("
-		UPDATE settings
-		SET 
-			luas_lahan='$luas_lahan',
-			penghasilan='$penghasilan',
-			hasil_panen='$hasil_panen',
-			lama_usaha_tani='$lama_usaha_tani',
-			jmlh_anggota_keluarga='$jmlh_anggota_keluarga',
-			v= '$v'
-		WHERE id = '$id'    
-		");
-		return redirect('settings.php');
-	}
+	$connection->query("UPDATE users
+		SET
+			nomor_induk='$nomor_induk',
+			nama='$nama',
+			kelas='$kelas',
+			tempat_lahir='$tempat_lahir',
+			tgl_lahir='$tgl_lahir',
+			angkatan='$angkatan',
+			alamat='$alamat',
+			moto_hidup='$moto_hidup',
+			kemampuan_pribadi='$kemampuan_pribadi'
+		WHERE id = '$id'
+	");
 	
-	$mysql = $connection->query("INSERT INTO settings (luas_lahan, penghasilan,hasil_panen,lama_usaha_tani,jmlh_anggota_keluarga,v) VALUES ('$luas_lahan','$penghasilan', '$hasil_panen','$lama_usaha_tani', '$jmlh_anggota_keluarga','$v')");
-	return redirect('settings.php');
-
 }

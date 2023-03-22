@@ -1,6 +1,25 @@
 <?php
 session_start();
 include "function.php";
+
+if(!isset($_SESSION['login'])){
+    redirect('login.php');
+}
+
+if (isset($_POST['profile'])) {
+    if($_SESSION['role'] == 1) {
+        update_admin_profile($_POST);
+    }
+    if($_SESSION['role'] == 2) {
+        update_dosen_profile($_POST);
+    }
+    if($_SESSION['role'] == 3) {
+        update_mahasiswa_profile($_POST);
+    }
+}
+    
+$data_user = ambil_data_user_by_id($_GET['id']);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -35,55 +54,94 @@ include "function.php";
                     <div class="card card-body">
                          <h4 class="text-dark">Profile</h4>
                          <form class="my-3" action="" method="POST">
+                            <!-- Jika Role == admin  -->
+                            <input type="hidden" name="id" value=<?= $data_user['id']?>>
+                            <?php if($_SESSION['role'] == 1):?>
+                                <div class="mb-3">
+                                   <label class="form-label" for="nama">Nama <sup class="text-danger">*</sup></label>
+                                   <input type="text" id="nama" name="nama" value="<?= $data_user['nama']?>" class="form-control">
+                              </div>
                               <div class="mb-3">
-                                   <label class="form-label" for="nim">NIM <sup class="text-danger">*</sup></label>
-                                   <input type="text" id="nim" name="nim" class="form-control">
+                                   <label class="form-label" for="username">Username <sup class="text-danger">*</sup></label>
+                                   <input type="text" id="username" name="username" value="<?= $data_user['username']?>" class="form-control">
+                              </div>
+                              <div class="mb-3">
+                                   <label class="form-label" for="foto">Foto <sup class="text-danger">*</sup></label>
+                                   <div class="custom-file form-control">
+                                        <input name="foto" type="file" class="custom-file-input" id="validatedInputGroupCustomFile" required>
+                                        <label class="custom-file-label" for="validatedInputGroupCustomFile">Choose file...</label>
+                                   </div>
+                              </div>
+                            <?php endif;?>
+                            <!-- Jika Role == Dosen -->
+                            <?php if($_SESSION['role'] == 2):?>
+                                <div class="mb-3">
+                                   <label class="form-label" for="nim">NIP <sup class="text-danger">*</sup></label>
+                                   <input type="text" id="nim" name="nomor_induk" value='<?= $data_user == NULL ? '': $data_user['nomor_induk']?>' class="form-control">
                               </div>
                               <div class="mb-3">
                                    <label class="form-label" for="nama">Nama <sup class="text-danger">*</sup></label>
-                                   <input type="text" id="nama" name="nama" class="form-control">
+                                   <input type="text" id="nama" name="nama" value="<?= $data_user['nama']?>" class="form-control">
+                              </div>
+                              <div class="mb-3">
+                                   <label class="form-label" for="foto">Foto <sup class="text-danger">*</sup></label>
+                                   <div class="custom-file form-control">
+                                        <input name="foto" type="file" class="custom-file-input" id="validatedInputGroupCustomFile" required>
+                                        <label class="custom-file-label" for="validatedInputGroupCustomFile">Choose file...</label>
+                                   </div>
+                              </div>
+                            <?php endif; ?>
+                            <!-- Jika Role == Mahasiswa -->
+                            <?php if($_SESSION['role'] == 3):?>
+                                <div class="mb-3">
+                                   <label class="form-label" for="nim">NIM <sup class="text-danger">*</sup></label>
+                                   <input type="text" id="nim" name="nomor_induk" value='<?= $data_user == NULL ? '': $data_user['nomor_induk']?>' class="form-control">
+                              </div>
+                              <div class="mb-3">
+                                   <label class="form-label" for="nama">Nama <sup class="text-danger">*</sup></label>
+                                   <input type="text" id="nama" name="nama" value="<?= $data_user['nama']?>" class="form-control">
                               </div>
                               <div class="mb-3">
                                    <label class="form-label" for="kelas">Kelas<sup class="text-danger">*</sup></label>
-                                   <input type="text" id="kelas" name="kelas" class="form-control">
+                                   <input type="text" id="kelas" name="kelas"  value='<?= $data_user == NULL ? '': $data_user['kelas']?>' class="form-control">
                               </div>
                               <div class="mb-3">
                                    <label class="form-label" for="tempat-lahir">Tempat Lahir<sup class="text-danger">*</sup></label>
-                                   <input type="text" id="tempat-lahir" name="tempat_lahir" class="form-control">
+                                   <input type="text" id="tempat-lahir" name="tempat_lahir" value='<?= $data_user == NULL ? '': $data_user['tempat_lahir']?>' class="form-control">
                               </div>
                               <div class="mb-3">
                                    <label class="form-label">Tanggal Lahir<sup class="text-danger">*</sup></label>
-                                   <input type="date" class="form-control" name="tanggal_lahir" required>
+                                   <input type="date" class="form-control" name="tgl_lahir" value='<?= $data_user == NULL ? '': $data_user['tgl_lahir']?>' required>
                               </div>
                               <div class="mb-3">
                                    <label class="form-label" for="angkatan">Angkatan <sup class="text-danger">*</sup></label>
-                                   <input type="text" id="angkatan" name="angkatan" class="form-control">
+                                   <input type="text" id="angkatan" name="angkatan" value='<?= $data_user == NULL ? '': $data_user['angkatan']?>' class="form-control">
                               </div>
                               <div class="mb-3">
                                    <label class="form-label" for="alamat">Alamat <sup class="text-danger">*</sup></label>
-                                   <input type="text" id="alamat" name="alamat" class="form-control">
+                                   <input type="text" id="alamat" name="alamat" value='<?= $data_user == NULL ? '': $data_user['alamat']?>' class="form-control">
                               </div>
                               
                               <div class="mb-3">
                                    <label for="">Moto Hidup <sup class="text-danger">*</sup></label>
                                    <div>
-                                   <textarea name="moto_hidup"id="tiny"> &lt;p&gt;Moto Hidup!&lt;/p&gt;</textarea>
+                                        <textarea name="moto_hidup" value='<?= $data_user == NULL ? '': $data_user['moto_hidup']?>'  id="tiny"> &lt;p&gt;<?=$data_user['moto_hidup']?>&lt;/p&gt;</textarea>
                                    </div>
                               </div>
                               <div class="mb-3">
                                    <label for="kemampuan_pribadi">Kemampuan Pribadi <sup class="text-danger">*</sup></label>
                                    <div>
-                                   <textarea name="kemampuan_pribadi"id="kemampuan_pribadi"> &lt;p&gt;Kemampuan Pribadi!&lt;/p&gt;</textarea>
+                                        <textarea name="kemampuan_pribadi" value='<?= $data_user == NULL ? '': $data_user['kemampuan_pribadi']?>' id="kemampuan-pribadi"> &lt;p&gt;<?=$data_user['kemampuan_pribadi']?>&lt;/p&gt;</textarea>
                                    </div>
                               </div>
                               <div class="mb-3">
                                    <label class="form-label" for="foto">Foto <sup class="text-danger">*</sup></label>
                                    <div class="custom-file form-control">
-                                        <input type="file" class="custom-file-input" id="validatedInputGroupCustomFile" required>
+                                        <input name="foto" type="file" class="custom-file-input" id="validatedInputGroupCustomFile" required>
                                         <label class="custom-file-label" for="validatedInputGroupCustomFile">Choose file...</label>
                                    </div>
                               </div>
-
+                            <?php endif; ?>
                               <div class="d-flex justify-content-start mt-5">
                                     <button type="submit" name="profile" class="btn btn-primary mr-2">Simpan</button>
                                     <button type="reset"  class="btn btn-danger mx-2">Batal</button>
@@ -105,25 +163,7 @@ include "function.php";
         <i class="fas fa-angle-up"></i>
     </a>
 
-    <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.php">Logout</a>
-                </div>
-            </div>
-        </div>
-    </div>
+    <?php include "logout_modal.php"?>
 
     <?php include "js.php"?>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>

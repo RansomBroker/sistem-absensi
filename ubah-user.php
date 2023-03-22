@@ -47,11 +47,11 @@ $data_user = ambil_data_user_by_id($_GET['id']);
                          <div class="row"> 
                               <div class="col-lg-12 col-12 mb-2">
                                    <label class="form-label">User <sup class="text-danger">*</sup></label>
-                                   <input type="text" class="form-control" name="username" value=<?= $data_user['username']?>>
+                                   <input type="text" class="form-control" name="username" value="<?= $data_user['username']?>">
                               </div>
                               <div class="col-lg-12 col-12 mb-2">
                                    <label class="form-label">Password <sup class="text-danger">*</sup></label>
-                                   <input type="text" class="form-control" name="password">
+                                   <input type="text" class="form-control" name="password" value="<?= $data_user['password']?>">
                               </div>
                               <div class="col-lg-12 col-12 mb-2">
                                    <label class="form-label">Status <sup class="text-danger">*</sup></label>
@@ -83,25 +83,8 @@ $data_user = ambil_data_user_by_id($_GET['id']);
         <i class="fas fa-angle-up"></i>
     </a>
 
-    <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.php">Logout</a>
-                </div>
-            </div>
-        </div>
-    </div>
+    
+    <?php include "logout_modal.php"?>
 
     <?php include "js.php"?>
 
