@@ -49,11 +49,11 @@ include "function.php";
                               </div>
                               <div class="mb-3">
                                    <label class="form-label" for="tempat-lahir">Tempat Lahir<sup class="text-danger">*</sup></label>
-                                   <input type="text" id="tempat-lahir" name="tempat-lahir" class="form-control">
+                                   <input type="text" id="tempat-lahir" name="tempat_lahir" class="form-control">
                               </div>
                               <div class="mb-3">
                                    <label class="form-label">Tanggal Lahir<sup class="text-danger">*</sup></label>
-                                   <input type="date" class="form-control" name="tanggal-lahir" required>
+                                   <input type="date" class="form-control" name="tanggal_lahir" required>
                               </div>
                               <div class="mb-3">
                                    <label class="form-label" for="angkatan">Angkatan <sup class="text-danger">*</sup></label>
@@ -67,13 +67,13 @@ include "function.php";
                               <div class="mb-3">
                                    <label for="">Moto Hidup <sup class="text-danger">*</sup></label>
                                    <div>
-                                   <textarea name="moto-hidup"id="tiny"> &lt;p&gt;Moto Hidup!&lt;/p&gt;</textarea>
+                                   <textarea name="moto_hidup"id="tiny"> &lt;p&gt;Moto Hidup!&lt;/p&gt;</textarea>
                                    </div>
                               </div>
                               <div class="mb-3">
-                                   <label for="kemampuan-pribadi">Kemampuan Pribadi <sup class="text-danger">*</sup></label>
+                                   <label for="kemampuan_pribadi">Kemampuan Pribadi <sup class="text-danger">*</sup></label>
                                    <div>
-                                   <textarea name="kemampuan-pribadi"id="kemampuan-pribadi"> &lt;p&gt;Kemampuan Pribadi!&lt;/p&gt;</textarea>
+                                   <textarea name="kemampuan_pribadi"id="kemampuan_pribadi"> &lt;p&gt;Kemampuan Pribadi!&lt;/p&gt;</textarea>
                                    </div>
                               </div>
                               <div class="mb-3">
@@ -83,6 +83,11 @@ include "function.php";
                                         <label class="custom-file-label" for="validatedInputGroupCustomFile">Choose file...</label>
                                    </div>
                               </div>
+
+                              <div class="d-flex justify-content-start mt-5">
+                                    <button type="submit" name="profile" class="btn btn-primary mr-2">Simpan</button>
+                                    <button type="reset"  class="btn btn-danger mx-2">Batal</button>
+                                </div>
                          </form>
                     </div>  
                 </div>

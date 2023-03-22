@@ -18,7 +18,19 @@
                     <span>Dashboard</span>
                 </a>
             </li>-->
+            <hr class="sidebar-divider my-0">
 
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item">
+                <a class="nav-link" href="index.php">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+            
             <li class="nav-item <?php if ((isset($_GET['halaman']) && $_GET['halaman'] == 'data-absen'))  :?> active <?php endif;?>">
                 <a class="nav-link" href="data-absen.php?halaman=data-absen">
                     <i class="fa fa-calendar" aria-hidden="true"></i>   

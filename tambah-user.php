@@ -1,6 +1,11 @@
 <?php
 session_start();
 include "function.php";
+
+if (isset($_POST['user-submit'])) {
+     tambah_user($_POST);
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -9,7 +14,7 @@ include "function.php";
 
     <?php include "head.php"?>
 
-    <title>Dashboard</title>
+    <title>Tambah User</title>
 
     <?php include "css.php"?>
 </head>
@@ -31,28 +36,38 @@ include "function.php";
 
             <!-- Begin Page Content -->
             <div class="container-fluid">
+                
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+                    <h1 class="h3 mb-0 text-gray-800">Tambah User</h1>
                 </div>
+
                 <div class="card card-body">
-                    <div class="row">
-                        <div class="card card-body col-lg-4">
-                            <h5>Dosen</h5>
-                            <a href="#">More Info</a>
-                        </div>
-                        <div class="card card-body col-lg-4">
-                            <h5>Mahasiswa</h5>
-                            <a href="#">More Info</a>
-                        </div>
-                        <div class="card card-body col-lg-4">
-                            <h5>User</h5>
-                            <a href="user.php">More Info</a>
-                        </div>
-                    </div>
+                    <form action="" method="POST">
+                         <div class="row"> 
+                              <div class="col-lg-12 col-12 mb-2">
+                                   <label class="form-label">User <sup class="text-danger">*</sup></label>
+                                   <input type="text" class="form-control desimal-input" name="username">
+                              </div>
+                              <div class="col-lg-12 col-12 mb-2">
+                                   <label class="form-label">Password <sup class="text-danger">*</sup></label>
+                                   <input type="text" class="form-control desimal-input" name="password">
+                              </div>
+                              <div class="col-lg-12 col-12 mb-2">
+                                   <label class="form-label">Status <sup class="text-danger">*</sup></label>
+                                   <select name="role" class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
+                                        <option selected>Pilih...</option>
+                                        <option value="1">Admin</option>
+                                        <option value="2">Dosen</option>
+                                        <option value="3">Mahasiswa</option>
+                                   </select>
+                              </div>
+                              <button type="submit" name="user-submit" class="btn btn-warning mt-2 mx-2 w-100">Tambah</button>
+                              <button type="reset"  class="btn btn-danger my-2 mx-2 w-100">Clear</button>
+                         </div>
+                    </form>
+                   
                 </div>
             </div>
-
-
         </div>
         <!-- End of Content Wrapper -->
         <?php include "footer.php"?>
