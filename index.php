@@ -40,11 +40,11 @@ include "function.php";
                         <div class="justify-content-center row ">
                             <div class="mx-4 card card-body col-lg-3">
                                 <h5>Dosen</h5>
-                                <a href="#">More Info</a>
+                                <a href="dosen.php">More Info</a>
                             </div>
                             <div class="mx-4 card card-body col-lg-3">
                                 <h5>Mahasiswa</h5>
-                                <a href="#">More Info</a>
+                                <a href="mahasiswa.php">More Info</a>
                             </div>
                             <div class="mx-4 card card-body col-lg-3">
                                 <h5>User</h5>

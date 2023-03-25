@@ -11,17 +11,26 @@ function login($form){
 	$check_username_query = "SELECT * FROM users WHERE username = '$username'";
 	$check_username_result = mysqli_query($connection, $check_username_query);
 	$username_in_db = mysqli_fetch_assoc($check_username_result);
-    
-	if ($username== $username_in_db['username']){
-		if (password_verify($password, $username_in_db['password'])){
-            $_SESSION['login']=true;
-            $_SESSION['id']=$username_in_db ['id'];
-            $_SESSION['username']=$username_in_db ['username'];
-            $_SESSION['role']=$username_in_db['role']; 
-			return redirect('index.php');
-		} else{
-            set_flash_message('login_failed','Username atau password tidak ditemukan');
-        }
+	
+	if ($username_in_db != null) {
+		if ($username== $username_in_db['username']){
+			if (password_verify($password, $username_in_db['password'])){
+			  $_SESSION['login']=true;
+			  $_SESSION['id']=$username_in_db ['id'];
+			  $_SESSION['username']=$username_in_db ['username'];
+			  $_SESSION['role']=$username_in_db['role']; 
+			  $_SESSION['foto']=$username_in_db['img'];
+			  $_SESSION['nama'] = $username_in_db['nama'];
+				return redirect('index.php');
+			} else{
+			  set_flash_message('login_failed','Username atau password salah ');
+		   }
+		}else{
+			set_flash_message('login_failed','Username atau password tidak ditemukan');
+		}
+	} else {
+		set_flash_message('login_failed','Isi Username dan Password ');
+
 	}
 
 }
@@ -51,6 +60,24 @@ function ambil_data_user() {
  
 	return $users;
 }
+
+function ambil_data_mahasiswa() {
+	global $connection;
+ 
+	$users = $connection->query("SELECT * FROM users WHERE role='3'")->fetch_all(MYSQLI_ASSOC);
+ 
+	return $users;
+}
+
+function ambil_data_dosen() {
+	global $connection;
+ 
+	$users = $connection->query("SELECT * FROM users WHERE role='2'")->fetch_all(MYSQLI_ASSOC);
+ 
+	return $users;
+}
+
+
 
 function update_data_user($form){
 	global $connection;
@@ -95,38 +122,87 @@ function ambil_data_user_by_id($id) {
 	return $users;
 }
 
-function update_admin_profile($form){
+function update_admin_profile($form, $file){
 	global $connection;
 
 	$id=$form['id'];
 	$nama= htmlspecialchars(strtolower(stripcslashes($form['nama'])));
 	$username= htmlspecialchars(strtolower(stripcslashes($form['username'])));
 
-	$connection->query("UPDATE users
+
+	if (!($file['foto']['name'] == "")) {
+		$nama_file_foto = upload_foto_profil($file, 'foto');
+		if(!$nama_file_foto) {
+			return redirect('profile.php?id='.$id);
+		}
+
+		$connection->query("UPDATE users
+			SET
+				nama='$nama',
+				username='$username',
+				img = '$nama_file_foto'
+			WHERE id = '$id'
+		");
+		$_SESSION['foto']=$nama_file_foto;
+		$_SESSION['nama'] = $nama;
+	
+	}else {
+		$connection->query("UPDATE users
 		SET
 			nama='$nama',
 			username='$username'
 		WHERE id = '$id'
-	");
+		");
+		$_SESSION['nama'] = $nama;
+
+	}
+	
+	set_flash_message('add_success', 'Berhasil Update Data Profil');
 }
 
-function update_dosen_profile($form){
+function update_dosen_profile($form,$file){
 	global $connection;
 
 	$id=$form['id'];
 	$nomor_induk= htmlspecialchars(strtolower(stripcslashes($form['nomor_induk'])));
 	$nama= htmlspecialchars(strtolower(stripcslashes($form['nama'])));
-	$connection->query("UPDATE users
+
+	// upload gambar
+	if (!($file['foto']['name'] == "")) {
+		$nama_file_foto = upload_foto_profil($file, 'foto');
+		if(!$nama_file_foto) {
+			return redirect('profile.php?id='.$id);
+		}
+
+		$connection->query("UPDATE users
+			SET
+				nomor_induk='$nomor_induk',
+				nama='$nama',
+				img = '$nama_file_foto'
+			WHERE id = '$id'
+		");
+		$_SESSION['foto']=$nama_file_foto;
+		$_SESSION['nama'] = $nama;
+	
+	}else {
+		$connection->query("UPDATE users
 		SET
 			nomor_induk='$nomor_induk',
 			nama='$nama'
 		WHERE id = '$id'
 	");
+	$_SESSION['nama'] = $nama;
+
+	}
+
+	
+	set_flash_message('add_success', 'Berhasil Update Data Profil');
+
 }
 
-function  update_mahasiswa_profile($form){
+function  update_mahasiswa_profile($form,$file){
 	global $connection;
-
+	
 	$id=$form['id'];
 	$nomor_induk= htmlspecialchars(strtolower(stripcslashes($form['nomor_induk'])));
 	$nama= htmlspecialchars(strtolower(stripcslashes($form['nama'])));
@@ -135,21 +211,82 @@ function  update_mahasiswa_profile($form){
 	$tgl_lahir = htmlspecialchars(strtolower(stripcslashes($form['tgl_lahir'])));
 	$angkatan= htmlspecialchars(strtolower(stripcslashes($form['angkatan'])));
 	$alamat = htmlspecialchars(strtolower(stripcslashes($form['alamat'])));
-	$moto_hidup = htmlspecialchars(strtolower(stripcslashes($form['moto_hidup'])));
-	$kemampuan_pribadi = htmlspecialchars(strtolower(stripcslashes($form['kemampuan_pribadi'])));
+	$moto_hidup =$form['moto_hidup'];
+	$kemampuan_pribadi = $form['kemampuan_pribadi'];
+	// upload gambar
+	if (!($file['foto']['name'] == "")) {
+		$nama_file_foto = upload_foto_profil($file, 'foto');
+		if(!$nama_file_foto) {
+			return redirect('profile.php?id='.$id);
+		}
 
-	$connection->query("UPDATE users
-		SET
-			nomor_induk='$nomor_induk',
-			nama='$nama',
-			kelas='$kelas',
-			tempat_lahir='$tempat_lahir',
-			tgl_lahir='$tgl_lahir',
-			angkatan='$angkatan',
-			alamat='$alamat',
-			moto_hidup='$moto_hidup',
-			kemampuan_pribadi='$kemampuan_pribadi'
-		WHERE id = '$id'
-	");
+		$connection->query("UPDATE users
+			SET
+				nomor_induk='$nomor_induk',
+				nama='$nama',
+				kelas='$kelas',
+				tempat_lahir='$tempat_lahir',
+				tgl_lahir='$tgl_lahir',
+				angkatan='$angkatan',
+				alamat='$alamat',
+				moto_hidup='$moto_hidup',
+				kemampuan_pribadi='$kemampuan_pribadi',
+				img = '$nama_file_foto'
+			WHERE id = '$id'
+		");
+
+		$_SESSION['foto']=$nama_file_foto;
+		$_SESSION['nama'] = $nama;
+	}else {
+		$connection->query("UPDATE users
+			SET
+				nomor_induk='$nomor_induk',
+				nama='$nama',
+				kelas='$kelas',
+				tempat_lahir='$tempat_lahir',
+				tgl_lahir='$tgl_lahir',
+				angkatan='$angkatan',
+				alamat='$alamat',
+				moto_hidup='$moto_hidup',
+				kemampuan_pribadi='$kemampuan_pribadi'
+			WHERE id = '$id'
+		");
+		$_SESSION['nama'] = $nama;
+	}
+
 	
+	set_flash_message('add_success', 'Berhasil Update Data Profil');
+
+}
+
+function upload_foto_profil($file, $name) {
+	$nama_file = $file[$name]['name'];
+	$ukuran_file = $file[$name]['size'];
+	$error_file = $file[$name]['error'];
+	$tmp_name = $file[$name]['tmp_name'];
+
+	// jika upload error
+	if ($error_file == 4 ) {
+		set_flash_message('add_failed', 'Error upload foto profil');
+		return false; 
+	}
+
+	// jika ekstensi tidak sesuai
+	$ekstensi_valid = ['jpg', 'png', 'jpeg'];
+	$ekstensi_gambar = strtolower(end(explode('.', $nama_file)));
+	
+	if (!in_array($ekstensi_gambar, $ekstensi_valid)) {
+		set_flash_message('add_failed', 'Ekstensi foto tidak valid');
+		return false; 
+	}
+
+	// jika file lebih besar dari 1mb
+	if ($ukuran_file >  1000000) {
+		set_flash_message('add_failed', 'Ukuran file tidak boleh lebih besar dari 1 MB');
+		return false;
+	}
+
+	// upload gambar ke folder img/profil
+	move_uploaded_file($tmp_name, 'img/profil/'.$nama_file);
+	return $nama_file;
 }

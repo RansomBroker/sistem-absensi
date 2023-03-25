@@ -46,16 +46,16 @@ $data_user = ambil_data_user_by_id($_GET['id']);
                          <input type="hidden" name="id" value=<?= $_GET['id']?>>
                          <div class="row"> 
                               <div class="col-lg-12 col-12 mb-2">
-                                   <label class="form-label">User <sup class="text-danger">*</sup></label>
-                                   <input type="text" class="form-control" name="username" value="<?= $data_user['username']?>">
+                                   <label class="form-label">Username <sup class="text-danger">*</sup></label>
+                                   <input type="text" class="form-control" name="username" value="<?= $data_user['username']?>" required>
                               </div>
                               <div class="col-lg-12 col-12 mb-2">
                                    <label class="form-label">Password <sup class="text-danger">*</sup></label>
-                                   <input type="text" class="form-control" name="password" value="<?= $data_user['password']?>">
+                                   <input type="text" class="form-control" name="password" value="<?= $data_user['password']?>" required>
                               </div>
                               <div class="col-lg-12 col-12 mb-2">
                                    <label class="form-label">Status <sup class="text-danger">*</sup></label>
-                                   <select name="role" class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
+                                   <select name="role" class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref" required>
                                         <?php $roles = ['admin', 'dosen', 'mahasiswa']?>
                                         <?php for ($i=1; $i <= 3 ; $i++): ?>
                                              <?php if ($i == $data_user['role']):?>
