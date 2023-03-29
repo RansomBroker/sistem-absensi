@@ -107,10 +107,6 @@ $data_user = ambil_data_user_by_id($_GET['id']);
                             <?php endif; ?>
                             <!-- Jika Role == Mahasiswa -->
                             <?php if($_SESSION['role'] == 3):?>
-                                <div class="mb-3">
-                                   <label class="form-label" for="nim">NIM <sup class="text-danger">*</sup></label>
-                                   <input type="text" id="nim" name="nomor_induk" value='<?= $data_user == NULL ? '': $data_user['nomor_induk']?>' class="form-control">
-                              </div>
                               <div class="mb-3">
                                    <label class="form-label" for="nim">NIM <sup class="text-danger">*</sup></label>
                                    <input type="text" id="nim" name="nomor_induk" value='<?= $data_user['nomor_induk']?>' class="form-control" readonly>
