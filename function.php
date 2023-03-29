@@ -40,11 +40,25 @@ function tambah_user($form){
 
 	$username = htmlspecialchars(strtolower(stripcslashes($form['username'])));
  	$password = mysqli_escape_string($connection, $form['password']);
+	$nama=$form['nama'];
 	$role = $form['role'];
+	$nim=$form['nim'];
+	$angkatan=$form['angkatan'];
+	$nip=$form['nip'];
 	$has_password = password_hash($password, PASSWORD_DEFAULT);
 
-	$mysql = $connection->query("INSERT INTO users (username, password, nama,role) VALUES ('$username', '$has_password','$username','$role')");
+	if (strlen($nim) > 0 ) {
+		$mysql = $connection->query("INSERT INTO users (username, password, nama,role,nomor_induk,angkatan) VALUES ('$username', '$has_password','$nama','$role','$nim','$angkatan')");
+	}
 
+	if(strlen($nip) > 0 ) {
+		$mysql = $connection->query("INSERT INTO users (username, password, nama,role,nomor_induk) VALUES ('$username', '$has_password','$nama','$role','$nip')");
+	}
+
+	if (strlen($nip) == 0 && strlen($nim) == 0) {
+		$mysql = $connection->query("INSERT INTO users (username, password, nama,role) VALUES ('$username', '$has_password','$nama','$role')");
+	}
+	
 	if ($connection->affected_rows > 0) {
 		set_flash_message('add_success', 'Berhasil melakukan pendaftaran');
 		redirect('user.php');
