@@ -38,6 +38,7 @@ if (isset($_POST['tambah-absensi'])) {
                 <div class="card card-body row">
                     <h5 class="card-title"> Tambah Absensi</h5>
                     <form action="" method="POST">
+                        <input type="hidden" name="user-id" value="<?= $_SESSION['id']?>">
                         <div class="form-group">
                             <label for="" class="form-label">Nama Mata Kuliah <sup class="text-danger">*</sup></label>
                             <input type="text" name="nama-mata-kuliah" class="form-control" required>

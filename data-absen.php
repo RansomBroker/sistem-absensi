@@ -1,6 +1,8 @@
 <?php
 session_start();
 include "function.php";
+
+$data_absen = $_SESSION['role'] == 2 ? ambil_data_absen_dosen($_SESSION['id']): ambil_data_absen($_SESSION['id']);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -52,8 +54,61 @@ include "function.php";
                     <div class="col-12 col-lg-12 mt-4">
                         <h5 class="fw-bold">List Absensi</h5>
                         <div class="table-responsive">
-                            <table class="table table-striped table-hover table-bordered" id="table-absensi">
-                            </table>
+                            <?php if ($_SESSION['role'] == 1):?>
+                                <table class="table table-striped table-hover table-bordered" id="table-absensi">
+                                    <thead>
+                                    <tr>
+                                        <th>Nama</th>
+                                        <th>Dosen Pengampu</th>
+                                        <th>Waktu Absen</th>
+                                        <th>Tanggal Absen</th>
+                                        <th>Waktu Dispensasi</th>
+                                        <th>Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php foreach ($data_absen as $data):?>
+                                        <tr>
+                                            <td><?= $data['nama'] ?></td>
+                                            <td><?= $data['dosen_pengampu']?></td>
+                                            <td><?= $data['jam_masuk'].'-'.$data['jam_keluar']?></td>
+                                            <td><?= $data['tgl_absen']?></td>
+                                            <td><?= $data['waktu_dispensasi']?></td>
+                                            <td>
+                                                <a href="#" class="btn btn-danger">Hapus</a>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach;?>
+                                    </tbody>
+                                </table>
+                            <?php endif;?>
+                            <?php if ($_SESSION['role'] == 2):?>
+                                <table class="table table-striped table-hover table-bordered" id="table-absensi">
+                                    <thead>
+                                    <tr>
+                                        <th>Nama</th>
+                                        <th>Waktu Absen</th>
+                                        <th>Tanggal Absen</th>
+                                        <th>Waktu Dispensasi</th>
+                                        <th>Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php foreach ($data_absen as $data):?>
+                                        <tr>
+                                            <td><?= $data['nama'] ?></td>
+                                            <td><?= $data['jam_masuk'].'-'.$data['jam_keluar']?></td>
+                                            <td><?= $data['tgl_absen']?></td>
+                                            <td><?= $data['waktu_dispensasi']?></td>
+                                            <td>
+                                                <button class="btn-edit btn btn-warning" data-id="<?= $data['id']?>">Edit</button>
+                                                <a href="#" class="btn btn-danger">Hapus</a>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach;?>
+                                    </tbody>
+                                </table>
+                            <?php endif;?>
                         </div>
                     </div>
                 </div>
@@ -78,6 +133,7 @@ include "function.php";
     <?php include "js.php"?>
     <script>
         $(document).ready(function () {
+            let tableDataAbsensi = $("#table-absensi").DataTable()
 
         })
     </script>

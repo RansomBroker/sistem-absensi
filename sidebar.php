@@ -29,17 +29,18 @@
             </li>
 
             <!-- Divider -->
-            <hr class="sidebar-divider">
-            
-            <li class="nav-item <?php if ((isset($_GET['halaman']) && $_GET['halaman'] == 'data-absen'))  :?> active <?php endif;?>">
-                <a class="nav-link" href="data-absen.php?halaman=data-absen">
-                    <i class="fa fa-calendar" aria-hidden="true"></i>   
-                    <span>Data Absen</span>
-                </a>
-            </li>
+            <?php if($_SESSION['role'] == 1 || $_SESSION['role'] == 2):?>
+                <hr class="sidebar-divider">
 
-            <!-- Divider -->
-            <hr class="sidebar-divider d-none d-md-block">
+
+                <li class="nav-item <?php if ((isset($_GET['halaman']) && $_GET['halaman'] == 'data-absen'))  :?> active <?php endif;?>">
+                    <a class="nav-link" href="data-absen.php?halaman=data-absen">
+                        <i class="fa fa-calendar" aria-hidden="true"></i>
+                        <span>Data Absen</span>
+                    </a>
+                </li>
+            <?php endif;?>
+
 
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
