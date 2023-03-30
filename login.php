@@ -34,6 +34,11 @@
                          <?= get_flash_message('login_failed')?>
                     </div>	
                 <?php endif;?>
+			 <?php if(get_flash_name('reset_success') != ""):?>
+                    <div class="alert alert-success" role="alert">
+                         <?= get_flash_message('reset_success')?>
+                    </div>	
+                <?php endif;?>
 			<form class="" method="POST" action="">
 				<div class="d-flex  justify-content-center ">
 					<div class=" row">
@@ -47,7 +52,7 @@
 							<input class="form-control" type="password" id="password" name="password">
 						</div>
 						<button name="login" class="btn btn-primary col-lg-12 mb-2" type="submit">Login</button>
-						<a href="register.php" class=" mb-1"><u> Reset Password?</u></a>
+						<a href="reset-password.php" class=" mb-1"><u> Reset Password?</u></a>
 					</div>
 				</div>
 			</form>

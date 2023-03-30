@@ -101,8 +101,7 @@ if (isset($_POST['user-submit'])) {
 
     <?php include "js.php"?>
     <script>
-        $(document).ready(function ()
-{
+        $(document).ready(function (){
         //making serverName Dropdown box disabled by default.
         $('#mahasiswa').addClass('d-none');
         $('#dosen').addClass('d-none');

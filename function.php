@@ -304,3 +304,35 @@ function upload_foto_profil($file, $name) {
 	move_uploaded_file($tmp_name, 'img/profil/'.$nama_file);
 	return $nama_file;
 }
+
+function resetpw($form){
+	global $connection;
+    	$username = htmlspecialchars(strtolower(stripcslashes($form['username'])));
+	$password = mysqli_escape_string($connection, $form['password']);
+	$check_username_query = "SELECT * FROM users WHERE username = '$username'";
+	$check_username_result = mysqli_query($connection, $check_username_query);
+	$username_in_db = mysqli_fetch_assoc($check_username_result);
+	$has_password = password_hash($password, PASSWORD_DEFAULT);
+
+
+	if ($username_in_db != null) {
+		if ($username== $username_in_db['username']){
+			$connection->query("UPDATE users
+				SET
+				password='$has_password'
+				WHERE username = '$username'
+			");	
+			if ($connection->affected_rows > 0) {
+			set_flash_message('reset_success', 'Berhasil Ubah Password');
+			} else {
+			set_flash_message('reset_failed', 'Berhasil Ubah Data User');
+			}
+		}else{
+			set_flash_message('username_erors','Username tidak ditemukan');
+			return;
+		}
+	}
+
+	redirect('login.php');
+	
+}	
