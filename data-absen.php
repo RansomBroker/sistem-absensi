@@ -1,6 +1,8 @@
 <?php
 session_start();
 include "function.php";
+
+$data_absen = $_SESSION['role'] == 2 ? ambil_data_absen_dosen($_SESSION['id']): ambil_data_absen($_SESSION['id']);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -9,7 +11,7 @@ include "function.php";
 
     <?php include "head.php"?>
 
-    <title>Kelola Mata Kuliah</title>
+    <title>Kelola Absensi</title>
 
     <?php include "css.php"?>
 </head>
@@ -36,24 +38,77 @@ include "function.php";
                 </div>
 
                 <div class="card card-body row">
-                    <a href="tambah-absensi.php" class="btn btn-warning col-lg-4 col-12">Tambah Absensi</a>
+                    <a href="tambah-data-absen.php" class="btn btn-warning col-lg-4 col-12">Tambah Absensi</a>
 
-                    <?php if (get_flash_name('berhasil_tambah_absensi') != ""):?>
+                    <?php if (get_flash_name('berhasil_tambah_absen') != ""):?>
                         <div class="alert alert-success my-3">
-                            <?= get_flash_message('berhasil_tambah_absensi')?>
+                            <?= get_flash_message('berhasil_tambah_absen')?>
                         </div>
                     <?php endif;?>
-                    <?php if (get_flash_name('gagal_tambah_absensi') != ""):?>
+                    <?php if (get_flash_name('gagal_tambah_absen') != ""):?>
                         <div class="alert alert-danger my-3">
-                            <?= get_flash_message('gagal_tambah_absensi')?>
+                            <?= get_flash_message('gagal_tambah_absen')?>
                         </div>
                     <?php endif;?>
 
                     <div class="col-12 col-lg-12 mt-4">
                         <h5 class="fw-bold">List Absensi</h5>
                         <div class="table-responsive">
-                            <table class="table table-striped table-hover table-bordered" id="table-absensi">
-                            </table>
+                            <?php if ($_SESSION['role'] == 1):?>
+                                <table class="table table-striped table-hover table-bordered" id="table-absensi">
+                                    <thead>
+                                    <tr>
+                                        <th>Nama</th>
+                                        <th>Dosen Pengampu</th>
+                                        <th>Waktu Absen</th>
+                                        <th>Tanggal Absen</th>
+                                        <th>Waktu Dispensasi</th>
+                                        <th>Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php foreach ($data_absen as $data):?>
+                                        <tr>
+                                            <td><?= $data['nama_matkul'] ?></td>
+                                            <td><?= $data['dosen_pengampu']?></td>
+                                            <td><?= $data['jam_masuk'].'-'.$data['jam_keluar']?></td>
+                                            <td><?= $data['tgl_absen']?></td>
+                                            <td><?= $data['waktu_dispensasi']?></td>
+                                            <td>
+                                                <a href="#" class="btn btn-danger">Hapus</a>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach;?>
+                                    </tbody>
+                                </table>
+                            <?php endif;?>
+                            <?php if ($_SESSION['role'] == 2):?>
+                                <table class="table table-striped table-hover table-bordered" id="table-absensi">
+                                    <thead>
+                                    <tr>
+                                        <th>Nama</th>
+                                        <th>Waktu Absen</th>
+                                        <th>Tanggal Absen</th>
+                                        <th>Waktu Dispensasi</th>
+                                        <th>Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php foreach ($data_absen as $data):?>
+                                        <tr>
+                                            <td><?= $data['nama'] ?></td>
+                                            <td><?= $data['jam_masuk'].'-'.$data['jam_keluar']?></td>
+                                            <td><?= $data['tgl_absen']?></td>
+                                            <td><?= $data['waktu_dispensasi']?></td>
+                                            <td>
+                                                <button class="btn-edit btn btn-warning" data-id="<?= $data['id']?>">Edit</button>
+                                                <a href="#" class="btn btn-danger">Hapus</a>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach;?>
+                                    </tbody>
+                                </table>
+                            <?php endif;?>
                         </div>
                     </div>
                 </div>
@@ -78,7 +133,7 @@ include "function.php";
     <?php include "js.php"?>
     <script>
         $(document).ready(function () {
-
+            let tableDataAbsensi = $("#table-absensi").DataTable()
         })
     </script>
 

@@ -30,16 +30,21 @@
 
             <!-- Divider -->
             <hr class="sidebar-divider">
-            
-            <li class="nav-item <?php if ((isset($_GET['halaman']) && $_GET['halaman'] == 'data-absen'))  :?> active <?php endif;?>">
-                <a class="nav-link" href="data-absen.php?halaman=data-absen">
-                    <i class="fa fa-calendar" aria-hidden="true"></i>   
-                    <span>Data Absen</span>
-                </a>
-            </li>
+            <?php if($_SESSION['role'] == 1 || $_SESSION['role'] == 2):?>
+                <li class="nav-item <?php if ((isset($_GET['halaman']) && $_GET['halaman'] == 'data-mata-kuliah'))  :?> active <?php endif;?>">
+                    <a class="nav-link" href="data-mata-kuliah.php?halaman=data-mata-kuliah">
+                        <i class="fa fa-calendar" aria-hidden="true"></i>
+                        <span>Data Mata Kuliah</span>
+                    </a>
+                </li>
+                <li class="nav-item <?php if ((isset($_GET['halaman']) && $_GET['halaman'] == 'data-absen'))  :?> active <?php endif;?>">
+                    <a class="nav-link" href="data-absen.php?halaman=data-absen">
+                        <i class="fa fa-calendar" aria-hidden="true"></i>
+                        <span>Data Absen</span>
+                    </a>
+                </li>
+            <?php endif;?>
 
-            <!-- Divider -->
-            <hr class="sidebar-divider d-none d-md-block">
 
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">

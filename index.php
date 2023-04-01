@@ -2,6 +2,7 @@
 session_start();
 include "function.php";
 
+$data_absen = ambil_data_absen();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -55,12 +56,44 @@ include "function.php";
                 <?php endif;?>
                 <?php if($_SESSION['role'] == 2):?>
                     <div class="card card-body">
-                        <h5>HI ASRUL</h5>
+                        <h5 class="card-title">HI <?=$_SESSION['nama']?></h5>
                     </div>
                 <?php endif;?>
                 <?php if($_SESSION['role'] == 3):?>
                     <div class="card card-body">
-                        <h5>HI Azdi</h5>
+                        <h5 class="card-title">HI <?=$_SESSION['nama']?></h5>
+                    </div>
+
+                    <div class="card card-body mt-4">
+                        <h5 class="card-title">List Absen</h5>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover table-bordered" id="table-absensi">
+                                <thead>
+                                <tr>
+                                    <th>Nama</th>
+                                    <th>Dosen Pengampu</th>
+                                    <th>Waktu Absen</th>
+                                    <th>Tanggal Absen</th>
+                                    <th>Waktu Dispensasi</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <?php foreach ($data_absen as $data):?>
+                                    <tr>
+                                        <td><?= $data['nama_matkul'] ?></td>
+                                        <td><?= $data['dosen_pengampu']?></td>
+                                        <td><?= $data['jam_masuk'].'-'.$data['jam_keluar']?></td>
+                                        <td><?= $data['tgl_absen']?></td>
+                                        <td><?= $data['waktu_dispensasi']?></td>
+                                        <td>
+                                            <button  class="btn-absen btn btn-warning">Isi Kehadiran</button>
+                                        </td>
+                                    </tr>
+                                <?php endforeach;?>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 <?php endif;?>    
             </div>
@@ -82,7 +115,19 @@ include "function.php";
     <?php include "js.php"?>
     <script>
         $(document).ready(function () {
-            let tabelMataKuliah = $("#table-mata-kuliah").DataTable();
+            let tableDataAbsensi = $("#table-absensi").DataTable()
+            
+            $('.btn-absen').on('click', function () {
+                Swal.fire({
+                    title: "Isi Kehadiran",
+                    html: `<div class="camera">
+                              <video id="video">Video stream not available.</video>
+                              <button id="startbutton">Take photo</button>
+                            </div>`,
+                    didOpen: () => {
+                    }
+                })
+            })
         })
     </script>
 

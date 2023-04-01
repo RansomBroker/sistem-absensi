@@ -40,25 +40,11 @@ function tambah_user($form){
 
 	$username = htmlspecialchars(strtolower(stripcslashes($form['username'])));
  	$password = mysqli_escape_string($connection, $form['password']);
-	$nama=$form['nama'];
 	$role = $form['role'];
-	$nim=$form['nim'];
-	$angkatan=$form['angkatan'];
-	$nip=$form['nip'];
 	$has_password = password_hash($password, PASSWORD_DEFAULT);
 
-	if (strlen($nim) > 0 ) {
-		$mysql = $connection->query("INSERT INTO users (username, password, nama,role,nomor_induk,angkatan) VALUES ('$username', '$has_password','$nama','$role','$nim','$angkatan')");
-	}
+	$mysql = $connection->query("INSERT INTO users (username, password, nama,role) VALUES ('$username', '$has_password','$username','$role')");
 
-	if(strlen($nip) > 0 ) {
-		$mysql = $connection->query("INSERT INTO users (username, password, nama,role,nomor_induk) VALUES ('$username', '$has_password','$nama','$role','$nip')");
-	}
-
-	if (strlen($nip) == 0 && strlen($nim) == 0) {
-		$mysql = $connection->query("INSERT INTO users (username, password, nama,role) VALUES ('$username', '$has_password','$nama','$role')");
-	}
-	
 	if ($connection->affected_rows > 0) {
 		set_flash_message('add_success', 'Berhasil melakukan pendaftaran');
 		redirect('user.php');
@@ -90,8 +76,6 @@ function ambil_data_dosen() {
  
 	return $users;
 }
-
-
 
 function update_data_user($form){
 	global $connection;
@@ -273,66 +257,167 @@ function  update_mahasiswa_profile($form,$file){
 
 }
 
-function upload_foto_profil($file, $name) {
-	$nama_file = $file[$name]['name'];
-	$ukuran_file = $file[$name]['size'];
-	$error_file = $file[$name]['error'];
-	$tmp_name = $file[$name]['tmp_name'];
+function upload_foto_profil($file, $name)
+{
+    $nama_file = $file[$name]['name'];
+    $ukuran_file = $file[$name]['size'];
+    $error_file = $file[$name]['error'];
+    $tmp_name = $file[$name]['tmp_name'];
 
-	// jika upload error
-	if ($error_file == 4 ) {
-		set_flash_message('add_failed', 'Error upload foto profil');
-		return false; 
-	}
+    // jika upload error
+    if ($error_file == 4) {
+        set_flash_message('add_failed', 'Error upload foto profil');
+        return false;
+    }
 
-	// jika ekstensi tidak sesuai
-	$ekstensi_valid = ['jpg', 'png', 'jpeg'];
-	$ekstensi_gambar = strtolower(end(explode('.', $nama_file)));
-	
-	if (!in_array($ekstensi_gambar, $ekstensi_valid)) {
-		set_flash_message('add_failed', 'Ekstensi foto tidak valid');
-		return false; 
-	}
+    // jika ekstensi tidak sesuai
+    $ekstensi_valid = ['jpg', 'png', 'jpeg'];
+    $ekstensi_gambar = strtolower(end(explode('.', $nama_file)));
 
-	// jika file lebih besar dari 1mb
-	if ($ukuran_file >  1000000) {
-		set_flash_message('add_failed', 'Ukuran file tidak boleh lebih besar dari 1 MB');
-		return false;
-	}
+    if (!in_array($ekstensi_gambar, $ekstensi_valid)) {
+        set_flash_message('add_failed', 'Ekstensi foto tidak valid');
+        return false;
+    }
 
-	// upload gambar ke folder img/profil
-	move_uploaded_file($tmp_name, 'img/profil/'.$nama_file);
-	return $nama_file;
+    // jika file lebih besar dari 1mb
+    if ($ukuran_file > 1000000) {
+        set_flash_message('add_failed', 'Ukuran file tidak boleh lebih besar dari 1 MB');
+        return false;
+    }
 }
 
-function resetpw($form){
-	global $connection;
-    	$username = htmlspecialchars(strtolower(stripcslashes($form['username'])));
-	$password = mysqli_escape_string($connection, $form['password']);
-	$check_username_query = "SELECT * FROM users WHERE username = '$username'";
-	$check_username_result = mysqli_query($connection, $check_username_query);
-	$username_in_db = mysqli_fetch_assoc($check_username_result);
-	$has_password = password_hash($password, PASSWORD_DEFAULT);
+function tambah_absensi($form) {
+    global  $connection;
+    $nama_mata_kuliah = htmlspecialchars(stripcslashes($form['nama-mata-kuliah']));
+    $user_id = $form['user-id'];
+    $waktu_masuk = $form['waktu-masuk'];
+    $waktu_keluar = $form['waktu-keluar'];
+    $tanggal_absensi = $form['tanggal-absensi'];
+    $waktu_dispensasi = $form['waktu-dispensasi'];
 
+    $connection->query("
+        INSERT INTO 
+            jadwal_presensi (user_id, nama, jam_masuk, jam_keluar, tgl_absen, waktu_dispensasi)
+        VALUES ('$user_id','$nama_mata_kuliah', '$waktu_masuk', '$waktu_keluar', '$tanggal_absensi', '$waktu_dispensasi')    
+    ");
 
-	if ($username_in_db != null) {
-		if ($username== $username_in_db['username']){
-			$connection->query("UPDATE users
-				SET
-				password='$has_password'
-				WHERE username = '$username'
-			");	
-			if ($connection->affected_rows > 0) {
-			set_flash_message('reset_success', 'Berhasil Ubah Password');
-			} else {
-			set_flash_message('reset_failed', 'Berhasil Ubah Data User');
-			}
-		}else{
-			set_flash_message('username_erors','Username tidak ditemukan');
-			return;
-		}
-	}
+    if ($connection->affected_rows > 0) {
+        set_flash_message('berhasil_tambah_absen', 'Berhasil menambahkan data absen');
+    } else {
+        set_flash_message('gagal_tambah_absen', 'Gagal menambahkan data absen');
+    }
 
-	redirect('login.php');
-	
-}	
+    return redirect('data-absen.php?halaman=data-absen');
+
+}
+
+function ambil_data_absen_dosen($id) {
+    global $connection;
+    return $connection->query("SELECT * FROM jadwal_presensi WHERE user_id = '$id'")->fetch_all(MYSQLI_ASSOC);
+}
+
+function ambil_data_absen() {
+    global $connection;
+    return $connection->query("
+    SELECT
+        *, 
+        users.nama AS dosen_pengampu, 
+        jadwal_presensi.nama AS nama_matkul
+    FROM
+	    jadwal_presensi
+	INNER JOIN
+        users
+	ON 
+		jadwal_presensi.user_id = users.id
+    ")->fetch_all(MYSQLI_ASSOC);
+}
+
+function tambah_data_mata_kuliah($form) {
+    global $connection;
+    $nama_mata_kuliah = htmlspecialchars(stripcslashes($form['name']));
+    $id_user = $form['dosen-pengampu'];
+    $kode_kelas = random_strings(6);
+
+    $connection->query("
+        INSERT INTO 
+            mata_kuliah (user_id, name, enroll_code)
+        VALUES ('$id_user', '$nama_mata_kuliah', '$kode_kelas') 
+    ");
+
+    if ($connection->affected_rows > 0) {
+        set_flash_message('berhasil_tambah_mata_kuliah', 'Berhasil menambahkan data Mata Kuliah');
+    } else {
+        set_flash_message('gagal_tambah_mata-kuliah', 'Gagal menambahkan data Mata Kuliah');
+    }
+
+    return redirect('data-mata-kuliah.php?halaman=data-mata-kuliah');
+}
+
+function update_data_mata_kuliah($form)
+{
+    global $connection;
+    $id = $form['id'];
+    $nama_mata_kuliah = htmlspecialchars(stripcslashes($form['name']));
+    $id_user = $form['dosen-pengampu'];
+    $kode_kelas = $form['enroll-code'];
+
+    $connection->query("
+        UPDATE mata_kuliah
+        SET
+            name = '$nama_mata_kuliah',
+            user_id = '$id_user',
+            enroll_code = '$kode_kelas'
+        WHERE
+            id = '$id'
+    ");
+
+    set_flash_message('berhasil_tambah_mata_kuliah', 'Berhasil menambahkan data Mata Kuliah');
+
+    return redirect('data-mata-kuliah.php?halaman=data-mata-kuliah');
+}
+
+function ambil_data_mata_kuliah() {
+    global $connection;
+    return $connection->query("
+    SELECT
+	    *,
+	    users.nama AS dosen_pengampu,
+	    mata_kuliah.id AS id_mata_kuliah
+    FROM
+	    mata_kuliah
+	INNER JOIN
+	users
+	ON 
+		mata_kuliah.user_id = users.id")->fetch_all(MYSQLI_ASSOC);
+}
+
+function ambil_data_mata_kuliah_by_id($id)
+{
+    global $connection;
+    return $connection->query("
+    SELECT
+        *, 
+        users.nama AS dosen_pengampu,
+	    mata_kuliah.id AS id_mata_kuliah
+    FROM
+	    mata_kuliah
+	INNER JOIN
+	    users
+	ON 
+		mata_kuliah.user_id = users.id
+    WHERE
+	mata_kuliah.id = '$id' 
+    ")->fetch_assoc();
+}
+
+function random_strings($length_of_string)
+{
+
+    // String of all alphanumeric character
+    $str_result = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+
+    // Shuffle the $str_result and returns substring
+    // of specified length
+    return substr(str_shuffle($str_result),
+        0, $length_of_string);
+}
