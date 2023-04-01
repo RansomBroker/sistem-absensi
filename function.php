@@ -284,6 +284,10 @@ function upload_foto_profil($file, $name)
         set_flash_message('add_failed', 'Ukuran file tidak boleh lebih besar dari 1 MB');
         return false;
     }
+
+    // upload gambar ke folder img/profil
+    move_uploaded_file($tmp_name, 'img/profil/'.$nama_file);
+    return $nama_file;
 }
 
 function tambah_absensi($form) {
