@@ -11,7 +11,7 @@ $data_absen = $_SESSION['role'] == 2 ? ambil_data_absen_dosen($_SESSION['id']): 
 
     <?php include "head.php"?>
 
-    <title>Kelola Mata Kuliah</title>
+    <title>Kelola Absensi</title>
 
     <?php include "css.php"?>
 </head>
@@ -69,7 +69,7 @@ $data_absen = $_SESSION['role'] == 2 ? ambil_data_absen_dosen($_SESSION['id']): 
                                     <tbody>
                                     <?php foreach ($data_absen as $data):?>
                                         <tr>
-                                            <td><?= $data['nama'] ?></td>
+                                            <td><?= $data['nama_matkul'] ?></td>
                                             <td><?= $data['dosen_pengampu']?></td>
                                             <td><?= $data['jam_masuk'].'-'.$data['jam_keluar']?></td>
                                             <td><?= $data['tgl_absen']?></td>
@@ -134,7 +134,6 @@ $data_absen = $_SESSION['role'] == 2 ? ambil_data_absen_dosen($_SESSION['id']): 
     <script>
         $(document).ready(function () {
             let tableDataAbsensi = $("#table-absensi").DataTable()
-
         })
     </script>
 

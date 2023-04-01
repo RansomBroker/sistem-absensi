@@ -320,12 +320,104 @@ function ambil_data_absen() {
     global $connection;
     return $connection->query("
     SELECT
-	    *, 
-	    users.nama as dosen_pengampu
+        *, 
+        users.nama AS dosen_pengampu, 
+        jadwal_presensi.nama AS nama_matkul
     FROM
 	    jadwal_presensi
 	INNER JOIN
+        users
+	ON 
+		jadwal_presensi.user_id = users.id
+    ")->fetch_all(MYSQLI_ASSOC);
+}
+
+function tambah_data_mata_kuliah($form) {
+    global $connection;
+    $nama_mata_kuliah = htmlspecialchars(stripcslashes($form['name']));
+    $id_user = $form['dosen-pengampu'];
+    $kode_kelas = random_strings(6);
+
+    $connection->query("
+        INSERT INTO 
+            mata_kuliah (user_id, name, enroll_code)
+        VALUES ('$id_user', '$nama_mata_kuliah', '$kode_kelas') 
+    ");
+
+    if ($connection->affected_rows > 0) {
+        set_flash_message('berhasil_tambah_mata_kuliah', 'Berhasil menambahkan data Mata Kuliah');
+    } else {
+        set_flash_message('gagal_tambah_mata-kuliah', 'Gagal menambahkan data Mata Kuliah');
+    }
+
+    return redirect('data-mata-kuliah.php?halaman=data-mata-kuliah');
+}
+
+function update_data_mata_kuliah($form)
+{
+    global $connection;
+    $id = $form['id'];
+    $nama_mata_kuliah = htmlspecialchars(stripcslashes($form['name']));
+    $id_user = $form['dosen-pengampu'];
+    $kode_kelas = $form['enroll-code'];
+
+    $connection->query("
+        UPDATE mata_kuliah
+        SET
+            name = '$nama_mata_kuliah',
+            user_id = '$id_user',
+            enroll_code = '$kode_kelas'
+        WHERE
+            id = '$id'
+    ");
+
+    set_flash_message('berhasil_tambah_mata_kuliah', 'Berhasil menambahkan data Mata Kuliah');
+
+    return redirect('data-mata-kuliah.php?halaman=data-mata-kuliah');
+}
+
+function ambil_data_mata_kuliah() {
+    global $connection;
+    return $connection->query("
+    SELECT
+	    *,
+	    users.nama AS dosen_pengampu,
+	    mata_kuliah.id AS id_mata_kuliah
+    FROM
+	    mata_kuliah
+	INNER JOIN
+	users
+	ON 
+		mata_kuliah.user_id = users.id")->fetch_all(MYSQLI_ASSOC);
+}
+
+function ambil_data_mata_kuliah_by_id($id)
+{
+    global $connection;
+    return $connection->query("
+    SELECT
+        *, 
+        users.nama AS dosen_pengampu,
+	    mata_kuliah.id AS id_mata_kuliah
+    FROM
+	    mata_kuliah
+	INNER JOIN
 	    users
 	ON 
-		jadwal_presensi.user_id = users.id")->fetch_all(MYSQLI_ASSOC);
+		mata_kuliah.user_id = users.id
+    WHERE
+	mata_kuliah.id = '$id' 
+    ")->fetch_assoc();
+}
+
+function random_strings($length_of_string)
+{
+
+    // String of all alphanumeric character
+    $str_result = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+
+    // Shuffle the $str_result and returns substring
+    // of specified length
+    return substr(str_shuffle($str_result),
+        0, $length_of_string);
 }
