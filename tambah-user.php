@@ -46,20 +46,38 @@ if (isset($_POST['user-submit'])) {
                          <div class="row"> 
                               <div class="col-lg-12 col-12 mb-2">
                                    <label class="form-label">User <sup class="text-danger">*</sup></label>
-                                   <input type="text" class="form-control desimal-input" name="username">
+                                   <input type="text" class="form-control desimal-input" name="username"required>
+                              </div>
+                              <div class="col-lg-12 col-12 mb-2">
+                                   <label class="form-label">Nama <sup class="text-danger">*</sup></label>
+                                   <input type="text" class="form-control desimal-input" name="nama"required>
                               </div>
                               <div class="col-lg-12 col-12 mb-2">
                                    <label class="form-label">Password <sup class="text-danger">*</sup></label>
-                                   <input type="text" class="form-control desimal-input" name="password">
+                                   <input type="text" class="form-control desimal-input" name="password"required>
                               </div>
                               <div class="col-lg-12 col-12 mb-2">
                                    <label class="form-label">Status <sup class="text-danger">*</sup></label>
-                                   <select name="role" class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
-                                        <option selected>Pilih...</option>
+                                   <select id="role" name="role" class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref"required>
+                                        <option selected value="">Pilih...</option>
                                         <option value="1">Admin</option>
                                         <option value="2">Dosen</option>
                                         <option value="3">Mahasiswa</option>
                                    </select>
+                              </div>
+                              <div class="w-100 d-none" id="mahasiswa">
+                                <div class="col-lg-12 col-12 mb-2 "  >
+                                   <label class="form-label">NIM <sup class="text-danger">*</sup></label>
+                                   <input class="form-control desimal-input" name="nim">
+                                </div>
+                                <div class="col-lg-12 col-12 mb-2 "   >
+                                   <label class="form-label">Angkatan <sup class="text-danger">*</sup></label>
+                                   <input class="form-control desimal-input" name="angkatan">
+                                </div>
+                              </div>
+                              <div class="col-lg-12 col-12 mb-2 d-none " id="dosen" >
+                                   <label class="form-label">NIP <sup class="text-danger">*</sup></label>
+                                   <input class="form-control desimal-input" name="nip" >
                               </div>
                               <button type="submit" name="user-submit" class="btn btn-warning mt-2 mx-2 w-100">Tambah</button>
                               <button type="reset"  class="btn btn-danger my-2 mx-2 w-100">Clear</button>
@@ -83,9 +101,49 @@ if (isset($_POST['user-submit'])) {
 
     <?php include "js.php"?>
     <script>
-        $(document).ready(function () {
-            let tabelMataKuliah = $("#table-mata-kuliah").DataTable();
-        })
+        $(document).ready(function (){
+        //making serverName Dropdown box disabled by default.
+        $('#mahasiswa').addClass('d-none');
+        $('#dosen').addClass('d-none');
+
+        $('#role').on("change",function ()
+        {
+        
+            if($(this).val() == "1"){
+                $('#mahasiswa').val = "1";
+                $('#mahasiswa').addClass('d-none');
+                $('#dosen').val = "1";
+                $('#dosen').addClass('d-none');
+                $('[name=nim]').attr('required', false);  
+                $('[name=angkatan]').attr('required', false);  
+                $('[name=nip]').attr('required', false); 
+                
+                $('[name=nim]').val('');  
+                $('[name=angkatan]').val('');  
+                $('[name=nip]').val('');
+                return;
+            }if($(this).val() === "2"){
+                $('#dosen').removeClass('d-none'); 
+                $('[name=nim]').attr('required', false);  
+                $('[name=angkatan]').attr('required', false);  
+                $('[name=nim]').val("");  
+                $('[name=angkatan]').val("");
+                $('[name=nip]').attr('required', true);  
+                $('#mahasiswa').addClass('d-none');
+                console.log("here");
+                return;
+            } if($(this).val() == "3"){
+                $('#dosen').addClass('d-none');
+                $('#mahasiswa').val = "3";
+                $('#mahasiswa').removeClass('d-none');
+                $('[name=nim]').attr('required', true);  
+                $('[name=angkatan]').attr('required', true);  
+                $('[name=nip]').attr('required', false);
+                $('[name=nip]').val('');    
+                return;
+            }  
+        });
+    });
     </script>
 
 </body>

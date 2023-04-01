@@ -71,7 +71,7 @@ $data_user = ambil_data_user_by_id($_GET['id']);
                             <?php if($_SESSION['role'] == 1):?>
                                 <div class="mb-3">
                                    <label class="form-label" for="nama">Nama <sup class="text-danger">*</sup></label>
-                                   <input type="text" id="nama" name="nama" value="<?= $data_user['nama']?>" class="text-capitalize form-control">
+                                   <input type="text" id="nama" name="nama" value="<?= $data_user['nama']?>" class="text-capitalize form-control" readonly>
                               </div>
                               <div class="mb-3">
                                    <label class="form-label" for="username">Username <sup class="text-danger">*</sup></label>
@@ -88,13 +88,13 @@ $data_user = ambil_data_user_by_id($_GET['id']);
                             <?php endif;?>
                             <!-- Jika Role == Dosen -->
                             <?php if($_SESSION['role'] == 2):?>
-                                <div class="mb-3">
+                              <div class="mb-3">
                                    <label class="form-label" for="nim">NIP <sup class="text-danger">*</sup></label>
-                                   <input type="text" id="nim" name="nomor_induk" value='<?= $data_user == NULL ? '': $data_user['nomor_induk']?>' class="form-control">
+                                   <input type="text" id="nim" name="nomor_induk" value='<?= $data_user['nomor_induk']?>' class="form-control" readonly>
                               </div>
                               <div class="mb-3">
                                    <label class="form-label" for="nama">Nama <sup class="text-danger">*</sup></label>
-                                   <input type="text" id="nama" name="nama" value="<?= $data_user['nama']?>" class="text-capitalize form-control">
+                                   <input type="text" id="nama" name="nama" value="<?= $data_user['nama']?>" class="text-capitalize form-control" readonly>
                               </div>
                               <div class="mb-3">
                                    <label class="form-label d-block" for="foto">Foto <sup class="text-danger">*</sup></label>
@@ -107,13 +107,13 @@ $data_user = ambil_data_user_by_id($_GET['id']);
                             <?php endif; ?>
                             <!-- Jika Role == Mahasiswa -->
                             <?php if($_SESSION['role'] == 3):?>
-                                <div class="mb-3">
+                              <div class="mb-3">
                                    <label class="form-label" for="nim">NIM <sup class="text-danger">*</sup></label>
-                                   <input type="text" id="nim" name="nomor_induk" value='<?= $data_user == NULL ? '': $data_user['nomor_induk']?>' class="form-control">
+                                   <input type="text" id="nim" name="nomor_induk" value='<?= $data_user['nomor_induk']?>' class="form-control" readonly>
                               </div>
                               <div class="mb-3">
                                    <label class="form-label" for="nama">Nama <sup class="text-danger">*</sup></label>
-                                   <input type="text" id="nama" name="nama" value="<?= $data_user['nama']?>" class="text-capitalize form-control">
+                                   <input type="text" id="nama" name="nama" value="<?= $data_user['nama']?>" class="text-capitalize form-control" readonly>
                               </div>
                               <div class="mb-3">
                                    <label class="form-label" for="kelas">Kelas<sup class="text-danger">*</sup></label>
