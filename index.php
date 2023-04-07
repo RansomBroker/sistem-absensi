@@ -64,6 +64,31 @@ $data_absen = ambil_data_absen();
                         <h5 class="card-title">HI <?=$_SESSION['nama']?></h5>
                     </div>
 
+                    <div class="card card-body my-4">
+                        <h5 class="card-title">List kelas</h5>
+                        <button data-id="<?= $_SESSION['id']?>" class="btn-enroll btn btn-warning mb-3">Enroll Kelas</button>
+                        <div>
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover table-bordered" id="table-mata-kuliah">
+                                    <thead>
+                                        <tr>
+                                            <th>Nama Mata Kuliah</th>
+                                            <th>Dosen Pengampu</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach (ambil_data_mata_kuliah_mahasiswa($_SESSION['id']) as $data):?>
+                                            <tr>
+                                                <td><?= $data['name']?></td>
+                                                <td><?= $data['nama']?></td>
+                                            </tr>
+                                        <?php endforeach;?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="card card-body mt-4">
                         <h5 class="card-title">List Absen</h5>
                         <div class="table-responsive">
@@ -116,7 +141,7 @@ $data_absen = ambil_data_absen();
     <script>
         $(document).ready(function () {
             let tableDataAbsensi = $("#table-absensi").DataTable()
-            
+            let tableMataKuliah = $("#table-mata-kuliah").DataTable()
             $('.btn-absen').on('click', function () {
                 Swal.fire({
                     title: "Isi Kehadiran",
@@ -126,6 +151,49 @@ $data_absen = ambil_data_absen();
                             </div>`,
                     didOpen: () => {
                     }
+                })
+            })
+
+            $(".btn-enroll").on('click', function() {
+                let id = $(this).attr('data-id')
+                Swal.fire({
+                    title: "Enroll Kelas",
+                    html: `<div class="form-group">
+                                <label class="form-label">Kode Kelas</label>
+                                <input type="text" class="form-control" name="enroll-code">
+                           </div>`,
+                    showCancelButton: true,
+                    reverseButtons: true,
+                    preConfirm: function () {
+                        return new Promise(function (resolve) {
+                            if($('[name=enroll-code]').val() === '') {
+                                swal.showValidationMessage("Masukan Kode Kelas")
+                                swal.enableButtons();
+                                return 0;
+                            }
+
+                            if ($('[name=enroll-code]').val() != '') {
+                                swal.resetValidationMessage();
+                                resolve({
+                                    "enrollCode" : $("[name=enroll-code]").val(),
+                                });
+                            }
+                        })
+                    }
+                }).then((result) => {
+                    let enrollCode = result.value.enrollCode;
+                    $.ajax({
+                        url: "enroll-kelas.php?enroll-code="+enrollCode + "&id=" + id,
+                        method: "GET",
+                        success: function(data) {
+                            let response = JSON.parse(data);
+                            if (response[0].code === 0) {
+                                Swal.fire('error', response[0].message, 'error')
+                                return 0;
+                            }
+                            window.location.reload();
+                        }
+                    })
                 })
             })
         })

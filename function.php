@@ -414,6 +414,28 @@ function ambil_data_mata_kuliah_by_id($id)
     ")->fetch_assoc();
 }
 
+function ambil_data_mata_kuliah_mahasiswa($id) {
+    global $connection;
+    return $connection->query("
+    SELECT
+        *, 
+        mahasiswa_enroll.user_id AS id_mahasiswa_enroll, 
+        mata_kuliah.user_id AS id_dosen_pengampu
+    FROM
+	    mahasiswa_enroll
+	INNER JOIN
+	    mata_kuliah
+	ON 
+		mahasiswa_enroll.mata_kuliah_id = mata_kuliah.id
+	INNER JOIN
+	users
+	ON 
+		mata_kuliah.user_id = users.id
+    WHERE
+	mahasiswa_enroll.user_id = '$id'
+    ")->fetch_all(MYSQLI_ASSOC);
+}
+
 function random_strings($length_of_string)
 {
 
