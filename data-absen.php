@@ -101,7 +101,7 @@ $data_absen = $_SESSION['role'] == 2 ? ambil_data_absen_dosen($_SESSION['id']): 
                                             <td><?= $data['tgl_absen']?></td>
                                             <td><?= $data['waktu_dispensasi']?></td>
                                             <td>
-                                                <button class="btn-edit btn btn-warning" data-id="<?= $data['id']?>">Edit</button>
+                                                <a href="ubah-data-absen.php?id=<?= $data['id']?>" class="btn-edit btn btn-warning">Edit</a>  
                                                 <a href="hapus-data-absen.php?id=<?=$data['id']?>" class="btn btn-danger">Hapus</a>
                                             </td>
                                         </tr>

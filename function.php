@@ -292,6 +292,7 @@ function upload_foto_profil($file, $name)
 
 function tambah_absensi($form) {
     global  $connection;
+    
     $nama_mata_kuliah = htmlspecialchars(stripcslashes($form['judul-presensi']));
     $id_mata_kuliah = $form['id-mata-kuliah'];
     $user_id = $form['user-id'];
@@ -465,4 +466,42 @@ function random_strings($length_of_string)
     // of specified length
     return substr(str_shuffle($str_result),
         0, $length_of_string);
+}
+function ambil_data_absen_by_id($id) {
+	global $connection;
+ 	return $connection->query("SELECT * FROM jadwal_presensi WHERE id = '$id'")->fetch_assoc();
+
+}
+function update_data_absen($form){
+	global $connection;
+	$id = $form['id'];
+	$nama_mata_kuliah = htmlspecialchars(stripcslashes($form['judul-presensi']));
+	$id_mata_kuliah = $form['id-mata-kuliah'];
+	$user_id = $form['user-id'];
+	$waktu_masuk = $form['waktu-masuk'];
+	$waktu_keluar = $form['waktu-keluar'];
+	$tanggal_absensi = $form['tanggal-absensi'];
+	$waktu_dispensasi = $form['waktu-dispensasi'];
+
+	$connection->query("
+		UPDATE jadwal_presensi
+		SET 
+			user_id ='$user_id', 
+			nama='$nama_mata_kuliah', 
+			jam_masuk='$waktu_masuk', 
+			jam_keluar='$waktu_keluar', 
+			tgl_absen='$tanggal_absensi', 
+			waktu_dispensasi='$waktu_dispensasi', 
+			mata_kuliah_id='$id_mata_kuliah'
+		WHERE
+		id = '$id'    
+	");
+
+	if ($connection->affected_rows > 0) {
+		set_flash_message('berhasil_tambah_absen', 'Berhasil Ubah Data absen');
+	} else {
+		set_flash_message('gagal_tambah_absen', 'Gagal Ubah Data absen');
+	}
+
+	return redirect('data-absen.php?halaman=data-absen');
 }
