@@ -11,7 +11,7 @@
  Target Server Version : 50722
  File Encoding         : 65001
 
- Date: 27/03/2023 07:20:26
+ Date: 08/04/2023 11:08:03
 */
 
 SET NAMES utf8mb4;
@@ -23,17 +23,64 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `jadwal_presensi`;
 CREATE TABLE `jadwal_presensi` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(20) NOT NULL,
   `nama` varchar(255) NOT NULL,
   `jam_masuk` time NOT NULL,
   `jam_keluar` time NOT NULL,
   `tgl_absen` date NOT NULL,
   `waktu_dispensasi` int(255) NOT NULL,
+  `mata_kuliah_id` bigint(20) NOT NULL,
   KEY `id` (`id`),
-  KEY `jam_masuk` (`jam_masuk`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  KEY `jam_masuk` (`jam_masuk`),
+  KEY `jadwal_presensi_id_user_foreign` (`user_id`),
+  KEY `jadwal_presensi_mata_kuliah_id_foreign` (`mata_kuliah_id`),
+  CONSTRAINT `jadwal_presensi_id_user_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `jadwal_presensi_mata_kuliah_id_foreign` FOREIGN KEY (`mata_kuliah_id`) REFERENCES `mata_kuliah` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of jadwal_presensi
+-- ----------------------------
+BEGIN;
+COMMIT;
+
+-- ----------------------------
+-- Table structure for mahasiswa_enroll
+-- ----------------------------
+DROP TABLE IF EXISTS `mahasiswa_enroll`;
+CREATE TABLE `mahasiswa_enroll` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(20) NOT NULL,
+  `mata_kuliah_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `mahasiswa_enroll_mata_kuliah_foreign_id` (`mata_kuliah_id`),
+  KEY `mahasiswa_enroll_user_id_foreign` (`user_id`),
+  CONSTRAINT `mahasiswa_enroll_mata_kuliah_foreign_id` FOREIGN KEY (`mata_kuliah_id`) REFERENCES `mata_kuliah` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `mahasiswa_enroll_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
+
+-- ----------------------------
+-- Records of mahasiswa_enroll
+-- ----------------------------
+BEGIN;
+COMMIT;
+
+-- ----------------------------
+-- Table structure for mata_kuliah
+-- ----------------------------
+DROP TABLE IF EXISTS `mata_kuliah`;
+CREATE TABLE `mata_kuliah` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(20) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `enroll_code` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `mata_kuliah_user_id_foreign` (`user_id`),
+  CONSTRAINT `mata_kuliah_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of mata_kuliah
 -- ----------------------------
 BEGIN;
 COMMIT;
@@ -78,7 +125,7 @@ CREATE TABLE `users` (
   `img` varchar(255) DEFAULT NULL,
   `kelas` varchar(255) DEFAULT NULL COMMENT 'mahasiswa',
   `tempat_lahir` varchar(255) DEFAULT NULL COMMENT 'mahasiswa',
-  `angkata` int(255) DEFAULT NULL COMMENT 'mahasiswa',
+  `angkatan` int(255) DEFAULT NULL COMMENT 'mahasiswa',
   `moto_hidup` varchar(255) DEFAULT NULL COMMENT 'mahasiswa',
   `kemampuan_pribadi` varchar(255) DEFAULT NULL COMMENT 'mahasiswa',
   `password` varchar(255) NOT NULL,
