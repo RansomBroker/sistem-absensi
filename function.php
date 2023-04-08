@@ -292,7 +292,8 @@ function upload_foto_profil($file, $name)
 
 function tambah_absensi($form) {
     global  $connection;
-    $nama_mata_kuliah = htmlspecialchars(stripcslashes($form['nama-mata-kuliah']));
+    $nama_mata_kuliah = htmlspecialchars(stripcslashes($form['judul-presensi']));
+    $id_mata_kuliah = $form['id-mata-kuliah'];
     $user_id = $form['user-id'];
     $waktu_masuk = $form['waktu-masuk'];
     $waktu_keluar = $form['waktu-keluar'];
@@ -301,8 +302,8 @@ function tambah_absensi($form) {
 
     $connection->query("
         INSERT INTO 
-            jadwal_presensi (user_id, nama, jam_masuk, jam_keluar, tgl_absen, waktu_dispensasi)
-        VALUES ('$user_id','$nama_mata_kuliah', '$waktu_masuk', '$waktu_keluar', '$tanggal_absensi', '$waktu_dispensasi')    
+            jadwal_presensi (user_id, nama, jam_masuk, jam_keluar, tgl_absen, waktu_dispensasi, mata_kuliah_id)
+        VALUES ('$user_id','$nama_mata_kuliah', '$waktu_masuk', '$waktu_keluar', '$tanggal_absensi', '$waktu_dispensasi', '$id_mata_kuliah')    
     ");
 
     if ($connection->affected_rows > 0) {
@@ -395,6 +396,24 @@ function ambil_data_mata_kuliah() {
 		mata_kuliah.user_id = users.id")->fetch_all(MYSQLI_ASSOC);
 }
 
+function ambil_data_mata_kuliah_dosen($id)
+{
+    global $connection;
+    return $connection->query("
+    SELECT
+        *, 
+        users.nama AS dosen_pengampu,
+	    mata_kuliah.id AS id_mata_kuliah
+    FROM
+	    mata_kuliah
+	INNER JOIN
+	    users
+	ON 
+		mata_kuliah.user_id = users.id
+    WHERE
+	mata_kuliah.user_id = '$id' 
+    ")->fetch_all(MYSQLI_ASSOC);
+}
 function ambil_data_mata_kuliah_by_id($id)
 {
     global $connection;
