@@ -5,6 +5,7 @@ include "function.php";
 if (isset($_POST['tambah-absensi'])) {
     tambah_absensi($_POST);
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -41,7 +42,15 @@ if (isset($_POST['tambah-absensi'])) {
                         <input type="hidden" name="user-id" value="<?= $_SESSION['id']?>">
                         <div class="form-group">
                             <label for="" class="form-label">Nama Mata Kuliah <sup class="text-danger">*</sup></label>
-                            <input type="text" name="nama-mata-kuliah" class="form-control" required>
+                            <select name="id-mata-kuliah" class="form-control" required>
+                                <?php foreach (ambil_data_mata_kuliah_dosen($_SESSION['id']) as $data):?>
+                                    <option value="<?= $data['id_mata_kuliah']?>"><?= $data['name']?></option>
+                                <?php endforeach;?>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="form-label">Judul Presensi <sup class="text-danger">*</sup></label>
+                            <input name="judul-presensi" class="form-control" required>
                         </div>
                         <div class="form-group">
                             <label for="" class="form-label">Waktu Masuk <sup class="text-danger">*</sup></label>

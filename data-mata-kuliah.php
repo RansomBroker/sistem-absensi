@@ -90,7 +90,7 @@ $data_mata_kuliah = ambil_data_mata_kuliah() ;
                                     </tr>
                                     </thead>
                                     <tbody>
-                                        <?php foreach ($data_mata_kuliah as $mata_kuliah):?>
+                                        <?php foreach (ambil_data_mata_kuliah_dosen($_SESSION['id']) as $mata_kuliah):?>
                                             <tr>
                                                 <td><?= $mata_kuliah['name']?></td>
                                                 <td><?= $mata_kuliah['enroll_code']?></td>
