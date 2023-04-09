@@ -2,7 +2,11 @@
 session_start();
 include "function.php";
 
-$data_absen = ambil_data_absen();
+$kehadiran = [];
+foreach (ambil_kehadiran_mahasiswa($_SESSION['id']) as $data) {
+    $kehadiran[] = $data['id_mata_kuliah'];
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -71,18 +75,18 @@ $data_absen = ambil_data_absen();
                             <div class="table-responsive">
                                 <table class="table table-striped table-hover table-bordered" id="table-mata-kuliah">
                                     <thead>
-                                        <tr>
-                                            <th>Nama Mata Kuliah</th>
-                                            <th>Dosen Pengampu</th>
-                                        </tr>
+                                    <tr>
+                                        <th>Nama Mata Kuliah</th>
+                                        <th>Dosen Pengampu</th>
+                                    </tr>
                                     </thead>
                                     <tbody>
-                                        <?php foreach (ambil_data_mata_kuliah_mahasiswa($_SESSION['id']) as $data):?>
-                                            <tr>
-                                                <td><?= $data['name']?></td>
-                                                <td><?= $data['nama']?></td>
-                                            </tr>
-                                        <?php endforeach;?>
+                                    <?php foreach (ambil_data_mata_kuliah_mahasiswa($_SESSION['id']) as $data):?>
+                                        <tr>
+                                            <td><?= $data['name']?></td>
+                                            <td><?= $data['nama']?></td>
+                                        </tr>
+                                    <?php endforeach;?>
                                     </tbody>
                                 </table>
                             </div>
@@ -96,7 +100,7 @@ $data_absen = ambil_data_absen();
                                 <thead>
                                 <tr>
                                     <th>Nama</th>
-                                    <th>Dosen Pengampu</th>
+                                    <th>Matkul</th>
                                     <th>Waktu Absen</th>
                                     <th>Tanggal Absen</th>
                                     <th>Waktu Dispensasi</th>
@@ -104,23 +108,36 @@ $data_absen = ambil_data_absen();
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <?php foreach ($data_absen as $data):?>
-                                    <tr>
-                                        <td><?= $data['nama_matkul'] ?></td>
-                                        <td><?= $data['dosen_pengampu']?></td>
-                                        <td><?= $data['jam_masuk'].'-'.$data['jam_keluar']?></td>
-                                        <td><?= $data['tgl_absen']?></td>
-                                        <td><?= $data['waktu_dispensasi']?></td>
-                                        <td>
-                                            <button  class="btn-absen btn btn-warning">Isi Kehadiran</button>
-                                        </td>
-                                    </tr>
+                                <?php foreach (ambil_jadwal_presensi_mahasiswa($_SESSION['id']) as $data):?>
+                                    <?php if (in_array($data['id_presensi'], $kehadiran)):?>
+                                        <tr>
+                                            <td><?= $data['judul_presensi'] ?></td>
+                                            <td><?= $data['mata_kuliah']?></td>
+                                            <td><?= $data['jam_masuk'].'-'.$data['jam_keluar']?></td>
+                                            <td><?= $data['tgl_absen']?></td>
+                                            <td><?= $data['waktu_dispensasi']?></td>
+                                            <td>
+                                                <button  class="btn btn-success" data-id="<?= $data['id_presensi']?>" data-id-mahasiswa="<?= $_SESSION['id']?>">Lihat Detail</button>
+                                            </td>
+                                        </tr>
+                                    <?php else:?>
+                                        <tr>
+                                            <td><?= $data['judul_presensi'] ?></td>
+                                            <td><?= $data['mata_kuliah']?></td>
+                                            <td><?= $data['jam_masuk'].'-'.$data['jam_keluar']?></td>
+                                            <td><?= $data['tgl_absen']?></td>
+                                            <td><?= $data['waktu_dispensasi']?></td>
+                                            <td>
+                                                <button  class="btn-absen btn btn-warning" data-id="<?= $data['id_presensi']?>" data-id-mahasiswa="<?= $_SESSION['id']?>">Isi Kehadiran</button>
+                                            </td>
+                                        </tr>
+                                    <?php endif;?>
                                 <?php endforeach;?>
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                <?php endif;?>    
+                <?php endif;?>
             </div>
 
 
@@ -136,20 +153,104 @@ $data_absen = ambil_data_absen();
     </a>
 
     <?php include "logout_modal.php"?>
-    
+
     <?php include "js.php"?>
     <script>
         $(document).ready(function () {
             let tableDataAbsensi = $("#table-absensi").DataTable()
             let tableMataKuliah = $("#table-mata-kuliah").DataTable()
             $('.btn-absen').on('click', function () {
+                let idAbsensi = $(this).attr('data-id');
+                let idMahasiswa = $(this).attr('data-id-mahasiswa');
                 Swal.fire({
                     title: "Isi Kehadiran",
-                    html: `<div class="camera">
-                              <video id="video">Video stream not available.</video>
-                              <button id="startbutton">Take photo</button>
-                            </div>`,
+                    allowOutsideClick: false,
+                    showCancelButton: true,
+                    html: `
+                            <p>Status Kehadiran</p>
+                            <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="status" value="hadir">
+                              <label class="form-check-label">Hadir</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="status" value="sakit">
+                              <label class="form-check-label">Sakit</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="status" value="izin">
+                              <label class="form-check-label">Izin</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="status" value="alpha">
+                              <label class="form-check-label">Alpha</label>
+                            </div>
+                            <video id="video" class="w-100">Video stream not available.</video>
+                            <canvas id="canvas" class="d-none"> </canvas>
+                            <input type="hidden" name="coordinate">
+                           `,
                     didOpen: () => {
+                        let video = $("#video").get(0);
+                        navigator.mediaDevices.getUserMedia({video:true, audio: false}).then(function (stream) {
+                            video.srcObject = stream;
+                            console.log(stream);
+                            video.play();
+                            stream.active;
+                        })
+                        navigator.geolocation.getCurrentPosition(function (position) {
+                            $('[name=coordinate]').val(position.coords.latitude + "," + position.coords.longitude)
+                        });
+                    },
+                    preConfirm: function () {
+                        return new Promise(function (resolve) {
+                            let status = $("[name=status]:checked").val()
+                            let canvas = $("#canvas").get(0);
+                            let context = canvas.getContext("2d")
+
+                            if (status === undefined) {
+                                swal.showValidationMessage("Pilih Status Kehadiran")
+                                swal.enableButtons();
+                                return 0;
+                            }
+
+                            if ($('[name=coordinate]').val().length === 0 ) {
+                                swal.showValidationMessage("Silahkan enable location pada browser")
+                                swal.enableButtons();
+                                return 0;
+                            }
+
+                            canvas.width = 512;
+                            canvas.height = 512;
+                            context.drawImage(video, 0, 0, 512,512)
+
+                            swal.resetValidationMessage();
+                            resolve({
+                                'imageData': canvas.toDataURL("image/png"),
+                                'status': status,
+                                'coordinate': $('[name=coordinate]').val()
+                            })
+                        })
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: 'tambah-absensi.php',
+                            method: 'POST',
+                            data: {
+                                'status': result.value.status,
+                                'imageData': result.value.imageData,
+                                'coordinate': result.value.coordinate,
+                                'idAbsensi': idAbsensi,
+                                'idMahasiswa': idMahasiswa
+                            },
+                            success: function(data) {
+                                let response = JSON.parse(data);
+                                if (response[0].code === 0) {
+                                    Swal.fire('error', response[0].message, 'error')
+                                    return 0;
+                                }
+                                window.location.reload();
+                            }
+                        })
                     }
                 })
             })

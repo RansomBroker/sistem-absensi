@@ -505,3 +505,44 @@ function update_data_absen($form){
 
 	return redirect('data-absen.php?halaman=data-absen');
 }
+
+function ambil_jadwal_presensi_mahasiswa($id)
+{
+    global $connection;
+    return $connection->query("
+        SELECT
+            *,
+            users.nama  as dosen_pengampu,
+            jadwal_presensi.nama as judul_presensi,
+            jadwal_presensi.id as id_presensi,
+            mata_kuliah.`name` as mata_kuliah
+        FROM
+            jadwal_presensi
+        INNER JOIN
+            mata_kuliah
+        ON 
+            jadwal_presensi.mata_kuliah_id = mata_kuliah.id
+        INNER JOIN
+            mahasiswa_enroll
+        ON 
+            mata_kuliah.id = mahasiswa_enroll.mata_kuliah_id
+        INNER JOIN
+            users
+        ON 
+            mata_kuliah.user_id = users.id
+        WHERE
+            mahasiswa_enroll.user_id = '$id'
+    ")->fetch_all(MYSQLI_ASSOC);
+}
+
+function ambil_kehadiran_mahasiswa($id)
+{
+    global  $connection;
+    return $connection->query("
+        SELECT
+            presensi_mahasiswa.id_jadwal_presensi as id_mata_kuliah
+        FROM
+            presensi_mahasiswa
+        where id_mahasiswa = '$id'
+    ")->fetch_all(MYSQLI_ASSOC);
+}
