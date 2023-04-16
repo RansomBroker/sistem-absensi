@@ -64,8 +64,41 @@ foreach (ambil_kehadiran_mahasiswa($_SESSION['id']) as $data) {
                     </div>
                 <?php endif;?>
                 <?php if($_SESSION['role'] == 3):?>
+                    <?php $akumulasi_telat = ambil_akumulasi_mahasiswa($_SESSION['id']);?>
                     <div class="card card-body">
                         <h5 class="card-title">HI <?=$_SESSION['nama']?></h5>
+                        <div class="card card-body">
+                            <div class=" row justify-content-start">
+                                <div class="col-lg-4 col-12 border-right">
+                                    <h5 class=card-title>Akumulasi Menit Alpha</h5>
+                                    <?php if ($akumulasi_telat['akumulasi'] < 480):?>
+                                        <h4 class="text-primary font-weight-bold"><?= $akumulasi_telat['akumulasi']?> (menit)</h4>
+                                    <?php endif;?>
+
+                                    <?php if ($akumulasi_telat['akumulasi'] >= 480 && $akumulasi_telat['akumulasi'] <= 960):?>
+                                        <h4 class="text-warning font-weight-bold"><?= $akumulasi_telat['akumulasi']?> (menit)</h4>
+                                    <?php endif;?>
+
+                                    <?php if ($akumulasi_telat['akumulasi'] > 960):?>
+                                        <h4 class="text-danger font-weight-bold"><?= $akumulasi_telat['akumulasi']?> (menit)</h4>
+                                    <?php endif;?>
+                                </div>
+                                <div class="col-lg-4 col-12">
+                                    <h5 class=card-title>Status</h5>
+                                    <?php if ($akumulasi_telat['akumulasi'] < 480):?>
+                                        <h4 class="btn btn-primary">SP1</h4>
+                                    <?php endif;?>
+
+                                    <?php if ($akumulasi_telat['akumulasi'] >= 480 && $akumulasi_telat['akumulasi'] <= 960):?>
+                                        <h4 class="btn btn-warning">SP2</h4>
+                                    <?php endif;?>
+
+                                    <?php if ($akumulasi_telat['akumulasi'] > 960):?>
+                                        <h4 class="btn btn-danger">SP3</h4>
+                                    <?php endif;?>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="card card-body my-4">
@@ -78,6 +111,7 @@ foreach (ambil_kehadiran_mahasiswa($_SESSION['id']) as $data) {
                                     <tr>
                                         <th>Nama Mata Kuliah</th>
                                         <th>Dosen Pengampu</th>
+                                        <th>Aksi</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -85,6 +119,7 @@ foreach (ambil_kehadiran_mahasiswa($_SESSION['id']) as $data) {
                                         <tr>
                                             <td><?= $data['name']?></td>
                                             <td><?= $data['nama']?></td>
+                                            <td><a href="list-absensi-matkul.php?id=<?= $data['id_mata_kuliah']?>" class="btn btn-warning">Lihat List Absensi</a></td>
                                         </tr>
                                     <?php endforeach;?>
                                     </tbody>
@@ -117,7 +152,7 @@ foreach (ambil_kehadiran_mahasiswa($_SESSION['id']) as $data) {
                                             <td><?= $data['tgl_absen']?></td>
                                             <td><?= $data['waktu_dispensasi']?></td>
                                             <td>
-                                                <button  class="btn btn-success" data-id="<?= $data['id_presensi']?>" data-id-mahasiswa="<?= $_SESSION['id']?>">Lihat Detail</button>
+                                                <a href="list-presensi.php?id-presensi=<?= $data['id_presensi']?>&id-mahasiswa=<?= $_SESSION['id']?>"  class="btn btn-success">Lihat Detail</a>
                                             </td>
                                         </tr>
                                     <?php else:?>
@@ -169,19 +204,19 @@ foreach (ambil_kehadiran_mahasiswa($_SESSION['id']) as $data) {
                     html: `
                             <p>Status Kehadiran</p>
                             <div class="form-check form-check-inline">
-                              <input class="form-check-input" type="radio" name="status" value="hadir">
+                              <input class="form-check-input" type="radio" name="status" value="Hadir">
                               <label class="form-check-label">Hadir</label>
                             </div>
                             <div class="form-check form-check-inline">
-                              <input class="form-check-input" type="radio" name="status" value="sakit">
+                              <input class="form-check-input" type="radio" name="status" value="Sakit">
                               <label class="form-check-label">Sakit</label>
                             </div>
                             <div class="form-check form-check-inline">
-                              <input class="form-check-input" type="radio" name="status" value="izin">
+                              <input class="form-check-input" type="radio" name="status" value="Izin">
                               <label class="form-check-label">Izin</label>
                             </div>
                             <div class="form-check form-check-inline">
-                              <input class="form-check-input" type="radio" name="status" value="alpha">
+                              <input class="form-check-input" type="radio" name="status" value="Alpha">
                               <label class="form-check-label">Alpha</label>
                             </div>
                             <video id="video" class="w-100">Video stream not available.</video>
