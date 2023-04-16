@@ -3,6 +3,7 @@ session_start();
 include "function.php";
 
 $data_absen = $_SESSION['role'] == 2 ? ambil_data_absen_dosen($_SESSION['id']): ambil_data_absen($_SESSION['id']);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -75,7 +76,7 @@ $data_absen = $_SESSION['role'] == 2 ? ambil_data_absen_dosen($_SESSION['id']): 
                                             <td><?= $data['tgl_absen']?></td>
                                             <td><?= $data['waktu_dispensasi']?></td>
                                             <td>
-                                                <a href="#" class="btn btn-danger">Hapus</a>
+                                                <a href="list-presensi.php?id-presensi=<?= $data['presensi_id']?>"  class="btn btn-success">Lihat Presensi</a>
                                             </td>
                                         </tr>
                                     <?php endforeach;?>
@@ -87,6 +88,7 @@ $data_absen = $_SESSION['role'] == 2 ? ambil_data_absen_dosen($_SESSION['id']): 
                                     <thead>
                                     <tr>
                                         <th>Nama</th>
+                                        <th>Matkul</th>
                                         <th>Waktu Absen</th>
                                         <th>Tanggal Absen</th>
                                         <th>Waktu Dispensasi</th>
@@ -96,13 +98,15 @@ $data_absen = $_SESSION['role'] == 2 ? ambil_data_absen_dosen($_SESSION['id']): 
                                     <tbody>
                                     <?php foreach ($data_absen as $data):?>
                                         <tr>
-                                            <td><?= $data['nama'] ?></td>
+                                            <td><?= $data['nama_presensi'] ?></td>
+                                            <td><?= $data['nama_matkul']?></td>
                                             <td><?= $data['jam_masuk'].'-'.$data['jam_keluar']?></td>
                                             <td><?= $data['tgl_absen']?></td>
                                             <td><?= $data['waktu_dispensasi']?></td>
                                             <td>
-                                                <a href="ubah-data-absen.php?id=<?= $data['id']?>" class="btn-edit btn btn-warning">Edit</a>  
-                                                <a href="hapus-data-absen.php?id=<?=$data['id']?>" class="btn btn-danger">Hapus</a>
+                                                <a href="list-presensi.php?id-presensi=<?= $data['presensi_id']?>"  class="btn btn-success">Lihat Presensi</a>
+                                                <a href="ubah-data-absen.php?id=<?= $data['presensi_id']?>" class="btn-edit btn btn-warning">Edit</a>
+                                                <a href="hapus-data-absen.php?id=<?=$data['presensi_id']?>" class="btn btn-danger">Hapus</a>
                                             </td>
                                         </tr>
                                     <?php endforeach;?>

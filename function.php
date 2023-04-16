@@ -319,20 +319,41 @@ function tambah_absensi($form) {
 
 function ambil_data_absen_dosen($id) {
     global $connection;
-    return $connection->query("SELECT * FROM jadwal_presensi WHERE user_id = '$id'")->fetch_all(MYSQLI_ASSOC);
+    return $connection->query("
+    SELECT
+        jadwal_presensi.id AS presensi_id, 
+        mata_kuliah.`name` AS nama_matkul, 
+        jadwal_presensi.nama AS nama_presensi, 
+        jadwal_presensi.jam_masuk AS jam_masuk, 
+        jadwal_presensi.jam_keluar AS jam_keluar, 
+        jadwal_presensi.tgl_absen AS tgl_absen, 
+        jadwal_presensi.waktu_dispensasi AS waktu_dispensasi
+    FROM
+	    jadwal_presensi
+	INNER JOIN
+	    mata_kuliah
+	ON 
+		jadwal_presensi.mata_kuliah_id = mata_kuliah.id
+    WHERE
+	    jadwal_presensi.user_id = '$id' 
+     ")->fetch_all(MYSQLI_ASSOC);
 }
 
 function ambil_data_absen() {
     global $connection;
     return $connection->query("
     SELECT
-        *, 
         users.nama AS dosen_pengampu, 
-        jadwal_presensi.nama AS nama_matkul
+        jadwal_presensi.nama AS nama_matkul, 
+        jadwal_presensi.id AS presensi_id, 
+        jadwal_presensi.jam_masuk AS jam_masuk, 
+        jadwal_presensi.jam_keluar AS jam_keluar, 
+        jadwal_presensi.tgl_absen AS tgl_absen, 
+        jadwal_presensi.waktu_dispensasi AS waktu_dispensasi
     FROM
 	    jadwal_presensi
 	INNER JOIN
-        users
+	    users
 	ON 
 		jadwal_presensi.user_id = users.id
     ")->fetch_all(MYSQLI_ASSOC);
@@ -440,7 +461,8 @@ function ambil_data_mata_kuliah_mahasiswa($id) {
     SELECT
         *, 
         mahasiswa_enroll.user_id AS id_mahasiswa_enroll, 
-        mata_kuliah.user_id AS id_dosen_pengampu
+        mata_kuliah.user_id AS id_dosen_pengampu,
+        mata_kuliah.id AS id_mata_kuliah
     FROM
 	    mahasiswa_enroll
 	INNER JOIN
@@ -509,6 +531,7 @@ function update_data_absen($form){
 function ambil_jadwal_presensi_mahasiswa($id)
 {
     global $connection;
+    $date = date('y-m-d');
     return $connection->query("
         SELECT
             *,
@@ -531,7 +554,10 @@ function ambil_jadwal_presensi_mahasiswa($id)
         ON 
             mata_kuliah.user_id = users.id
         WHERE
-            mahasiswa_enroll.user_id = '$id'
+            mahasiswa_enroll.user_id = '$id' AND
+            jadwal_presensi.tgl_absen >= '$date'
+        ORDER BY
+	        tgl_absen DESC
     ")->fetch_all(MYSQLI_ASSOC);
 }
 
@@ -544,5 +570,138 @@ function ambil_kehadiran_mahasiswa($id)
         FROM
             presensi_mahasiswa
         where id_mahasiswa = '$id'
+    ")->fetch_all(MYSQLI_ASSOC);
+}
+
+function ambil_data_presensi_mahasiswa($id, $id_presensi)
+{
+    global $connection;
+    return $connection->query("
+    SELECT
+        users.nama AS nama_mahasiswa, 
+        jadwal_presensi.nama AS judul_presensi, 
+        jadwal_presensi.jam_masuk AS jam_masuk, 
+        jadwal_presensi.jam_keluar AS jam_keluar, 
+        jadwal_presensi.tgl_absen AS tgl_absensi, 
+        presensi_mahasiswa.jam_presensi AS jam_presensi, 
+        presensi_mahasiswa.tgl_presensi AS tgl_presensi, 
+        presensi_mahasiswa.waktu_telat AS waktu_telat, 
+        presensi_mahasiswa.`status` AS `status`, 
+        presensi_mahasiswa.img AS img, 
+        presensi_mahasiswa.geo_coordinate AS coordinate, 
+        mata_kuliah.`name` AS nama_mata_kuliah
+    FROM
+	    jadwal_presensi
+	INNER JOIN
+	    presensi_mahasiswa
+	ON 
+		jadwal_presensi.id = presensi_mahasiswa.id_jadwal_presensi
+	INNER JOIN
+	    users
+	ON 
+		presensi_mahasiswa.id_mahasiswa = users.id
+	INNER JOIN
+	    mata_kuliah
+	ON 
+		jadwal_presensi.mata_kuliah_id = mata_kuliah.id
+    WHERE
+	    jadwal_presensi.id =  '$id_presensi' AND
+	    presensi_mahasiswa.id_mahasiswa = '$id'
+    ")->fetch_assoc();
+}
+
+function ambil_data_seluruh_presensi_mahasiswa($id_presensi)
+{
+    global $connection;
+    return $connection->query("
+    SELECT
+        users.nama AS nama_mahasiswa, 
+        jadwal_presensi.nama AS judul_presensi, 
+        jadwal_presensi.jam_masuk AS jam_masuk, 
+        jadwal_presensi.jam_keluar AS jam_keluar, 
+        jadwal_presensi.tgl_absen AS tgl_absensi, 
+        presensi_mahasiswa.jam_presensi AS jam_presensi, 
+        presensi_mahasiswa.tgl_presensi AS tgl_presensi, 
+        presensi_mahasiswa.waktu_telat AS waktu_telat, 
+        presensi_mahasiswa.`status` AS `status`, 
+        presensi_mahasiswa.img AS img, 
+        presensi_mahasiswa.geo_coordinate AS coordinate, 
+        mata_kuliah.`name` AS nama_mata_kuliah
+    FROM
+	    jadwal_presensi
+	INNER JOIN
+	    presensi_mahasiswa
+	ON 
+		jadwal_presensi.id = presensi_mahasiswa.id_jadwal_presensi
+	INNER JOIN
+	    users
+	ON 
+		presensi_mahasiswa.id_mahasiswa = users.id
+	INNER JOIN
+	    mata_kuliah
+	ON 
+		jadwal_presensi.mata_kuliah_id = mata_kuliah.id
+    WHERE
+	    jadwal_presensi.id =  '$id_presensi'
+    ")->fetch_all(MYSQLI_ASSOC);
+}
+
+function ambiL_seluruh_data_absensi($id_matkul)
+{
+    global $connection;
+    return $connection->query("
+    SELECT
+        jadwal_presensi.nama AS nama_presensi, 
+        jadwal_presensi.jam_masuk AS jam_masuk, 
+        jadwal_presensi.jam_keluar AS jam_keluar, 
+        jadwal_presensi.tgl_absen AS tgl_absen, 
+        jadwal_presensi.waktu_dispensasi AS waktu_dispensasi, 
+        jadwal_presensi.id AS presensi_id, 
+        mata_kuliah.`name` AS nama_matkul
+    FROM
+	    jadwal_presensi
+	INNER JOIN
+	    mata_kuliah
+	ON 
+		jadwal_presensi.mata_kuliah_id = mata_kuliah.id
+    WHERE
+	    mata_kuliah.id = '$id_matkul' 
+	ORDER BY
+	    tgl_absen DESC
+    ")->fetch_all(MYSQLI_ASSOC);
+}
+
+function ambil_akumulasi_mahasiswa($id_mahasiswa) {
+    global $connection;
+    return $connection->query("
+    SELECT
+	    SUM(waktu_telat) as akumulasi
+    FROM
+	    presensi_mahasiswa
+    WHERE
+	    presensi_mahasiswa.id_mahasiswa = 8
+    ")->fetch_assoc();
+}
+
+function ambil_list_akumulasi_keterlambatan()
+{
+    global $connection;
+    return $connection->query("
+    SELECT
+        SUM(waktu_telat) AS akumulasi, 
+        users.nama AS nama_mahasiswa, 
+        users.nomor_induk AS nim, 
+        users.tgl_lahir AS tgl_lahir, 
+        users.alamat AS alamat, 
+        users.img AS img, 
+        users.kelas
+    FROM
+	    presensi_mahasiswa
+	INNER JOIN
+	    users
+	ON 
+		presensi_mahasiswa.id_mahasiswa = users.id
+    GROUP BY
+	    presensi_mahasiswa.id_mahasiswa
     ")->fetch_all(MYSQLI_ASSOC);
 }

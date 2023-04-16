@@ -73,6 +73,7 @@ $data_mata_kuliah = ambil_data_mata_kuliah() ;
                                                 <td><?= $mata_kuliah['dosen_pengampu']?></td>
                                                 <td><?= $mata_kuliah['enroll_code']?></td>
                                                 <td>
+                                                    <a href="list-absensi-matkul.php?id=<?= $mata_kuliah['id_mata_kuliah']?>" class="btn btn-success">Lihat List Absensi</a>
                                                     <a href="ubah-mata-kuliah.php?id=<?=$mata_kuliah['id_mata_kuliah']?>" class="btn btn-warning">Edit</a>
                                                     <a href="hapus-mata-kuliah.php?id=<?=$mata_kuliah['id_mata_kuliah']?>" class="btn btn-danger">Hapus</a>
                                                 </td>
@@ -87,6 +88,7 @@ $data_mata_kuliah = ambil_data_mata_kuliah() ;
                                     <tr>
                                         <th>Nama Mata Kuliah</th>
                                         <th>Kode Enroll</th>
+                                        <th>Action</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -94,6 +96,7 @@ $data_mata_kuliah = ambil_data_mata_kuliah() ;
                                             <tr>
                                                 <td><?= $mata_kuliah['name']?></td>
                                                 <td><?= $mata_kuliah['enroll_code']?></td>
+                                                <td><a href="list-absensi-matkul.php?id=<?= $mata_kuliah['id_mata_kuliah']?>" class="btn btn-warning">Lihat List Absensi</a></td>
                                             </tr>
                                         <?php endforeach;?>
                                     </tbody>

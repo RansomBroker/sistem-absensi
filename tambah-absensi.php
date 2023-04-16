@@ -34,14 +34,15 @@ if ($waktu_telat < $data_absen['waktu_dispensasi']) {
 list($type, $data) = explode(';', $image_data);
 list(,$data) = explode(',', $image_data);
 $image = base64_decode($data);
-$image_name = time() .'.png';
+$image_name = time();
+$image_name_db = $image_name.'.png';
 file_put_contents('img/absensi/'.$image_name.'.png', $image);
 
 $connection->query("
     INSERT INTO presensi_mahasiswa
     (id_jadwal_presensi, id_mahasiswa, jam_presensi, tgl_presensi, waktu_telat, status, img, geo_coordinate)
     VALUES
-    ('$id_absensi', '$id_mahasiswa', '$jam_presensi', '$tgl_presensi', '$waktu_telat', '$status', '$image_name', '$coordinate')
+    ('$id_absensi', '$id_mahasiswa', '$jam_presensi', '$tgl_presensi', '$waktu_telat', '$status', '$image_name_db', '$coordinate')
 ");
 
 if ($connection->affected_rows > 0) {

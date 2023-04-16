@@ -43,6 +43,12 @@
                         <span>Data Absen</span>
                     </a>
                 </li>
+                <li class="nav-item <?php if ((isset($_GET['halaman']) && $_GET['halaman'] == 'list-data-keterlambatan'))  :?> active <?php endif;?>">
+                    <a class="nav-link" href="list-data-keterlambatan.php?halaman=list-data-keterlambatann">
+                        <i class="fa fa-calendar" aria-hidden="true"></i>
+                        <span>List Data Keterlambatan </span>
+                    </a>
+                </li>
             <?php endif;?>
 
 
