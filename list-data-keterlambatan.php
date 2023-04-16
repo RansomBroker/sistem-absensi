@@ -103,6 +103,7 @@ include "function.php";
     <?php include "js.php"?>
     <script>
         $(document).ready(function () {
+            $("#table-list-keterlambatan").DataTable();
         })
     </script>
 
