@@ -64,17 +64,17 @@ include "function.php";
                                             </td>
                                             <td><?= $data['kelas']?></td>
                                             <td><?= $data['akumulasi']?></td>
-                                            <?php if ($data['akumulasi'] < 480):?>
-                                                <td><h4 class="btn btn-primary">SP1</h4></td>
+                                            <?php if ($data['akumulasi']  < 480):?>
+                                                <td><a href="cetak-sp-1.php?id=<?=$data['id']?>" class="btn btn-primary">SP1 / Klik untuk mengunduh surat</a></td>
                                             <?php endif;?>
 
                                             <?php if ($data['akumulasi'] >= 480 && $data['akumulasi'] <= 960):?>
-                                                <td><h4 class="btn btn-warning">SP2</h4></td>
+                                                <td><a href="cetak-sp-2.php?id=<?=$data['id']?>" class="btn btn-warning">SP2 / Klik untuk mengunduh surat</a></td>
                                             <?php endif;?>
 
                                             <?php if ($data['akumulasi'] > 960):?>
                                                 <td>
-                                                    <h4 class="btn btn-danger">SP3</h4>
+                                                    <a href="cetak-sp-3.php?id=<?=$data['id']?>" class="btn btn-danger">SP3 / Klik untuk mengunduh surat</a>
                                                 </td>
                                             <?php endif;?>
                                         </tr>

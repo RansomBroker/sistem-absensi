@@ -675,11 +675,21 @@ function ambil_akumulasi_mahasiswa($id_mahasiswa) {
     global $connection;
     return $connection->query("
     SELECT
-	    SUM(waktu_telat) as akumulasi
+	    SUM(presensi_mahasiswa.waktu_telat) AS akumulasi, 
+	    users.nama AS nama, 
+	    users.nomor_induk AS npm, 
+	    users.alamat AS alamat, 
+	    users.kelas AS kelas
     FROM
 	    presensi_mahasiswa
+	INNER JOIN
+	    users
+	ON 
+		presensi_mahasiswa.id_mahasiswa = users.id
     WHERE
-	    presensi_mahasiswa.id_mahasiswa = 8
+	    presensi_mahasiswa.id_mahasiswa = '$id_mahasiswa'
+    GROUP BY
+	    presensi_mahasiswa.id_mahasiswa
     ")->fetch_assoc();
 }
 
@@ -694,7 +704,8 @@ function ambil_list_akumulasi_keterlambatan()
         users.tgl_lahir AS tgl_lahir, 
         users.alamat AS alamat, 
         users.img AS img, 
-        users.kelas
+        users.kelas AS kelas,
+        users.id AS id
     FROM
 	    presensi_mahasiswa
 	INNER JOIN
