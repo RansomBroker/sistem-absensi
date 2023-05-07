@@ -61,23 +61,19 @@ include "function.php";
                                             <td><?= $presensi['jam_presensi']?></td>
                                             <td><?= $presensi['tgl_presensi']?></td>
                                             <td><?= $presensi['waktu_telat']?></td>
-                                            <td><?= $presensi['coordinate']?></td>
+                                            <td><button class="map-popup btn btn-warning" data-coordinate="<?= $presensi['coordinate']?>">Lihat Map</button></td>
                                             <td>
                                                 <img src="/img/absensi/<?= $presensi['img']?>" alt="gambar_absensi" width="64">
                                             </td>
                                             <td>
-                                                <?php if ($presensi['status'] == "Hadir"):?>
-                                                    <button class="btn btn-success"><?= $presensi['status']?></button>
-                                                <?php endif;?>
-                                                <?php if ($presensi['status'] == "Sakit"):?>
-                                                    <button class="btn btn-primary"><?= $presensi['status']?></button>
-                                                <?php endif;?>
-                                                <?php if ($presensi['status'] == "Izin"):?>
-                                                    <button class="btn btn-warning"><?= $presensi['status']?></button>
-                                                <?php endif;?>
-                                                <?php if ($presensi['status'] == "Alpha"):?>
-                                                    <button class="btn btn-danger"><?= $presensi['status']?></button>
-                                                <?php endif;?>
+                                                <div class="form-group">
+                                                    <select class="select-kehadiran form-control" name="select-kehadiran">
+                                                        <option value="Hadir||<?=$presensi['id_mahasiswa']?>||<?=$presensi['id_presensi']?>" <?= ($presensi['status'] == "Hadir") ? 'selected' : ''?>>Hadir</option>
+                                                        <option value="Sakit||<?=$presensi['id_mahasiswa']?>||<?=$presensi['id_presensi']?>" <?= ($presensi['status'] == "Sakit") ? 'selected' : ''?>>Sakit</option>
+                                                        <option value="Izin||<?=$presensi['id_mahasiswa']?>||<?=$presensi['id_presensi']?>" <?= ($presensi['status'] == "Izin") ? 'selected' : ''?>>Izin</option>
+                                                        <option value="Alpha||<?=$presensi['id_mahasiswa']?>||<?=$presensi['id_presensi']?>" <?= ($presensi['status'] == "Alpha") ? 'selected' : ''?>>Alpha</option>
+                                                    </select>
+                                                </div>
                                             </td>
                                         </tr>
                                     <?php endforeach;?>
@@ -160,6 +156,41 @@ include "function.php";
     <script>
         $(document).ready(function () {
             let tableListPresensi = $("#table-list-presensi").DataTable();
+
+            $(".select-kehadiran").click(function () {
+                let selectVal = $(this).val().split('||');
+                let status = selectVal[0];
+                let idMahasiswa = selectVal[1];
+                let idPresensi = selectVal[2];
+
+                $.ajax({
+                    url: 'update-kehadiran.php',
+                    method: 'POST',
+                    data: {
+                        status: status,
+                        idMahasiswa: idMahasiswa,
+                        idPresensi: idPresensi
+                    }
+                })
+            });
+
+            $(".map-popup").click(function () {
+                Swal.fire({
+                    title: "Peta Koordinat Absensi Mahasiswa",
+                    html : `<div id="map" style="height: 250px"></div>`,
+                    didOpen: () => {
+                        let coordinate = $(this).attr('data-coordinate').split(',');
+                        console.log(coordinate);
+                        let map = L.map('map').setView(coordinate, 10);
+
+                        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                        }).addTo(map);
+
+                        L.marker(coordinate).addTo(map)
+                    }
+                })
+            })
         })
     </script>
 

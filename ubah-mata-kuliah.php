@@ -43,8 +43,9 @@ $mata_kuliah = ambil_data_mata_kuliah_by_id($_GET['id']);
                 </div>
 
                 <div class="card card-body row">
-                    <form action="" method="POST">
+                    <form action="" method="POST" id="form">
                         <input type="hidden" name="id" value="<?= $mata_kuliah['id_mata_kuliah']?>">
+                        <input type="hidden" name="submit-mata-kuliah">
                         <div class="form-group mb-3">
                             <label class="form-label">Nama Kuliah <sup class="text-danger">*</sup></label>
                             <input type="text" class="form-control" name="name" value="<?= $mata_kuliah['name'] ?>" required>
@@ -65,7 +66,7 @@ $mata_kuliah = ambil_data_mata_kuliah_by_id($_GET['id']);
                             <label class="form-label">Kode Enroll</label>
                             <input type="text" class="form-control" name="enroll-code" value="<?= $mata_kuliah['enroll_code']?>" readonly>
                         </div>
-                        <button name="submit-mata-kuliah" class="btn btn-warning w-100">Ubah Mata Kuliah</button>
+                        <button class="btn btn-warning w-100">Ubah Mata Kuliah</button>
                     </form>
                 </div>
             </div>
@@ -88,6 +89,21 @@ $mata_kuliah = ambil_data_mata_kuliah_by_id($_GET['id']);
 
     <?php include "js.php"?>
     <script>
+        $("#form").one('submit', function (e) {
+            e.preventDefault();
+            Swal.fire({
+                icon: 'question',
+                title: 'Konfirmasi',
+                text: 'Apakah data sudah benar ?',
+                showCancelButton: true,
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $(this).submit();
+                }
+            })
+
+        })
     </script>
 
 </body>

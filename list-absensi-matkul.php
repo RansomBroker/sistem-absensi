@@ -174,26 +174,70 @@ foreach (ambil_kehadiran_mahasiswa($_SESSION['id']) as $data) {
                               <label class="form-check-label">Alpha</label>
                             </div>
                             <video id="video" class="w-100">Video stream not available.</video>
+                            <img id="photo" alt="This photo will apear here" class="w-100" src="">
                             <canvas id="canvas" class="d-none"> </canvas>
                             <input type="hidden" name="coordinate">
+                            <button class="take-photo btn btn-warning mt-2">Ambil Photo</button>
                            `,
                     didOpen: () => {
                         let video = $("#video").get(0);
+                        $("#photo").hide()
+
+                        // akses kamera
                         navigator.mediaDevices.getUserMedia({video:true, audio: false}).then(function (stream) {
+                            $("#video").show();
                             video.srcObject = stream;
-                            console.log(stream);
                             video.play();
                             stream.active;
+                        }).catch((error) => {
+                            $("#video").hide();
+                            $(".take-photo").hide();
+                            swal.showValidationMessage("*Silahkan izinkan akses kamera pada browser")
                         })
-                        navigator.geolocation.getCurrentPosition(function (position) {
-                            $('[name=coordinate]').val(position.coords.latitude + "," + position.coords.longitude)
-                        });
+
+                        // akses lokasi
+                        navigator.geolocation.getCurrentPosition(
+                            function (position) {
+                                $('[name=coordinate]').val(position.coords.latitude + "," + position.coords.longitude)
+                            },
+                            function () {
+                                swal.showValidationMessage("*Silahkan izinkan akses lokasi pada browser")
+                            }
+                        );
+
+                        //ambil photo
+                        $(document).on('click', '.take-photo', function () {
+                            let canvas = $("#canvas").get(0);
+                            const context = canvas.getContext('2d');
+                            canvas.width = 512;
+                            canvas.height = 512;
+                            context.drawImage(video, 0, 0, 512, 512);
+
+                            const data = canvas.toDataURL('image/png');
+                            $("#photo").attr('src', data);
+                            $("#photo").show();
+                            $("#video").hide();
+                            $(this).removeClass("btn-warning")
+                            $(this).removeClass("take-photo")
+                            $(this).addClass("btn-danger")
+                            $(this).addClass("retake-photo")
+                            $(this).text("Ambil Ulang Photo")
+                        })
+
+                        // retake photo
+                        $(document).on('click', '.retake-photo', function () {
+                            $("#photo").hide();
+                            $("#video").show();
+                            $(this).removeClass("btn-danger")
+                            $(this).removeClass("retake-photo")
+                            $(this).addClass("take-photo")
+                            $(this).addClass("btn-warning")
+                            $(this).text("Ambil photo")
+                        })
                     },
                     preConfirm: function () {
                         return new Promise(function (resolve) {
                             let status = $("[name=status]:checked").val()
-                            let canvas = $("#canvas").get(0);
-                            let context = canvas.getContext("2d")
 
                             if (status === undefined) {
                                 swal.showValidationMessage("Pilih Status Kehadiran")
@@ -207,13 +251,16 @@ foreach (ambil_kehadiran_mahasiswa($_SESSION['id']) as $data) {
                                 return 0;
                             }
 
-                            canvas.width = 512;
-                            canvas.height = 512;
-                            context.drawImage(video, 0, 0, 512,512)
+                            if ($("#photo").attr('src').length === 0) {
+                                swal.showValidationMessage("Silahkan ambil photo terlebih dahulu")
+                                swal.enableButtons();
+                                return 0;
+                            }
 
+                            console.log()
                             swal.resetValidationMessage();
                             resolve({
-                                'imageData': canvas.toDataURL("image/png"),
+                                'imageData': $("#photo").attr('src'),
                                 'status': status,
                                 'coordinate': $('[name=coordinate]').val()
                             })

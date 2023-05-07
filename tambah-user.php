@@ -42,7 +42,7 @@ if (isset($_POST['user-submit'])) {
                 </div>
 
                 <div class="card card-body">
-                    <form action="" method="POST">
+                    <form action="" method="POST" id="form">
                          <div class="row"> 
                               <div class="col-lg-12 col-12 mb-2">
                                    <label class="form-label">User <sup class="text-danger">*</sup></label>
@@ -79,6 +79,7 @@ if (isset($_POST['user-submit'])) {
                                    <label class="form-label">NIP <sup class="text-danger">*</sup></label>
                                    <input class="form-control desimal-input" name="nip" >
                               </div>
+                             <input type="hidden" name="user-submit">
                               <button type="submit" name="user-submit" class="btn btn-warning mt-2 mx-2 w-100">Tambah</button>
                               <button type="reset"  class="btn btn-danger my-2 mx-2 w-100">Clear</button>
                          </div>
@@ -102,48 +103,63 @@ if (isset($_POST['user-submit'])) {
     <?php include "js.php"?>
     <script>
         $(document).ready(function (){
-        //making serverName Dropdown box disabled by default.
-        $('#mahasiswa').addClass('d-none');
-        $('#dosen').addClass('d-none');
+            //making serverName Dropdown box disabled by default.
+            $('#mahasiswa').addClass('d-none');
+            $('#dosen').addClass('d-none');
 
-        $('#role').on("change",function ()
-        {
-        
-            if($(this).val() == "1"){
-                $('#mahasiswa').val = "1";
-                $('#mahasiswa').addClass('d-none');
-                $('#dosen').val = "1";
-                $('#dosen').addClass('d-none');
-                $('[name=nim]').attr('required', false);  
-                $('[name=angkatan]').attr('required', false);  
-                $('[name=nip]').attr('required', false); 
-                
-                $('[name=nim]').val('');  
-                $('[name=angkatan]').val('');  
-                $('[name=nip]').val('');
-                return;
-            }if($(this).val() === "2"){
-                $('#dosen').removeClass('d-none'); 
-                $('[name=nim]').attr('required', false);  
-                $('[name=angkatan]').attr('required', false);  
-                $('[name=nim]').val("");  
-                $('[name=angkatan]').val("");
-                $('[name=nip]').attr('required', true);  
-                $('#mahasiswa').addClass('d-none');
-                console.log("here");
-                return;
-            } if($(this).val() == "3"){
-                $('#dosen').addClass('d-none');
-                $('#mahasiswa').val = "3";
-                $('#mahasiswa').removeClass('d-none');
-                $('[name=nim]').attr('required', true);  
-                $('[name=angkatan]').attr('required', true);  
-                $('[name=nip]').attr('required', false);
-                $('[name=nip]').val('');    
-                return;
-            }  
+            $('#role').on("change",function ()
+            {
+
+                if($(this).val() == "1"){
+                    $('#mahasiswa').val = "1";
+                    $('#mahasiswa').addClass('d-none');
+                    $('#dosen').val = "1";
+                    $('#dosen').addClass('d-none');
+                    $('[name=nim]').attr('required', false);
+                    $('[name=angkatan]').attr('required', false);
+                    $('[name=nip]').attr('required', false);
+
+                    $('[name=nim]').val('');
+                    $('[name=angkatan]').val('');
+                    $('[name=nip]').val('');
+                    return;
+                }if($(this).val() === "2"){
+                    $('#dosen').removeClass('d-none');
+                    $('[name=nim]').attr('required', false);
+                    $('[name=angkatan]').attr('required', false);
+                    $('[name=nim]').val("");
+                    $('[name=angkatan]').val("");
+                    $('[name=nip]').attr('required', true);
+                    $('#mahasiswa').addClass('d-none');
+                    console.log("here");
+                    return;
+                } if($(this).val() == "3"){
+                    $('#dosen').addClass('d-none');
+                    $('#mahasiswa').val = "3";
+                    $('#mahasiswa').removeClass('d-none');
+                    $('[name=nim]').attr('required', true);
+                    $('[name=angkatan]').attr('required', true);
+                    $('[name=nip]').attr('required', false);
+                    $('[name=nip]').val('');
+                    return;
+                }
+            });
+            $("#form").one('submit', function (e) {
+                e.preventDefault();
+                Swal.fire({
+                    icon: 'question',
+                    title: 'Konfirmasi',
+                    text: 'Apakah data sudah benar ?',
+                    showCancelButton: true,
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $(this).submit();
+                    }
+                })
+
+            })
         });
-    });
     </script>
 
 </body>

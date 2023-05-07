@@ -41,7 +41,7 @@ if (isset($_POST['submit-mata-kuliah'])) {
                 </div>
 
                 <div class="card card-body row">
-                    <form action="" method="POST">
+                    <form action="" method="POST" id="form">
                         <div class="form-group mb-3">
                             <label class="form-label">Nama Kuliah <sup class="text-danger">*</sup></label>
                             <input type="text" class="form-control" name="name" required>
@@ -55,7 +55,8 @@ if (isset($_POST['submit-mata-kuliah'])) {
                                 <?php endforeach;?>
                             </select>
                         </div>
-                        <button name="submit-mata-kuliah" class="btn btn-warning w-100">Tambah Mata Kuliah</button>
+                        <input type="hidden" name="submit-mata-kuliah">
+                        <button class="btn-submit btn btn-warning w-100">Tambah Mata Kuliah</button>
                     </form>
                 </div>
             </div>
@@ -78,6 +79,21 @@ if (isset($_POST['submit-mata-kuliah'])) {
 
     <?php include "js.php"?>
     <script>
+        $("#form").one('submit', function (e) {
+            e.preventDefault();
+            Swal.fire({
+                icon: 'question',
+                title: 'Konfirmasi',
+                text: 'Apakah data sudah benar ?',
+                showCancelButton: true,
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $(this).submit();
+                }
+            })
+
+        })
     </script>
 
 </body>

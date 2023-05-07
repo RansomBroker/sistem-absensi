@@ -55,7 +55,7 @@ include "function.php";
                                             <td class="text-capitalize"><?= $users['nama']?></td>
                                             <td class="text-capitalize"><?= $users['nomor_induk']?></td>
                                             <td><img width=64 src="img/profil/<?= $users['img']?>"></td>
-                                            <td><a href="hapus-user.php?id=<?=$users['id']?>&role=2" class="ml-3 btn btn-danger">Hapus</a></td>
+                                            <td><a data-id="<?=$users['id']?>"  class="btn-remove ml-3 btn btn-danger">Hapus</a></td>
                                         </tr>
                                     <?php endforeach;?>
                                 </tbody>
@@ -79,6 +79,23 @@ include "function.php";
     <?php include "logout_modal.php"?>
     
     <?php include "js.php"?>
+    <script>
+        $(document).ready(function () {
+            $(".btn-remove").click(function () {
+                let idUser = $(this).attr('data-id')
+                Swal.fire({
+                    title: 'question',
+                    text: 'Yakin ingin menghapus ?',
+                    showCancelButton: true,
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = 'hapus-user.php?id='+ idUser +'&role=2'
+                    }
+                })
+            })
+        })
+    </script>
 </body>
 
 </html>

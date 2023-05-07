@@ -75,7 +75,7 @@ $data_mata_kuliah = ambil_data_mata_kuliah() ;
                                                 <td>
                                                     <a href="list-absensi-matkul.php?id=<?= $mata_kuliah['id_mata_kuliah']?>" class="btn btn-success">Lihat List Absensi</a>
                                                     <a href="ubah-mata-kuliah.php?id=<?=$mata_kuliah['id_mata_kuliah']?>" class="btn btn-warning">Edit</a>
-                                                    <a href="hapus-mata-kuliah.php?id=<?=$mata_kuliah['id_mata_kuliah']?>" class="btn btn-danger">Hapus</a>
+                                                    <button data-id="<?=$mata_kuliah['id_mata_kuliah']?>" class="btn-remove btn btn-danger">Hapus</button>
                                                 </td>
                                             </tr>
                                         <?php endforeach;?>
@@ -127,6 +127,20 @@ $data_mata_kuliah = ambil_data_mata_kuliah() ;
     <script>
         $(document).ready(function () {
             let tableDataMataKuliah = $("#table-mata-kuliah").DataTable()
+            
+            $(".btn-remove").click(function () {
+                let idMataKuliah = $(this).attr('data-id')
+                Swal.fire({
+                    title: 'question',
+                    text: 'Yakin ingin menghapus ?',
+                    showCancelButton: true,
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = 'hapus-mata-kuliah.php?id=' + idMataKuliah
+                    }
+                })
+            })
         })
     </script>
 

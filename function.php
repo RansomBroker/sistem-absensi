@@ -363,7 +363,7 @@ function tambah_data_mata_kuliah($form) {
     global $connection;
     $nama_mata_kuliah = htmlspecialchars(stripcslashes($form['name']));
     $id_user = $form['dosen-pengampu'];
-    $kode_kelas = random_strings(6);
+    $kode_kelas = random_strings(8);
 
     $connection->query("
         INSERT INTO 
@@ -624,7 +624,9 @@ function ambil_data_seluruh_presensi_mahasiswa($id_presensi)
         presensi_mahasiswa.tgl_presensi AS tgl_presensi, 
         presensi_mahasiswa.waktu_telat AS waktu_telat, 
         presensi_mahasiswa.`status` AS `status`, 
-        presensi_mahasiswa.img AS img, 
+        presensi_mahasiswa.img AS img,
+        presensi_mahasiswa.id_mahasiswa as id_mahasiswa,
+        presensi_mahasiswa.id_jadwal_presensi as id_presensi, 
         presensi_mahasiswa.geo_coordinate AS coordinate, 
         mata_kuliah.`name` AS nama_mata_kuliah
     FROM

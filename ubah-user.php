@@ -42,7 +42,7 @@ $data_user = ambil_data_user_by_id($_GET['id']);
                 </div>
 
                 <div class="card card-body">
-                    <form action="" method="POST">
+                    <form action="" method="POST" id="form">
                          <input type="hidden" name="id" value=<?= $_GET['id']?>>
                          <div class="row"> 
                               <div class="col-lg-12 col-12 mb-2">
@@ -66,6 +66,7 @@ $data_user = ambil_data_user_by_id($_GET['id']);
                                         <?php endfor;?>
                                    </select>
                               </div>
+                             <input type="hidden" name="user-submit">
                               <button type="submit" name="user-submit" class="btn btn-warning mt-2 mx-2 w-100">Ubah</button>
                          </div>
                     </form>
@@ -87,6 +88,25 @@ $data_user = ambil_data_user_by_id($_GET['id']);
     <?php include "logout_modal.php"?>
 
     <?php include "js.php"?>
+    <script>
+        $(document).ready(function () {
+            $("#form").one('submit', function (e) {
+                e.preventDefault();
+                Swal.fire({
+                    icon: 'question',
+                    title: 'Konfirmasi',
+                    text: 'Apakah data sudah benar ?',
+                    showCancelButton: true,
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $(this).submit();
+                    }
+                })
+
+            })
+        })
+    </script>
 
 </body>
 
