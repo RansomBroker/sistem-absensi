@@ -7,5 +7,5 @@
 out
 gen
 connection.php
-img/profil
-img/absensi
+!img/profil/logo-poltek.jpg
+!img/absensi/logo-poltek.jpg
