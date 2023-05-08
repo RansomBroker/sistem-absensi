@@ -112,6 +112,66 @@ function update_data_user($form){
 
 }
 
+function update_logo_auth($file) {
+    global $connection;
+
+    $nama_file_foto = upload_foto_logo($file, 'logo-auth');
+
+    if(!$nama_file_foto) {
+        return redirect('setting.php?halaman=setting');
+    }
+
+    $connection->query("UPDATE setting
+			SET
+				img = '$nama_file_foto'
+			WHERE id = 1
+		");
+
+    set_flash_message('add_success', 'Berhasil Update Data Logo');
+
+    return redirect('setting.php?halaman=setting');
+}
+
+function update_logo_sidebar($file) {
+    global $connection;
+
+    $nama_file_foto = upload_foto_logo($file, 'logo-sidebar');
+
+    if(!$nama_file_foto) {
+        return redirect('setting.php?halaman=setting');
+    }
+
+    $connection->query("UPDATE setting
+			SET
+				img = '$nama_file_foto'
+			WHERE id = 2
+		");
+
+    set_flash_message('add_success', 'Berhasil Update Data Logo');
+
+    return redirect('setting.php?halaman=setting');
+}
+
+function update_logo_surat($file) {
+    global $connection;
+
+    $nama_file_foto = upload_foto_logo($file, 'logo-surat');
+
+    if(!$nama_file_foto) {
+        return redirect('setting.php?halaman=setting');
+    }
+
+    $connection->query("UPDATE setting
+			SET
+				img = '$nama_file_foto'
+			WHERE id = 3
+		");
+
+    set_flash_message('add_success', 'Berhasil Update Data Logo');
+
+    return redirect('setting.php?halaman=setting');
+}
+
 function ambil_data_user_by_id($id) {
 	global $connection;
  
@@ -198,7 +258,7 @@ function update_dosen_profile($form,$file){
 
 }
 
-function  update_mahasiswa_profile($form,$file){
+function update_mahasiswa_profile($form,$file){
 	global $connection;
 	
 	$id=$form['id'];
@@ -255,39 +315,6 @@ function  update_mahasiswa_profile($form,$file){
 	
 	set_flash_message('add_success', 'Berhasil Update Data Profil');
 
-}
-
-function upload_foto_profil($file, $name)
-{
-    $nama_file = $file[$name]['name'];
-    $ukuran_file = $file[$name]['size'];
-    $error_file = $file[$name]['error'];
-    $tmp_name = $file[$name]['tmp_name'];
-
-    // jika upload error
-    if ($error_file == 4) {
-        set_flash_message('add_failed', 'Error upload foto profil');
-        return false;
-    }
-
-    // jika ekstensi tidak sesuai
-    $ekstensi_valid = ['jpg', 'png', 'jpeg'];
-    $ekstensi_gambar = strtolower(end(explode('.', $nama_file)));
-
-    if (!in_array($ekstensi_gambar, $ekstensi_valid)) {
-        set_flash_message('add_failed', 'Ekstensi foto tidak valid');
-        return false;
-    }
-
-    // jika file lebih besar dari 1mb
-    if ($ukuran_file > 1000000) {
-        set_flash_message('add_failed', 'Ukuran file tidak boleh lebih besar dari 1 MB');
-        return false;
-    }
-
-    // upload gambar ke folder img/profil
-    move_uploaded_file($tmp_name, 'img/profil/'.$nama_file);
-    return $nama_file;
 }
 
 function tambah_absensi($form) {
@@ -436,6 +463,7 @@ function ambil_data_mata_kuliah_dosen($id)
 	mata_kuliah.user_id = '$id' 
     ")->fetch_all(MYSQLI_ASSOC);
 }
+
 function ambil_data_mata_kuliah_by_id($id)
 {
     global $connection;
@@ -452,6 +480,42 @@ function ambil_data_mata_kuliah_by_id($id)
 		mata_kuliah.user_id = users.id
     WHERE
 	mata_kuliah.id = '$id' 
+    ")->fetch_assoc();
+}
+
+function ambil_logo_auth() {
+    global $connection;
+    return $connection->query("
+    SELECT
+        *
+    FROM
+        setting
+    WHERE
+        name = 'auth'
+    ")->fetch_assoc();
+}
+
+function ambil_logo_sidebar() {
+    global $connection;
+    return $connection->query("
+    SELECT
+        *
+    FROM
+        setting
+    WHERE
+        name = 'sidebar'
+    ")->fetch_assoc();
+}
+
+function ambil_logo_surat() {
+    global $connection;
+    return $connection->query("
+    SELECT
+        *
+    FROM
+        setting
+    WHERE
+        name = 'surat'
     ")->fetch_assoc();
 }
 
@@ -717,4 +781,70 @@ function ambil_list_akumulasi_keterlambatan()
     GROUP BY
 	    presensi_mahasiswa.id_mahasiswa
     ")->fetch_all(MYSQLI_ASSOC);
+}
+
+function upload_foto_profil($file, $name)
+{
+    $nama_file = $file[$name]['name'];
+    $ukuran_file = $file[$name]['size'];
+    $error_file = $file[$name]['error'];
+    $tmp_name = $file[$name]['tmp_name'];
+
+    // jika upload error
+    if ($error_file == 4) {
+        set_flash_message('add_failed', 'Error upload foto profil');
+        return false;
+    }
+
+    // jika ekstensi tidak sesuai
+    $ekstensi_valid = ['jpg', 'png', 'jpeg'];
+    $ekstensi_gambar = strtolower(end(explode('.', $nama_file)));
+
+    if (!in_array($ekstensi_gambar, $ekstensi_valid)) {
+        set_flash_message('add_failed', 'Ekstensi foto tidak valid');
+        return false;
+    }
+
+    // jika file lebih besar dari 1mb
+    if ($ukuran_file > 1000000) {
+        set_flash_message('add_failed', 'Ukuran file tidak boleh lebih besar dari 1 MB');
+        return false;
+    }
+
+    // upload gambar ke folder img/profil
+    move_uploaded_file($tmp_name, 'img/profil/'.$nama_file);
+    return $nama_file;
+}
+
+function upload_foto_logo($file, $name)
+{
+    $nama_file = $file[$name]['name'];
+    $ukuran_file = $file[$name]['size'];
+    $error_file = $file[$name]['error'];
+    $tmp_name = $file[$name]['tmp_name'];
+
+    // jika upload error
+    if ($error_file == 4) {
+        set_flash_message('add_failed', 'Error upload foto profil');
+        return false;
+    }
+
+    // jika ekstensi tidak sesuai
+    $ekstensi_valid = ['jpg', 'png', 'jpeg'];
+    $ekstensi_gambar = strtolower(end(explode('.', $nama_file)));
+
+    if (!in_array($ekstensi_gambar, $ekstensi_valid)) {
+        set_flash_message('add_failed', 'Ekstensi foto tidak valid');
+        return false;
+    }
+
+    // jika file lebih besar dari 1mb
+    if ($ukuran_file > 1000000) {
+        set_flash_message('add_failed', 'Ukuran file tidak boleh lebih besar dari 1 MB');
+        return false;
+    }
+
+    // upload gambar ke folder img/profil
+    move_uploaded_file($tmp_name, 'img/'.$nama_file);
+    return $nama_file;
 }

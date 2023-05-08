@@ -22,7 +22,7 @@
 <body class="bg-warning bg-opacity-75 flex-column d-flex justify-content-center align-items-center vh-100">
 	<div class="flex-row justify-content-center">
 		<div class="d-flex justify-content-center align-items-center">
-			<img src="img/logi-poltek.jpg" width="180" class="  rounded-circle mb-2" alt="logo">
+			<img src="img/<?= ambil_logo_auth()['img']?>" width="180" class="  rounded-circle mb-2" alt="logo">
 		</div>
 		<h4 class="text-center text-dark">Validasi Kehadiran Mahasiswa</h4>
 	</div>

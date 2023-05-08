@@ -5,8 +5,9 @@ require "function.php";
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
-$data= file_get_contents('img/logo-poltek.jpg');
-$type= pathinfo('img/logo-poltek.jpg', PATHINFO_EXTENSION);
+$img = 'img/'. ambil_logo_surat()['img'];
+$data= file_get_contents($img);
+$type= pathinfo($img, PATHINFO_EXTENSION);
 $logo = 'data:image/'. $type . ';base64,' . base64_encode($data);
 $mahasiswa = ambil_akumulasi_mahasiswa($_GET['id']);
 

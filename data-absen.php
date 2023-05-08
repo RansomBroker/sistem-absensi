@@ -108,7 +108,7 @@ $data_absen = $_SESSION['role'] == 2 ? ambil_data_absen_dosen($_SESSION['id']): 
                                             <td>
                                                 <a href="list-presensi.php?id-presensi=<?= $data['presensi_id']?>"  class="btn btn-success">Lihat Presensi</a>
                                                 <a href="ubah-data-absen.php?id=<?= $data['presensi_id']?>" class="btn-edit btn btn-warning">Edit</a>
-                                                <a href="hapus-data-absen.php?id=<?=$data['presensi_id']?>" class="btn btn-danger">Hapus</a>
+                                                <button class="btn-remove btn btn-danger" data-id="<?=$data['presensi_id']?>">Hapus</button>
                                             </td>
                                         </tr>
                                     <?php endforeach;?>
@@ -140,6 +140,19 @@ $data_absen = $_SESSION['role'] == 2 ? ambil_data_absen_dosen($_SESSION['id']): 
     <script>
         $(document).ready(function () {
             let tableDataAbsensi = $("#table-absensi").DataTable()
+            $(".btn-remove").click(function () {
+                let idMataKuliah = $(this).attr('data-id')
+                Swal.fire({
+                    title: 'question',
+                    text: 'Yakin ingin menghapus ?',
+                    showCancelButton: true,
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = 'hapus-data-absen.php?id=' + idMataKuliah
+                    }
+                })
+            })
         })
     </script>
 

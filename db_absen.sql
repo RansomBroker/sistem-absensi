@@ -11,7 +11,7 @@
  Target Server Version : 50722
  File Encoding         : 65001
 
- Date: 08/04/2023 11:08:03
+ Date: 08/05/2023 14:33:49
 */
 
 SET NAMES utf8mb4;
@@ -36,7 +36,7 @@ CREATE TABLE `jadwal_presensi` (
   KEY `jadwal_presensi_mata_kuliah_id_foreign` (`mata_kuliah_id`),
   CONSTRAINT `jadwal_presensi_id_user_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `jadwal_presensi_mata_kuliah_id_foreign` FOREIGN KEY (`mata_kuliah_id`) REFERENCES `mata_kuliah` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of jadwal_presensi
@@ -57,7 +57,7 @@ CREATE TABLE `mahasiswa_enroll` (
   KEY `mahasiswa_enroll_user_id_foreign` (`user_id`),
   CONSTRAINT `mahasiswa_enroll_mata_kuliah_foreign_id` FOREIGN KEY (`mata_kuliah_id`) REFERENCES `mata_kuliah` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `mahasiswa_enroll_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of mahasiswa_enroll
@@ -77,7 +77,7 @@ CREATE TABLE `mata_kuliah` (
   PRIMARY KEY (`id`),
   KEY `mata_kuliah_user_id_foreign` (`user_id`),
   CONSTRAINT `mata_kuliah_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of mata_kuliah
@@ -94,7 +94,7 @@ CREATE TABLE `presensi_mahasiswa` (
   `id_jadwal_presensi` bigint(20) NOT NULL,
   `id_mahasiswa` bigint(20) NOT NULL,
   `jam_presensi` time NOT NULL,
-  `tgl_presensi` time NOT NULL,
+  `tgl_presensi` date NOT NULL,
   `waktu_telat` int(255) NOT NULL,
   `status` varchar(255) NOT NULL,
   `img` varchar(255) NOT NULL,
@@ -102,6 +102,7 @@ CREATE TABLE `presensi_mahasiswa` (
   PRIMARY KEY (`id`),
   KEY `id_mahasiswa_foreign` (`id_mahasiswa`),
   KEY `id_jadwal_presensi_foreign` (`id_jadwal_presensi`),
+  CONSTRAINT `id_jadwal_presensi_foreign` FOREIGN KEY (`id_jadwal_presensi`) REFERENCES `jadwal_presensi` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `id_mahasiswa_foreign` FOREIGN KEY (`id_mahasiswa`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -109,6 +110,26 @@ CREATE TABLE `presensi_mahasiswa` (
 -- Records of presensi_mahasiswa
 -- ----------------------------
 BEGIN;
+COMMIT;
+
+-- ----------------------------
+-- Table structure for setting
+-- ----------------------------
+DROP TABLE IF EXISTS `setting`;
+CREATE TABLE `setting` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `img` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of setting
+-- ----------------------------
+BEGIN;
+INSERT INTO `setting` VALUES (1, 'auth', 'logo-poltek.jpg');
+INSERT INTO `setting` VALUES (2, 'sidebar', 'logo-poltek.jpg');
+INSERT INTO `setting` VALUES (3, 'surat', 'logo-poltek.jpg');
 COMMIT;
 
 -- ----------------------------
@@ -131,7 +152,7 @@ CREATE TABLE `users` (
   `password` varchar(255) NOT NULL,
   `username` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of users

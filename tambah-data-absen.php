@@ -38,8 +38,9 @@ if (isset($_POST['tambah-absensi'])) {
             <div class="container-fluid">
                 <div class="card card-body row">
                     <h5 class="card-title"> Tambah Absensi</h5>
-                    <form action="" method="POST">
+                    <form action="" method="POST" id="form">
                         <input type="hidden" name="user-id" value="<?= $_SESSION['id']?>">
+                        <input type="hidden"name="tambah-absensi">
                         <div class="form-group">
                             <label for="" class="form-label">Nama Mata Kuliah <sup class="text-danger">*</sup></label>
                             <select name="id-mata-kuliah" class="form-control" required>
@@ -120,6 +121,22 @@ if (isset($_POST['tambah-absensi'])) {
                 dropdown: true,
                 scrollbar: true
             });
+
+            $("#form").one('submit', function (e) {
+                e.preventDefault();
+                Swal.fire({
+                    icon: 'question',
+                    title: 'Konfirmasi',
+                    text: 'Apakah data sudah benar ?',
+                    showCancelButton: true,
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $(this).submit();
+                    }
+                })
+
+            })
         })
     </script>
 

@@ -3,7 +3,7 @@
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
                 <div >
-                    <img src="img/logi-poltek.jpg" width="55" class="img-profile rounded-circle"alt="logo">
+                    <img src="img/<?= ambil_logo_sidebar()['img']?>" width="55" class="img-profile rounded-circle"alt="logo">
                 </div>
                 <div class="sidebar-brand-text mx-3">Sistem Absensi</div>
             </a>
@@ -47,6 +47,12 @@
                     <a class="nav-link" href="list-data-keterlambatan.php?halaman=list-data-keterlambatann">
                         <i class="fa fa-calendar" aria-hidden="true"></i>
                         <span>List Data Keterlambatan </span>
+                    </a>
+                </li>
+                <li class="nav-item <?php if ((isset($_GET['halaman']) && $_GET['halaman'] == 'setting'))  :?> active <?php endif;?>">
+                    <a class="nav-link" href="setting.php?halaman=setting">
+                        <i class="fa fa-wrench" aria-hidden="true"></i>
+                        <span>Setting </span>
                     </a>
                 </li>
             <?php endif;?>
