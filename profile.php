@@ -129,7 +129,7 @@ $data_user = ambil_data_user_by_id($_GET['id']);
                               </div>
                               <div class="mb-3">
                                    <label class="form-label" for="angkatan">Angkatan <sup class="text-danger">*</sup></label>
-                                   <input type="text" id="angkatan" name="angkatan" value='<?= $data_user == NULL ? '': $data_user['angkatan']?>' class="form-control">
+                                   <input type="text" id="angkatan" name="angkatan" value='<?= $data_user == NULL ? '': $data_user['angkatan']?>' class="form-control" readonly>
                               </div>
                               <div class="mb-3">
                                    <label class="form-label" for="alamat">Alamat <sup class="text-danger">*</sup></label>

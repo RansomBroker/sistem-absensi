@@ -45,6 +45,7 @@ include "function.php";
                                     <tr>
                                         <th>Nama Presensi</th>
                                         <th>Nama</th>
+                                        <th>Kelas</th>
                                         <th>Jam Presensi</th>
                                         <th>Tgl Presensi</th>
                                         <th>Waktu Telat (menit)</th>
@@ -58,6 +59,7 @@ include "function.php";
                                         <tr>
                                             <td><?= $presensi['judul_presensi']?></td>
                                             <td><?= $presensi['nama_mahasiswa']?></td>
+                                            <td><?= $presensi['kelas']?></td>
                                             <td><?= $presensi['jam_presensi']?></td>
                                             <td><?= $presensi['tgl_presensi']?></td>
                                             <td><?= $presensi['waktu_telat']?></td>
@@ -96,6 +98,7 @@ include "function.php";
                                         <tr>
                                             <th>Nama Presensi</th>
                                             <th>Nama</th>
+                                            <th>Kelas</th>
                                             <th>Jam Presensi</th>
                                             <th>Tgl Presensi</th>
                                             <th>Waktu Telat (menit)</th>
@@ -108,10 +111,11 @@ include "function.php";
                                         <tr>
                                             <td><?= $data_presensi_mahasiswa['judul_presensi']?></td>
                                             <td><?= $data_presensi_mahasiswa['nama_mahasiswa']?></td>
+                                            <td><?= $data_presensi_mahasiswa['kelas']?></td>
                                             <td><?= $data_presensi_mahasiswa['jam_presensi']?></td>
                                             <td><?= $data_presensi_mahasiswa['tgl_presensi']?></td>
                                             <td><?= $data_presensi_mahasiswa['waktu_telat']?></td>
-                                            <td><?= $data_presensi_mahasiswa['coordinate']?></td>
+                                            <td><button class="map-popup btn btn-warning" data-coordinate="<?= $presensi['coordinate']?>">Lihat Map</button></td>
                                             <td>
                                                 <img src="/img/absensi/<?= $data_presensi_mahasiswa['img']?>" alt="gambar_absensi" width="64">
                                             </td>

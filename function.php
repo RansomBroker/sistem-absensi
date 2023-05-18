@@ -43,7 +43,21 @@ function tambah_user($form){
 	$role = $form['role'];
 	$has_password = password_hash($password, PASSWORD_DEFAULT);
 
-	$mysql = $connection->query("INSERT INTO users (username, password, nama,role) VALUES ('$username', '$has_password','$username','$role')");
+    if ($role == 1) {
+        $connection->query("INSERT INTO users (username, password, nama,role) VALUES ('$username', '$has_password','$username','$role')");
+    }
+
+    if ($role == 2) {
+        $nomor_induk = $form['nip'];
+        $connection->query("INSERT INTO users (username, password, nama,role, nomor_induk) VALUES ('$username', '$has_password','$username','$role', '$nomor_induk')");
+    }
+
+    if ($role == 3) {
+        $nomor_induk = $form['nim'];
+        $angkatan = $form['angkatan'];
+        $kelas = $form['kelas'];
+        $connection->query("INSERT INTO users (username, password, nama,role, nomor_induk, angkatan, kelas) VALUES ('$username', '$has_password','$username','$role', '$nomor_induk', '$angkatan', '$kelas')");
+    }
 
 	if ($connection->affected_rows > 0) {
 		set_flash_message('add_success', 'Berhasil melakukan pendaftaran');
@@ -643,6 +657,7 @@ function ambil_data_presensi_mahasiswa($id, $id_presensi)
     return $connection->query("
     SELECT
         users.nama AS nama_mahasiswa, 
+        users.kelas AS kelas,
         jadwal_presensi.nama AS judul_presensi, 
         jadwal_presensi.jam_masuk AS jam_masuk, 
         jadwal_presensi.jam_keluar AS jam_keluar, 
@@ -680,6 +695,7 @@ function ambil_data_seluruh_presensi_mahasiswa($id_presensi)
     return $connection->query("
     SELECT
         users.nama AS nama_mahasiswa, 
+        users.kelas AS kelas,
         jadwal_presensi.nama AS judul_presensi, 
         jadwal_presensi.jam_masuk AS jam_masuk, 
         jadwal_presensi.jam_keluar AS jam_keluar, 

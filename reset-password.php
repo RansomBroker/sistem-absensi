@@ -21,8 +21,8 @@
 		</div>
 		<h4 class="text-center text-dark">Validasi Kehadiran Mahasiswa</h4>
 	</div>
-	<div class="mx-lg-3 mx-1 my-2 py-lg-3  col-lg-6 card rounded login  ">
-		<div class="card-body py-0 px-1">
+	<div class="mx-lg-3 mx-1 my-2 py-lg-3  col-lg-3 card rounded login  ">
+		<div class="card-body py-0 px-3">
 			<h4 class="text-center">Reset Password</h4>
 			
 			<form class="" method="POST" action="">

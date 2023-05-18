@@ -16,7 +16,11 @@
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
-                        
+
+                        <li class="nav-item dropdown align-self-center">
+                            <div id="clock" class="fw-bold" onload="currentTime()"></div>
+                        </li>
+
                         <div class="topbar-divider d-none d-sm-block"></div>
                 
                         <!-- Nav Item - User Information -->
