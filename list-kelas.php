@@ -41,121 +41,36 @@ foreach (ambil_kehadiran_mahasiswa($_SESSION['id']) as $data) {
             <!-- Begin Page Content -->
             <div class="container-fluid">
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+                    <h1 class="h3 mb-0 text-gray-800">List Kelas</h1>
                 </div>
-                <?php if($_SESSION['role'] == 1):?>
-                    <div class="card card-body">
-                        <div class="justify-content-center row ">
-                            <div class="mx-4 card card-body col-lg-3">
-                                <h5>Dosen</h5>
-                                <a href="dosen.php">More Info</a>
-                            </div>
-                            <div class="mx-4 card card-body col-lg-3">
-                                <h5>Mahasiswa</h5>
-                                <a href="mahasiswa.php">More Info</a>
-                            </div>
-                            <div class="mx-4 card card-body col-lg-3">
-                                <h5>User</h5>
-                                <a href="user.php">More Info</a>
-                            </div>
-                        </div>
-                    </div>
-                <?php endif;?>
-                <?php if($_SESSION['role'] == 2):?>
-                    <div class="card card-body">
-                        <h5 class="card-title">HI <?=$_SESSION['nama']?></h5>
-                    </div>
-                <?php endif;?>
                 <?php if($_SESSION['role'] == 3):?>
-                    <?php $akumulasi_telat = ambil_akumulasi_mahasiswa($_SESSION['id']);?>
-                    <div class="card card-body">
-                        <h5 class="card-title">HI <?=$_SESSION['nama']?></h5>
-                        <div class="card card-body">
-                            <div class=" row justify-content-start">
-                                <div class="col-lg-4 col-12 border-right">
-                                    <h5 class=card-title>Akumulasi Menit Alpha</h5>
-                                    <?php if ($akumulasi_telat != null):?>
-                                        <?php if ($akumulasi_telat['akumulasi'] > 5):?>
-                                            <h4 class="text-primary font-weight-bold"><?= $akumulasi_telat['akumulasi']?> (menit)</h4>
-                                        <?php endif;?>
-
-                                        <?php if ($akumulasi_telat['akumulasi'] >= 480 && $akumulasi_telat['akumulasi'] <= 960):?>
-                                            <h4 class="text-warning font-weight-bold"><?= $akumulasi_telat['akumulasi']?> (menit)</h4>
-                                        <?php endif;?>
-
-                                        <?php if ($akumulasi_telat['akumulasi'] > 960):?>
-                                            <h4 class="text-danger font-weight-bold"><?= $akumulasi_telat['akumulasi']?> (menit)</h4>
-                                        <?php endif;?>
-                                    <?php else:?>
-                                        <h4 class="text-primary font-weight-bold">-</h4>
-                                    <?php endif;?>
-                                </div>
-                                <div class="col-lg-4 col-12">
-                                    <h5 class=card-title>Status</h5>
-                                    <?php if ($akumulasi_telat != null):?>
-                                        <?php if ($akumulasi_telat['akumulasi'] > 5):?>
-                                            <a href="cetak-sp-1.php?id=<?=$_SESSION['id']?>&sp=SURAT%20PERINGATAN%201%20%28Pertama%29" class="btn btn-primary">SP1 / Klik untuk mengunduh surat</a>
-                                        <?php endif;?>
-
-                                        <?php if ($akumulasi_telat['akumulasi'] >= 480 && $akumulasi_telat['akumulasi'] <= 960):?>
-                                            <a href="cetak-sp-2.php?id=<?=$_SESSION['id']?>&sp=SURAT%20PERINGATAN%202%20%28Kedua%29" class="btn btn-warning">SP2 / Klik untuk mengunduh surat</a>
-                                        <?php endif;?>
-
-                                        <?php if ($akumulasi_telat['akumulasi'] > 960):?>
-                                            <a href="cetak-sp-3.php?id=<?=$_SESSION['id']?>&sp=SURAT%20PERINGATAN%203%20%28Ketiga%29" class="btn btn-danger">SP3 / Klik untuk mengunduh surat</a>
-                                        <?php endif;?>
-                                    <?php else:?>
-                                        <h4 class="text-primary font-weight-bold">-</h4>
-                                    <?php endif;?>
-                                </div>
+                    <div class="card card-body my-4">
+                        <h5 class="card-title">List kelas</h5>
+                        <button data-id="<?= $_SESSION['id']?>" class="btn-enroll btn btn-warning mb-3">Enroll Kelas</button>
+                        <div>
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover table-bordered" id="table-mata-kuliah">
+                                    <thead>
+                                    <tr>
+                                        <th>Nama Mata Kuliah</th>
+                                        <th>Dosen Pengampu</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php foreach (ambil_data_mata_kuliah_mahasiswa($_SESSION['id']) as $data):?>
+                                        <tr>
+                                            <td><?= $data['name']?></td>
+                                            <td><?= $data['nama']?></td>
+                                            <td><a href="list-absensi-matkul.php?id=<?= $data['id_mata_kuliah']?>" class="btn btn-warning">Lihat List Absensi</a></td>
+                                        </tr>
+                                    <?php endforeach;?>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
 
-                    <div class="card card-body mt-4">
-                        <h5 class="card-title">List Absen</h5>
-                        <div class="table-responsive">
-                            <table class="table table-striped table-hover table-bordered" id="table-absensi">
-                                <thead>
-                                <tr>
-                                    <th>Nama</th>
-                                    <th>Matkul</th>
-                                    <th>Waktu Absen</th>
-                                    <th>Tanggal Absen</th>
-                                    <th>Waktu Dispensasi</th>
-                                    <th>Action</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <?php foreach (ambil_jadwal_presensi_mahasiswa($_SESSION['id']) as $data):?>
-                                    <?php if (in_array($data['id_presensi'], $kehadiran)):?>
-                                        <tr>
-                                            <td><?= $data['judul_presensi'] ?></td>
-                                            <td><?= $data['mata_kuliah']?></td>
-                                            <td><?= $data['jam_masuk'].'-'.$data['jam_keluar']?></td>
-                                            <td><?= $data['tgl_absen']?></td>
-                                            <td><?= $data['waktu_dispensasi']?></td>
-                                            <td>
-                                                <a href="list-presensi.php?id-presensi=<?= $data['id_presensi']?>&id-mahasiswa=<?= $_SESSION['id']?>"  class="btn btn-success">Lihat Detail</a>
-                                            </td>
-                                        </tr>
-                                    <?php else:?>
-                                        <tr>
-                                            <td><?= $data['judul_presensi'] ?></td>
-                                            <td><?= $data['mata_kuliah']?></td>
-                                            <td><?= $data['jam_masuk'].'-'.$data['jam_keluar']?></td>
-                                            <td><?= $data['tgl_absen']?></td>
-                                            <td><?= $data['waktu_dispensasi']?></td>
-                                            <td>
-                                                <button  class="btn-absen btn btn-warning" data-id="<?= $data['id_presensi']?>" data-id-mahasiswa="<?= $_SESSION['id']?>">Isi Kehadiran</button>
-                                            </td>
-                                        </tr>
-                                    <?php endif;?>
-                                <?php endforeach;?>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
                 <?php endif;?>
             </div>
 
@@ -228,7 +143,7 @@ foreach (ambil_kehadiran_mahasiswa($_SESSION['id']) as $data) {
                         // akses lokasi
                         navigator.geolocation.getCurrentPosition(
                             function (position) {
-                            $('[name=coordinate]').val(position.coords.latitude + "," + position.coords.longitude)
+                                $('[name=coordinate]').val(position.coords.latitude + "," + position.coords.longitude)
                             },
                             function () {
                                 swal.showValidationMessage("*Silahkan izinkan akses lokasi pada browser")

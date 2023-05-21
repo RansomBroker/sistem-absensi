@@ -64,7 +64,7 @@ include "function.php";
                                             </td>
                                             <td><?= $data['kelas']?></td>
                                             <td><?= $data['akumulasi']?></td>
-                                            <?php if ($data['akumulasi']  < 480):?>
+                                            <?php if ($data['akumulasi'] > 5):?>
                                                 <td><a href="cetak-sp-1.php?id=<?=$data['id']?>" class="btn btn-primary">SP1 / Klik untuk mengunduh surat</a></td>
                                             <?php endif;?>
 

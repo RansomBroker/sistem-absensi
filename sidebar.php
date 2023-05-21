@@ -28,6 +28,15 @@
                 </a>
             </li>
 
+            <?php if($_SESSION['role'] == 3 ):?>
+                <li class="nav-item">
+                    <a class="nav-link" href="list-kelas.php">
+                        <i class="fas fa-fw fa-tachometer-alt"></i>
+                        <span>List Kelas</span>
+                    </a>
+                </li>
+            <?php endif;?>
+
             <!-- Divider -->
             <hr class="sidebar-divider">
             <?php if($_SESSION['role'] == 1 || $_SESSION['role'] == 2):?>
