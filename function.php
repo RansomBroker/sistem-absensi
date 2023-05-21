@@ -864,3 +864,21 @@ function upload_foto_logo($file, $name)
     move_uploaded_file($tmp_name, 'img/'.$nama_file);
     return $nama_file;
 }
+
+function resetpw($form) {
+    global $connection;
+
+    $username = htmlspecialchars(strtolower(stripcslashes($form['username'])));
+    $password = mysqli_escape_string($connection, $form['password']);
+    $has_password = password_hash($password, PASSWORD_DEFAULT);
+
+    $connection->query("
+        UPDATE users SET
+            password = '$has_password'
+        WHERE username = '$username'
+    ");
+
+    set_flash_message('reset_success','Berhasil reset password');
+
+    redirect('login.php');
+}
