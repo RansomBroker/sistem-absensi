@@ -1,5 +1,6 @@
 <?php
 include "connection.php";
+include "checker.php";
 include "helper.php";
 
 function login($form){
@@ -341,11 +342,11 @@ function tambah_absensi($form) {
     $waktu_keluar = $form['waktu-keluar'];
     $tanggal_absensi = $form['tanggal-absensi'];
     $waktu_dispensasi = $form['waktu-dispensasi'];
-
+    $timestamp_akhir_presensi = $tanggal_absensi .' '. $waktu_keluar;
     $connection->query("
         INSERT INTO 
-            jadwal_presensi (user_id, nama, jam_masuk, jam_keluar, tgl_absen, waktu_dispensasi, mata_kuliah_id)
-        VALUES ('$user_id','$nama_mata_kuliah', '$waktu_masuk', '$waktu_keluar', '$tanggal_absensi', '$waktu_dispensasi', '$id_mata_kuliah')    
+            jadwal_presensi (user_id, nama, jam_masuk, jam_keluar, tgl_absen, waktu_dispensasi, mata_kuliah_id, timestamp_akhir_presensi)
+        VALUES ('$user_id','$nama_mata_kuliah', '$waktu_masuk', '$waktu_keluar', '$tanggal_absensi', '$waktu_dispensasi', '$id_mata_kuliah', '$timestamp_akhir_presensi')    
     ");
 
     if ($connection->affected_rows > 0) {
@@ -582,7 +583,7 @@ function update_data_absen($form){
 	$waktu_keluar = $form['waktu-keluar'];
 	$tanggal_absensi = $form['tanggal-absensi'];
 	$waktu_dispensasi = $form['waktu-dispensasi'];
-
+    $timestamp_akhir_presensi = $tanggal_absensi .' '. $waktu_keluar;
 	$connection->query("
 		UPDATE jadwal_presensi
 		SET 
@@ -592,7 +593,8 @@ function update_data_absen($form){
 			jam_keluar='$waktu_keluar', 
 			tgl_absen='$tanggal_absensi', 
 			waktu_dispensasi='$waktu_dispensasi', 
-			mata_kuliah_id='$id_mata_kuliah'
+			mata_kuliah_id='$id_mata_kuliah',
+			timestamp_akhir_presensi = '$timestamp_akhir_presensi'
 		WHERE
 		id = '$id'    
 	");

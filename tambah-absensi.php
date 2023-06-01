@@ -38,6 +38,7 @@ $image_name = time();
 $image_name_db = $image_name.'.png';
 file_put_contents('img/absensi/'.$image_name.'.png', $image);
 
+
 $connection->query("
     INSERT INTO presensi_mahasiswa
     (id_jadwal_presensi, id_mahasiswa, jam_presensi, tgl_presensi, waktu_telat, status, img, geo_coordinate)

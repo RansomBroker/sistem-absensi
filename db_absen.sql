@@ -30,6 +30,7 @@ CREATE TABLE `jadwal_presensi` (
   `tgl_absen` date NOT NULL,
   `waktu_dispensasi` int(255) NOT NULL,
   `mata_kuliah_id` bigint(20) NOT NULL,
+  `timestamp_akhir_presensi` datetime DEFAULT NULL,
   KEY `id` (`id`),
   KEY `jam_masuk` (`jam_masuk`),
   KEY `jadwal_presensi_id_user_foreign` (`user_id`),

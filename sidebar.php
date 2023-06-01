@@ -58,6 +58,8 @@
                         <span>List Data Keterlambatan </span>
                     </a>
                 </li>
+            <?php endif;?>
+            <?php if ($_SESSION['role'] == 1):?>
                 <li class="nav-item <?php if ((isset($_GET['halaman']) && $_GET['halaman'] == 'setting'))  :?> active <?php endif;?>">
                     <a class="nav-link" href="setting.php?halaman=setting">
                         <i class="fa fa-wrench" aria-hidden="true"></i>

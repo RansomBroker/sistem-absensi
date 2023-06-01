@@ -13,6 +13,12 @@
     $date = date('d');
     $month = date('m');
     $year = date('Y');
+    $kompen = $mahasiswa['akumulasi'];
+    if ($kompen > 150) {
+        $kompen = 10;
+    }else {
+        $kompen = round(($mahasiswa['akumulasi'] * 4) / 50, 1);
+    }
 
     $bulan = [
         '01'=> 'Januari',
@@ -108,6 +114,7 @@
             </tr>
         </table>
         <p>Karena Mahasiswa tersebut telah tidak hadir selama '. round($mahasiswa['akumulasi'] / 60, 0) .' (Jam) tanpa pemberitahuan dan akan di berhentikan (Drop Out) jika jumlah kehaidran telah mencapai 29 (dua puluh sembilan) Jam/Semester.</p>
+        <p>Kompensasi waktu '.$kompen.' (jam)</p>
         <p>Surat peringatan ini dikeluarkan untuk menjadi perhatian dan diharapkan agar orang tua/wali segera <br> menghubungi Ketua Jurusan terkait untuk mengklarifikasi masalah ini.</p>
         <div class="f-right">
             <p class="mt-0 mb-0">Palembang, '.$date.' '.$bulan[$month].' '. $year.'</p>
