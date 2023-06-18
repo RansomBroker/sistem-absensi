@@ -33,3 +33,14 @@ function redirect($url) {
     header("Location:".$url, true, 301);
     exit();
 }
+
+function json($status, $code, $message, $body = [] ) {
+    $response = array(
+        'body' => $body,
+        'status' => $status,
+        'code' => $code,
+        'message' => $message
+    );
+
+    return json_encode($response);
+}

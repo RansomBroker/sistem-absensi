@@ -66,6 +66,18 @@ $mata_kuliah = ambil_data_mata_kuliah_by_id($_GET['id']);
                             <label class="form-label">Kode Enroll</label>
                             <input type="text" class="form-control" name="enroll-code" value="<?= $mata_kuliah['enroll_code']?>" readonly>
                         </div>
+                        <div class="form-group mb-3">
+                            <label class="form-label">Kelas <sup class="text-danger">*</sup></label>
+                            <input type="text" class="form-control" name="kelas" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="form-label">Waktu Masuk <sup class="text-danger">*</sup></label>
+                            <input name="waktu-masuk" class="time form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="form-label">Waktu Keluar <sup class="text-danger">*</sup></label>
+                            <input name="waktu-keluar" class="time form-control" required>
+                        </div>
                         <button class="btn btn-warning w-100">Ubah Mata Kuliah</button>
                     </form>
                 </div>

@@ -39,7 +39,7 @@ $data_absen = $_SESSION['role'] == 2 ? ambil_data_absen_dosen($_SESSION['id']): 
                 </div>
 
                 <div class="card card-body row">
-                    <?php if ($_SESSION['role'] != 1 ):?>
+                    <?php if ($_SESSION['role'] == 1 ):?>
                         <a href="tambah-data-absen.php" class="btn btn-warning col-lg-4 col-12">Tambah Absensi</a>
                     <?php endif;?>
 

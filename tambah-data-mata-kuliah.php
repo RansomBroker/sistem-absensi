@@ -55,6 +55,18 @@ if (isset($_POST['submit-mata-kuliah'])) {
                                 <?php endforeach;?>
                             </select>
                         </div>
+                        <div class="form-group mb-3">
+                            <label class="form-label">Kelas <sup class="text-danger">*</sup></label>
+                            <input type="text" class="form-control" name="kelas" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="form-label">Waktu Masuk <sup class="text-danger">*</sup></label>
+                            <input name="waktu-masuk" class="time form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="form-label">Waktu Keluar <sup class="text-danger">*</sup></label>
+                            <input name="waktu-keluar" class="time form-control" required>
+                        </div>
                         <input type="hidden" name="submit-mata-kuliah">
                         <button class="btn-submit btn btn-warning w-100">Tambah Mata Kuliah</button>
                     </form>
@@ -95,7 +107,37 @@ if (isset($_POST['submit-mata-kuliah'])) {
 
         })
     </script>
+    <script>
+        $(document).ready(function () {
+            $('.time').timepicker({
+                timeFormat: 'HH:mm:ss ',
+                interval: 1,
+                minTime: '6',
+                maxTime: '11:59pm',
+                defaultTime: '06:00',
+                startTime: '00:00',
+                dynamic: false,
+                dropdown: true,
+                scrollbar: true
+            });
 
+            $("#form").one('submit', function (e) {
+                e.preventDefault();
+                Swal.fire({
+                    icon: 'question',
+                    title: 'Konfirmasi',
+                    text: 'Apakah data sudah benar ?',
+                    showCancelButton: true,
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $(this).submit();
+                    }
+                })
+
+            })
+        })
+    </script>
 </body>
 
 </html>

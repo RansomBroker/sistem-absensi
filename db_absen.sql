@@ -152,6 +152,8 @@ CREATE TABLE `users` (
   `kemampuan_pribadi` varchar(255) DEFAULT NULL COMMENT 'mahasiswa',
   `password` varchar(255) NOT NULL,
   `username` varchar(255) NOT NULL,
+  `prodi` varchar(255) DEFAULT NULL,
+  `jurusan` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 

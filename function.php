@@ -57,7 +57,9 @@ function tambah_user($form){
         $nomor_induk = $form['nim'];
         $angkatan = $form['angkatan'];
         $kelas = $form['kelas'];
-        $connection->query("INSERT INTO users (username, password, nama,role, nomor_induk, angkatan, kelas) VALUES ('$username', '$has_password','$username','$role', '$nomor_induk', '$angkatan', '$kelas')");
+        $prodi = $form['prodi'];
+        $jurusan = $form['jurusan'];
+        $connection->query("INSERT INTO users (username, password, nama,role, nomor_induk, angkatan, kelas, prodi, jurusan) VALUES ('$username', '$has_password','$username','$role', '$nomor_induk', '$angkatan', '$kelas', '$prodi', '$jurusan')");
     }
 
 	if ($connection->affected_rows > 0) {
@@ -406,11 +408,15 @@ function tambah_data_mata_kuliah($form) {
     $nama_mata_kuliah = htmlspecialchars(stripcslashes($form['name']));
     $id_user = $form['dosen-pengampu'];
     $kode_kelas = random_strings(8);
+    $kelas = $form['kelas'];
+    $waktu_masuk = $form['waktu-masuk'];
+    $waktu_keluar = $form['waktu-keluar'];
+    $waktu_absen = $waktu_masuk .' - '.$waktu_keluar;
 
     $connection->query("
         INSERT INTO 
-            mata_kuliah (user_id, name, enroll_code)
-        VALUES ('$id_user', '$nama_mata_kuliah', '$kode_kelas') 
+            mata_kuliah (user_id, name, enroll_code, kelas, waktu_absen)
+        VALUES ('$id_user', '$nama_mata_kuliah', '$kode_kelas', '$kelas', '$waktu_absen') 
     ");
 
     if ($connection->affected_rows > 0) {
@@ -429,13 +435,19 @@ function update_data_mata_kuliah($form)
     $nama_mata_kuliah = htmlspecialchars(stripcslashes($form['name']));
     $id_user = $form['dosen-pengampu'];
     $kode_kelas = $form['enroll-code'];
+    $kelas = $form['kelas'];
+    $waktu_masuk = $form['waktu-masuk'];
+    $waktu_keluar = $form['waktu-keluar'];
+    $waktu_absen = $waktu_masuk .' - '.$waktu_keluar;
 
     $connection->query("
         UPDATE mata_kuliah
         SET
             name = '$nama_mata_kuliah',
             user_id = '$id_user',
-            enroll_code = '$kode_kelas'
+            enroll_code = '$kode_kelas',
+            kelas = '$kelas',
+            waktu_absen = '$waktu_absen'
         WHERE
             id = '$id'
     ");
@@ -451,7 +463,9 @@ function ambil_data_mata_kuliah() {
     SELECT
 	    *,
 	    users.nama AS dosen_pengampu,
-	    mata_kuliah.id AS id_mata_kuliah
+	    mata_kuliah.id AS id_mata_kuliah,
+	    mata_kuliah.kelas AS kelas_mata_kuliah,
+        mata_kuliah.waktu_absen AS jam_masuk
     FROM
 	    mata_kuliah
 	INNER JOIN
@@ -460,22 +474,22 @@ function ambil_data_mata_kuliah() {
 		mata_kuliah.user_id = users.id")->fetch_all(MYSQLI_ASSOC);
 }
 
-function ambil_data_mata_kuliah_dosen($id)
+function ambil_data_mata_kuliah_dosen()
 {
     global $connection;
     return $connection->query("
     SELECT
         *, 
         users.nama AS dosen_pengampu,
-	    mata_kuliah.id AS id_mata_kuliah
+	    mata_kuliah.id AS id_mata_kuliah,
+        mata_kuliah.kelas AS kelas_mata_kuliah,
+        mata_kuliah.waktu_absen AS jam_masuk
     FROM
 	    mata_kuliah
 	INNER JOIN
 	    users
 	ON 
 		mata_kuliah.user_id = users.id
-    WHERE
-	mata_kuliah.user_id = '$id' 
     ")->fetch_all(MYSQLI_ASSOC);
 }
 
@@ -486,7 +500,8 @@ function ambil_data_mata_kuliah_by_id($id)
     SELECT
         *, 
         users.nama AS dosen_pengampu,
-	    mata_kuliah.id AS id_mata_kuliah
+	    mata_kuliah.id AS id_mata_kuliah,
+	    mata_kuliah.kelas AS kelas_mata_kuliah
     FROM
 	    mata_kuliah
 	INNER JOIN
@@ -883,4 +898,27 @@ function resetpw($form) {
     set_flash_message('reset_success','Berhasil reset password');
 
     redirect('login.php');
+}
+
+function ambil_mahasiswa_enroll($id) {
+    global $connection;
+
+    $data = $connection->query("
+        SELECT
+            users.nama AS nama, 
+            users.nomor_induk AS nim, 
+            users.kelas AS kelas, 
+            users.prodi AS prodi, 
+            users.jurusan AS jurusan
+        FROM
+            mahasiswa_enroll
+            INNER JOIN
+            users
+            ON 
+                mahasiswa_enroll.user_id = users.id
+        WHERE
+            mahasiswa_enroll.mata_kuliah_id = '$id'
+    ")->fetch_all(MYSQLI_ASSOC);
+
+    return $data;
 }

@@ -44,8 +44,8 @@ if (isset($_POST['tambah-absensi'])) {
                         <div class="form-group">
                             <label for="" class="form-label">Nama Mata Kuliah <sup class="text-danger">*</sup></label>
                             <select name="id-mata-kuliah" class="form-control" required>
-                                <?php foreach (ambil_data_mata_kuliah_dosen($_SESSION['id']) as $data):?>
-                                    <option value="<?= $data['id_mata_kuliah']?>"><?= $data['name']?></option>
+                                <?php foreach (ambil_data_mata_kuliah_dosen() as $data):?>
+                                    <option value="<?= $data['id_mata_kuliah']?>"><?= $data['name']?> - <?= $data['dosen_pengampu']?></option>
                                 <?php endforeach;?>
                             </select>
                         </div>

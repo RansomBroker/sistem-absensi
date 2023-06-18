@@ -76,9 +76,18 @@ if (isset($_POST['user-submit'])) {
                                         <input class="form-control desimal-input" name="angkatan">
                                     </div>
                                     <div class="col-lg-12 col-12 mb-2 "   >
+                                        <label class="form-label">Prodi <sup class="text-danger">*</sup></label>
+                                        <input class="form-control desimal-input" name="prodi">
+                                    </div>
+                                    <div class="col-lg-12 col-12 mb-2 "   >
+                                        <label class="form-label">Jurusan <sup class="text-danger">*</sup></label>
+                                        <input class="form-control desimal-input" name="jurusan">
+                                    </div>
+                                    <div class="col-lg-12 col-12 mb-2 "   >
                                         <label class="form-label">Kelas <sup class="text-danger">*</sup></label>
                                         <input class="form-control desimal-input" name="kelas">
                                     </div>
+
                                 </div>
                                 <div class="col-lg-12 col-12 mb-2 d-none " id="dosen" >
                                     <label class="form-label">NIP <sup class="text-danger">*</sup></label>
@@ -124,22 +133,30 @@ if (isset($_POST['user-submit'])) {
                     $('[name=nim]').attr('required', false);
                     $('[name=angkatan]').attr('required', false);
                     $('[name=nip]').attr('required', false);
-
+                    $('[name=kelas]').attr('required', false);
+                    $('[name=prodi]').attr('required', false);
+                    $('[name=jurusan]').attr('required', false);
                     $('[name=nim]').val('');
                     $('[name=angkatan]').val('');
                     $('[name=nip]').val('');
                     $('[name=kelas]').val('');
+                    $('[name=prodi]').val('');
+                    $('[name=jurusan]').val('');
                     return;
                 }if($(this).val() === "2"){
                     $('#dosen').removeClass('d-none');
                     $('[name=nim]').attr('required', false);
                     $('[name=angkatan]').attr('required', false);
+                    $('[name=kelas]').attr('required', false);
+                    $('[name=prodi]').attr('required', false);
+                    $('[name=jurusan]').attr('required', false);
                     $('[name=nim]').val("");
                     $('[name=angkatan]').val("");
-                    $('[name=kelas]').val('');
+                    $('[name=kelas]').val("");
+                    $('[name=prodi]').val("");
+                    $('[name=jurusan]').val("");
                     $('[name=nip]').attr('required', true);
                     $('#mahasiswa').addClass('d-none');
-                    console.log("here");
                     return;
                 } if($(this).val() == "3"){
                     $('#dosen').addClass('d-none');
@@ -147,8 +164,10 @@ if (isset($_POST['user-submit'])) {
                     $('#mahasiswa').removeClass('d-none');
                     $('[name=nim]').attr('required', true);
                     $('[name=angkatan]').attr('required', true);
+                    $('[name=prodi]').attr('required', true);
+                    $('[name=kelas]').attr('required', true);
+                    $('[name=jurusan]').attr('required', true);
                     $('[name=nip]').attr('required', false);
-                    $('[name=kelas]').attr('required', false);
                     $('[name=nip]').val('');
                     return;
                 }
