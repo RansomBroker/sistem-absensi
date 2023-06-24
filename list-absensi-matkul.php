@@ -24,41 +24,42 @@ foreach (ambil_kehadiran_mahasiswa($_SESSION['id']) as $data) {
 
 <body id="page-top">
 
-<!-- Page Wrapper -->
-<div id="wrapper">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
 
-    <?php include "sidebar.php";?>
+        <?php include "sidebar.php";?>
 
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
 
-        <!-- Main Content -->
-        <div id="content">
+            <!-- Main Content -->
+            <div id="content">
 
-            <?php include "navbar.php";?>
+                <?php include "navbar.php";?>
 
-            <!-- Begin Page Content -->
-            <div class="container-fluid">
-                <?php if ($_SESSION['role'] == 2 || $_SESSION['role'] == 1):?>
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <?php if ($_SESSION['role'] == 2 || $_SESSION['role'] == 1):?>
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800"><?= isset($list_absensi[0]['nama_matkul']) ? $list_absensi[0]['nama_matkul']: ""?></h1>
+                        <h1 class="h3 mb-0 text-gray-800">
+                            <?= isset($list_absensi[0]['nama_matkul']) ? $list_absensi[0]['nama_matkul']: ""?></h1>
                     </div>
                     <div class="card card-body my-4">
                         <div>
                             <div class="table-responsive">
                                 <table class="table table-striped table-hover table-bordered" id="table-absensi">
                                     <thead>
-                                    <tr>
-                                        <th>Nama</th>
-                                        <th>Matkul</th>
-                                        <th>Waktu Absen</th>
-                                        <th>Tanggal Absen</th>
-                                        <th>Waktu Dispensasi</th>
-                                        <th>Action</th>
-                                    </tr>
+                                        <tr>
+                                            <th>Nama</th>
+                                            <th>Matkul</th>
+                                            <th>Waktu Absen</th>
+                                            <th>Tanggal Absen</th>
+                                            <th>Waktu Dispensasi</th>
+                                            <th>Action</th>
+                                        </tr>
                                     </thead>
                                     <tbody>
-                                    <?php foreach ($list_absensi as $data):?>
+                                        <?php foreach ($list_absensi as $data):?>
                                         <tr>
                                             <td><?= $data['nama_presensi'] ?></td>
                                             <td><?= $data['nama_matkul']?></td>
@@ -66,89 +67,96 @@ foreach (ambil_kehadiran_mahasiswa($_SESSION['id']) as $data) {
                                             <td><?= $data['tgl_absen']?></td>
                                             <td><?= $data['waktu_dispensasi']?></td>
                                             <td>
-                                                <a href="list-presensi.php?id-presensi=<?= $data['presensi_id']?>"  class="btn btn-success">Lihat Presensi</a>
-                                                <a href="ubah-data-absen.php?id=<?= $data['presensi_id']?>" class="btn-edit btn btn-warning">Edit</a>
-                                                <a href="hapus-data-absen.php?id=<?=$data['presensi_id']?>" class="btn btn-danger">Hapus</a>
+                                                <a href="list-presensi.php?id-presensi=<?= $data['presensi_id']?>"
+                                                    class="btn btn-success">Lihat Presensi</a>
+                                                <a href="ubah-data-absen.php?id=<?= $data['presensi_id']?>&id-dosen=<?= $data['id_dosen']?>"
+                                                    class="btn-edit btn btn-warning">Edit</a>
+                                                <a href="hapus-data-absen.php?id=<?=$data['presensi_id']?>"
+                                                    class="btn btn-danger">Hapus</a>
                                             </td>
                                         </tr>
-                                    <?php endforeach;?>
+                                        <?php endforeach;?>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
-                <?php endif;?>
-                <?php if ($_SESSION['role'] == 3):?>
+                    <?php endif;?>
+                    <?php if ($_SESSION['role'] == 3):?>
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800"><?= isset($list_absensi[0]['nama_matkul']) ? $list_absensi[0]['nama_matkul']: ""?></h1>
+                        <h1 class="h3 mb-0 text-gray-800">
+                            <?= isset($list_absensi[0]['nama_matkul']) ? $list_absensi[0]['nama_matkul']: ""?></h1>
                     </div>
                     <div class="card card-body my-4">
                         <div>
                             <div class="table-responsive">
                                 <table class="table table-striped table-hover table-bordered" id="table-absensi">
                                     <thead>
-                                    <tr>
-                                        <th>Nama</th>
-                                        <th>Matkul</th>
-                                        <th>Waktu Absen</th>
-                                        <th>Tanggal Absen</th>
-                                        <th>Waktu Dispensasi</th>
-                                        <th>Action</th>
-                                    </tr>
+                                        <tr>
+                                            <th>Nama</th>
+                                            <th>Matkul</th>
+                                            <th>Waktu Absen</th>
+                                            <th>Tanggal Absen</th>
+                                            <th>Waktu Dispensasi</th>
+                                            <th>Action</th>
+                                        </tr>
                                     </thead>
                                     <tbody>
-                                    <?php foreach ($list_absensi as $data):?>
+                                        <?php foreach ($list_absensi as $data):?>
                                         <?php if (in_array($data['presensi_id'], $kehadiran)):?>
-                                            <tr>
-                                                <td><?= $data['nama_presensi'] ?></td>
-                                                <td><?= $data['nama_matkul']?></td>
-                                                <td><?= $data['jam_masuk'].'-'.$data['jam_keluar']?></td>
-                                                <td><?= $data['tgl_absen']?></td>
-                                                <td><?= $data['waktu_dispensasi']?></td>
-                                                <td>
-                                                    <a href="list-presensi.php?id-presensi=<?= $data['presensi_id']?>&id-mahasiswa=<?= $_SESSION['id']?>"  class="btn btn-success">Lihat Detail</a>
-                                                </td>
-                                            </tr>
+                                        <tr>
+                                            <td><?= $data['nama_presensi'] ?></td>
+                                            <td><?= $data['nama_matkul']?></td>
+                                            <td><?= $data['jam_masuk'].'-'.$data['jam_keluar']?></td>
+                                            <td><?= $data['tgl_absen']?></td>
+                                            <td><?= $data['waktu_dispensasi']?></td>
+                                            <td>
+                                                <a href="list-presensi.php?id-presensi=<?= $data['presensi_id']?>&id-mahasiswa=<?= $_SESSION['id']?>"
+                                                    class="btn btn-success">Lihat Detail</a>
+                                            </td>
+                                        </tr>
                                         <?php else:?>
-                                            <tr>
-                                                <td><?= $data['nama_presensi'] ?></td>
-                                                <td><?= $data['nama_matkul']?></td>
-                                                <td><?= $data['jam_masuk'].'-'.$data['jam_keluar']?></td>
-                                                <td><?= $data['tgl_absen']?></td>
-                                                <td><?= $data['waktu_dispensasi']?></td>
-                                                <td>
-                                                    <button  class="btn-absen btn btn-warning" data-id="<?= $data['presensi_id']?>" data-id-mahasiswa="<?= $_SESSION['id']?>">Isi Kehadiran</button>
-                                                </td>
-                                            </tr>
+                                        <tr>
+                                            <td><?= $data['nama_presensi'] ?></td>
+                                            <td><?= $data['nama_matkul']?></td>
+                                            <td><?= $data['jam_masuk'].'-'.$data['jam_keluar']?></td>
+                                            <td><?= $data['tgl_absen']?></td>
+                                            <td><?= $data['waktu_dispensasi']?></td>
+                                            <td>
+                                                <button class="btn-absen btn btn-warning"
+                                                    data-id="<?= $data['presensi_id']?>"
+                                                    data-id-mahasiswa="<?= $_SESSION['id']?>">Isi Kehadiran</button>
+                                            </td>
+                                        </tr>
                                         <?php endif;?>
-                                    <?php endforeach;?>
+                                        <?php endforeach;?>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
-                <?php endif;?>
+                    <?php endif;?>
+                </div>
+
+
             </div>
-
-
+            <!-- End of Content Wrapper -->
+            <?php include "footer.php"?>
         </div>
-        <!-- End of Content Wrapper -->
-        <?php include "footer.php"?>
-    </div>
-    <!-- End of Page Wrapper -->
+        <!-- End of Page Wrapper -->
 
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
+        <!-- Scroll to Top Button-->
+        <a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>
 
-    <?php include "logout_modal.php"?>
+        <?php include "logout_modal.php"?>
 
-    <?php include "js.php"?>
-    <script>
-        $(document).ready(function () {
+        <?php include "js.php"?>
+        <script>
+        $(document).ready(function() {
             let tableListPresensi = $("#table-list-presensi").DataTable();
-            $('.btn-absen').on('click', function () {
+            $('.btn-absen').on('click', function() {
                 let idAbsensi = $(this).attr('data-id');
                 let idMahasiswa = $(this).attr('data-id-mahasiswa');
                 Swal.fire({
@@ -184,7 +192,10 @@ foreach (ambil_kehadiran_mahasiswa($_SESSION['id']) as $data) {
                         $("#photo").hide()
 
                         // akses kamera
-                        navigator.mediaDevices.getUserMedia({video:true, audio: false}).then(function (stream) {
+                        navigator.mediaDevices.getUserMedia({
+                            video: true,
+                            audio: false
+                        }).then(function(stream) {
                             $("#video").show();
                             video.srcObject = stream;
                             video.play();
@@ -192,21 +203,24 @@ foreach (ambil_kehadiran_mahasiswa($_SESSION['id']) as $data) {
                         }).catch((error) => {
                             $("#video").hide();
                             $(".take-photo").hide();
-                            swal.showValidationMessage("*Silahkan izinkan akses kamera pada browser")
+                            swal.showValidationMessage(
+                                "*Silahkan izinkan akses kamera pada browser")
                         })
 
                         // akses lokasi
                         navigator.geolocation.getCurrentPosition(
-                            function (position) {
-                                $('[name=coordinate]').val(position.coords.latitude + "," + position.coords.longitude)
+                            function(position) {
+                                $('[name=coordinate]').val(position.coords.latitude +
+                                    "," + position.coords.longitude)
                             },
-                            function () {
-                                swal.showValidationMessage("*Silahkan izinkan akses lokasi pada browser")
+                            function() {
+                                swal.showValidationMessage(
+                                    "*Silahkan izinkan akses lokasi pada browser")
                             }
                         );
 
                         //ambil photo
-                        $(document).on('click', '.take-photo', function () {
+                        $(document).on('click', '.take-photo', function() {
                             let canvas = $("#canvas").get(0);
                             const context = canvas.getContext('2d');
                             canvas.width = 512;
@@ -225,7 +239,7 @@ foreach (ambil_kehadiran_mahasiswa($_SESSION['id']) as $data) {
                         })
 
                         // retake photo
-                        $(document).on('click', '.retake-photo', function () {
+                        $(document).on('click', '.retake-photo', function() {
                             $("#photo").hide();
                             $("#video").show();
                             $(this).removeClass("btn-danger")
@@ -235,8 +249,8 @@ foreach (ambil_kehadiran_mahasiswa($_SESSION['id']) as $data) {
                             $(this).text("Ambil photo")
                         })
                     },
-                    preConfirm: function () {
-                        return new Promise(function (resolve) {
+                    preConfirm: function() {
+                        return new Promise(function(resolve) {
                             let status = $("[name=status]:checked").val()
 
                             if (status === undefined) {
@@ -245,14 +259,16 @@ foreach (ambil_kehadiran_mahasiswa($_SESSION['id']) as $data) {
                                 return 0;
                             }
 
-                            if ($('[name=coordinate]').val().length === 0 ) {
-                                swal.showValidationMessage("Silahkan enable location pada browser")
+                            if ($('[name=coordinate]').val().length === 0) {
+                                swal.showValidationMessage(
+                                    "Silahkan enable location pada browser")
                                 swal.enableButtons();
                                 return 0;
                             }
 
                             if ($("#photo").attr('src').length === 0) {
-                                swal.showValidationMessage("Silahkan ambil photo terlebih dahulu")
+                                swal.showValidationMessage(
+                                    "Silahkan ambil photo terlebih dahulu")
                                 swal.enableButtons();
                                 return 0;
                             }
@@ -291,7 +307,7 @@ foreach (ambil_kehadiran_mahasiswa($_SESSION['id']) as $data) {
                 })
             })
         })
-    </script>
+        </script>
 
 </body>
 

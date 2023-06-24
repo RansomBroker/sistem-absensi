@@ -336,10 +336,10 @@ function update_mahasiswa_profile($form,$file){
 
 function tambah_absensi($form) {
     global  $connection;
-    
+    $data_matkul = explode('||', $form['id-mata-kuliah']);
     $nama_mata_kuliah = htmlspecialchars(stripcslashes($form['judul-presensi']));
-    $id_mata_kuliah = $form['id-mata-kuliah'];
-    $user_id = $form['user-id'];
+    $id_mata_kuliah = $data_matkul[0];
+    $user_id = $data_matkul[1];
     $waktu_masuk = $form['waktu-masuk'];
     $waktu_keluar = $form['waktu-keluar'];
     $tanggal_absensi = $form['tanggal-absensi'];
@@ -479,8 +479,9 @@ function ambil_data_mata_kuliah_dosen()
     global $connection;
     return $connection->query("
     SELECT
-        *, 
+        users.id AS id_dosen_pengampu, 
         users.nama AS dosen_pengampu,
+        mata_kuliah.name AS matkul,
 	    mata_kuliah.id AS id_mata_kuliah,
         mata_kuliah.kelas AS kelas_mata_kuliah,
         mata_kuliah.waktu_absen AS jam_masuk
@@ -756,7 +757,8 @@ function ambiL_seluruh_data_absensi($id_matkul)
         jadwal_presensi.tgl_absen AS tgl_absen, 
         jadwal_presensi.waktu_dispensasi AS waktu_dispensasi, 
         jadwal_presensi.id AS presensi_id, 
-        mata_kuliah.`name` AS nama_matkul
+        mata_kuliah.name AS nama_matkul,
+        mata_kuliah.user_id AS id_dosen
     FROM
 	    jadwal_presensi
 	INNER JOIN

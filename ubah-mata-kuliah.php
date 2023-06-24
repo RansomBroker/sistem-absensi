@@ -23,85 +23,87 @@ $mata_kuliah = ambil_data_mata_kuliah_by_id($_GET['id']);
 
 <body id="page-top">
 
-<!-- Page Wrapper -->
-<div id="wrapper">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
 
-    <?php include "sidebar.php";?>
+        <?php include "sidebar.php";?>
 
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
 
-        <!-- Main Content -->
-        <div id="content">
+            <!-- Main Content -->
+            <div id="content">
 
-            <?php include "navbar.php";?>
+                <?php include "navbar.php";?>
 
-            <!-- Begin Page Content -->
-            <div class="container-fluid">
-                <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h1 class="h3 mb-0 text-gray-800">Ubah Mata Kuliah</h1>
-                </div>
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">Ubah Mata Kuliah</h1>
+                    </div>
 
-                <div class="card card-body row">
-                    <form action="" method="POST" id="form">
-                        <input type="hidden" name="id" value="<?= $mata_kuliah['id_mata_kuliah']?>">
-                        <input type="hidden" name="submit-mata-kuliah">
-                        <div class="form-group mb-3">
-                            <label class="form-label">Nama Kuliah <sup class="text-danger">*</sup></label>
-                            <input type="text" class="form-control" name="name" value="<?= $mata_kuliah['name'] ?>" required>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label class="form-label">Dosen Pengampu <sup class="text-danger">*</sup></label>
-                            <select name="dosen-pengampu" class="form-control" required>
-                                <?php foreach (ambil_data_dosen() as $dosen):?>
+                    <div class="card card-body row">
+                        <form action="" method="POST" id="form">
+                            <input type="hidden" name="id" value="<?= $mata_kuliah['id_mata_kuliah']?>">
+                            <input type="hidden" name="submit-mata-kuliah">
+                            <div class="form-group mb-3">
+                                <label class="form-label">Nama Kuliah <sup class="text-danger">*</sup></label>
+                                <input type="text" class="form-control" name="name" value="<?= $mata_kuliah['name'] ?>"
+                                    required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label class="form-label">Dosen Pengampu <sup class="text-danger">*</sup></label>
+                                <select name="dosen-pengampu" class="form-control" required>
+                                    <?php foreach (ambil_data_dosen() as $dosen):?>
                                     <?php if ($dosen['id'] == $mata_kuliah['id']):?>
-                                        <option selected value="<?= $dosen['id']?>"><?= $dosen['nama']?></option>
+                                    <option selected value="<?= $dosen['id']?>"><?= $dosen['nama']?></option>
                                     <?php else:?>
-                                        <option value="<?= $dosen['id']?>"><?= $dosen['nama']?></option>
+                                    <option value="<?= $dosen['id']?>"><?= $dosen['nama']?></option>
                                     <?php endif;?>
-                                <?php endforeach;?>
-                            </select>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label class="form-label">Kode Enroll</label>
-                            <input type="text" class="form-control" name="enroll-code" value="<?= $mata_kuliah['enroll_code']?>" readonly>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label class="form-label">Kelas <sup class="text-danger">*</sup></label>
-                            <input type="text" class="form-control" name="kelas" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="" class="form-label">Waktu Masuk <sup class="text-danger">*</sup></label>
-                            <input name="waktu-masuk" class="time form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="" class="form-label">Waktu Keluar <sup class="text-danger">*</sup></label>
-                            <input name="waktu-keluar" class="time form-control" required>
-                        </div>
-                        <button class="btn btn-warning w-100">Ubah Mata Kuliah</button>
-                    </form>
+                                    <?php endforeach;?>
+                                </select>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label class="form-label">Kode Enroll</label>
+                                <input type="text" class="form-control" name="enroll-code"
+                                    value="<?= $mata_kuliah['enroll_code']?>" readonly>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label class="form-label">Kelas <sup class="text-danger">*</sup></label>
+                                <input type="text" class="form-control" name="kelas" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="form-label">Waktu Masuk <sup class="text-danger">*</sup></label>
+                                <input name="waktu-masuk" class="time form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="form-label">Waktu Keluar <sup class="text-danger">*</sup></label>
+                                <input name="waktu-keluar" class="time form-control" required>
+                            </div>
+                            <button class="btn btn-warning w-100">Ubah Mata Kuliah</button>
+                        </form>
+                    </div>
                 </div>
+
+
             </div>
+            <!-- End of Content Wrapper -->
 
-
+            <?php include "footer.php"?>
         </div>
-        <!-- End of Content Wrapper -->
+        <!-- End of Page Wrapper -->
 
-        <?php include "footer.php"?>
-    </div>
-    <!-- End of Page Wrapper -->
+        <!-- Scroll to Top Button-->
+        <a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>
 
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
+        <!-- Logout Modal-->
+        <?php include "logout_modal.php"?>
 
-    <!-- Logout Modal-->
-    <?php include "logout_modal.php"?>
-
-    <?php include "js.php"?>
-    <script>
-        $("#form").one('submit', function (e) {
+        <?php include "js.php"?>
+        <script>
+        $("#form").one('submit', function(e) {
             e.preventDefault();
             Swal.fire({
                 icon: 'question',
@@ -116,7 +118,18 @@ $mata_kuliah = ambil_data_mata_kuliah_by_id($_GET['id']);
             })
 
         })
-    </script>
+        $('.time').timepicker({
+            timeFormat: 'HH:mm:ss ',
+            interval: 1,
+            minTime: '6',
+            maxTime: '11:59pm',
+            defaultTime: '06:00',
+            startTime: '00:00',
+            dynamic: false,
+            dropdown: true,
+            scrollbar: true
+        });
+        </script>
 
 </body>
 
