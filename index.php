@@ -25,25 +25,25 @@ foreach (ambil_kehadiran_mahasiswa($_SESSION['id']) as $data) {
 
 <body id="page-top">
 
-<!-- Page Wrapper -->
-<div id="wrapper">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
 
-    <?php include "sidebar.php";?>
+        <?php include "sidebar.php";?>
 
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
 
-        <!-- Main Content -->
-        <div id="content">
+            <!-- Main Content -->
+            <div id="content">
 
-            <?php include "navbar.php";?>
+                <?php include "navbar.php";?>
 
-            <!-- Begin Page Content -->
-            <div class="container-fluid">
-                <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-                </div>
-                <?php if($_SESSION['role'] == 1):?>
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+                    </div>
+                    <?php if($_SESSION['role'] == 1):?>
                     <div class="card card-body">
                         <div class="justify-content-center row ">
                             <div class="mx-4 card card-body col-lg-3">
@@ -60,13 +60,13 @@ foreach (ambil_kehadiran_mahasiswa($_SESSION['id']) as $data) {
                             </div>
                         </div>
                     </div>
-                <?php endif;?>
-                <?php if($_SESSION['role'] == 2):?>
+                    <?php endif;?>
+                    <?php if($_SESSION['role'] == 2):?>
                     <div class="card card-body">
                         <h5 class="card-title">HI <?=$_SESSION['nama']?></h5>
                     </div>
-                <?php endif;?>
-                <?php if($_SESSION['role'] == 3):?>
+                    <?php endif;?>
+                    <?php if($_SESSION['role'] == 3):?>
                     <?php $akumulasi_telat = ambil_akumulasi_mahasiswa($_SESSION['id']);?>
                     <div class="card card-body">
                         <h5 class="card-title">HI <?=$_SESSION['nama']?></h5>
@@ -75,37 +75,43 @@ foreach (ambil_kehadiran_mahasiswa($_SESSION['id']) as $data) {
                                 <div class="col-lg-4 col-12 border-right">
                                     <h5 class=card-title>Akumulasi Menit Alpha</h5>
                                     <?php if ($akumulasi_telat != null):?>
-                                        <?php if ($akumulasi_telat['akumulasi'] > 5):?>
-                                            <h4 class="text-primary font-weight-bold"><?= $akumulasi_telat['akumulasi']?> (menit)</h4>
-                                        <?php endif;?>
+                                    <?php if ($akumulasi_telat['akumulasi'] > 5):?>
+                                    <h4 class="text-primary font-weight-bold"><?= $akumulasi_telat['akumulasi']?>
+                                        (menit)</h4>
+                                    <?php endif;?>
 
-                                        <?php if ($akumulasi_telat['akumulasi'] >= 480 && $akumulasi_telat['akumulasi'] <= 960):?>
-                                            <h4 class="text-warning font-weight-bold"><?= $akumulasi_telat['akumulasi']?> (menit)</h4>
-                                        <?php endif;?>
+                                    <?php if ($akumulasi_telat['akumulasi'] >= 480 && $akumulasi_telat['akumulasi'] <= 960):?>
+                                    <h4 class="text-warning font-weight-bold"><?= $akumulasi_telat['akumulasi']?>
+                                        (menit)</h4>
+                                    <?php endif;?>
 
-                                        <?php if ($akumulasi_telat['akumulasi'] > 960):?>
-                                            <h4 class="text-danger font-weight-bold"><?= $akumulasi_telat['akumulasi']?> (menit)</h4>
-                                        <?php endif;?>
+                                    <?php if ($akumulasi_telat['akumulasi'] > 960):?>
+                                    <h4 class="text-danger font-weight-bold"><?= $akumulasi_telat['akumulasi']?> (menit)
+                                    </h4>
+                                    <?php endif;?>
                                     <?php else:?>
-                                        <h4 class="text-primary font-weight-bold">-</h4>
+                                    <h4 class="text-primary font-weight-bold">-</h4>
                                     <?php endif;?>
                                 </div>
                                 <div class="col-lg-4 col-12">
                                     <h5 class=card-title>Status</h5>
                                     <?php if ($akumulasi_telat != null):?>
-                                        <?php if ($akumulasi_telat['akumulasi'] > 5):?>
-                                            <a href="cetak-sp-1.php?id=<?=$_SESSION['id']?>&sp=SURAT%20PERINGATAN%201%20%28Pertama%29" class="btn btn-primary">SP1 / Klik untuk mengunduh surat</a>
-                                        <?php endif;?>
+                                    <?php if ($akumulasi_telat['akumulasi'] > 5):?>
+                                    <a href="cetak-sp-1.php?id=<?=$_SESSION['id']?>&sp=SURAT%20PERINGATAN%201%20%28Pertama%29"
+                                        class="btn btn-primary">SP1 / Klik untuk mengunduh surat</a>
+                                    <?php endif;?>
 
-                                        <?php if ($akumulasi_telat['akumulasi'] >= 480 && $akumulasi_telat['akumulasi'] <= 960):?>
-                                            <a href="cetak-sp-2.php?id=<?=$_SESSION['id']?>&sp=SURAT%20PERINGATAN%202%20%28Kedua%29" class="btn btn-warning">SP2 / Klik untuk mengunduh surat</a>
-                                        <?php endif;?>
+                                    <?php if ($akumulasi_telat['akumulasi'] >= 480 && $akumulasi_telat['akumulasi'] <= 960):?>
+                                    <a href="cetak-sp-2.php?id=<?=$_SESSION['id']?>&sp=SURAT%20PERINGATAN%202%20%28Kedua%29"
+                                        class="btn btn-warning">SP2 / Klik untuk mengunduh surat</a>
+                                    <?php endif;?>
 
-                                        <?php if ($akumulasi_telat['akumulasi'] > 960):?>
-                                            <a href="cetak-sp-3.php?id=<?=$_SESSION['id']?>&sp=SURAT%20PERINGATAN%203%20%28Ketiga%29" class="btn btn-danger">SP3 / Klik untuk mengunduh surat</a>
-                                        <?php endif;?>
+                                    <?php if ($akumulasi_telat['akumulasi'] > 960):?>
+                                    <a href="cetak-sp-3.php?id=<?=$_SESSION['id']?>&sp=SURAT%20PERINGATAN%203%20%28Ketiga%29"
+                                        class="btn btn-danger">SP3 / Klik untuk mengunduh surat</a>
+                                    <?php endif;?>
                                     <?php else:?>
-                                        <h4 class="text-primary font-weight-bold">-</h4>
+                                    <h4 class="text-primary font-weight-bold">-</h4>
                                     <?php endif;?>
                                 </div>
                             </div>
@@ -117,68 +123,76 @@ foreach (ambil_kehadiran_mahasiswa($_SESSION['id']) as $data) {
                         <div class="table-responsive">
                             <table class="table table-striped table-hover table-bordered" id="table-absensi">
                                 <thead>
-                                <tr>
-                                    <th>Nama</th>
-                                    <th>Matkul</th>
-                                    <th>Waktu Absen</th>
-                                    <th>Tanggal Absen</th>
-                                    <th>Waktu Dispensasi</th>
-                                    <th>Action</th>
-                                </tr>
+                                    <tr>
+                                        <th>Nama</th>
+                                        <th>Matkul</th>
+                                        <th>Waktu Absen</th>
+                                        <th>Tanggal Absen</th>
+                                        <th>Waktu Dispensasi</th>
+                                        <th>Action</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
-                                <?php foreach (ambil_jadwal_presensi_mahasiswa($_SESSION['id']) as $data):?>
+                                    <?php foreach (ambil_jadwal_presensi_mahasiswa($_SESSION['id']) as $data):?>
                                     <?php if (in_array($data['id_presensi'], $kehadiran)):?>
-                                        <tr>
-                                            <td><?= $data['judul_presensi'] ?></td>
-                                            <td><?= $data['mata_kuliah']?></td>
-                                            <td><?= $data['jam_masuk'].'-'.$data['jam_keluar']?></td>
-                                            <td><?= $data['tgl_absen']?></td>
-                                            <td><?= $data['waktu_dispensasi']?></td>
-                                            <td>
-                                                <a href="list-presensi.php?id-presensi=<?= $data['id_presensi']?>&id-mahasiswa=<?= $_SESSION['id']?>"  class="btn btn-success">Lihat Detail</a>
-                                            </td>
-                                        </tr>
+                                    <tr>
+                                        <td><?= $data['judul_presensi'] ?></td>
+                                        <td><?= $data['mata_kuliah']?></td>
+                                        <td><?= $data['jam_masuk'].'-'.$data['jam_keluar']?></td>
+                                        <td><?= $data['tgl_absen']?></td>
+                                        <td><?= $data['waktu_dispensasi']?></td>
+                                        <td>
+                                            <a href="list-presensi.php?id-presensi=<?= $data['id_presensi']?>&id-mahasiswa=<?= $_SESSION['id']?>"
+                                                class="btn btn-success">Lihat Detail</a>
+                                        </td>
+                                    </tr>
                                     <?php else:?>
-                                        <tr>
-                                            <td><?= $data['judul_presensi'] ?></td>
-                                            <td><?= $data['mata_kuliah']?></td>
-                                            <td><?= $data['jam_masuk'].'-'.$data['jam_keluar']?></td>
-                                            <td><?= $data['tgl_absen']?></td>
-                                            <td><?= $data['waktu_dispensasi']?></td>
-                                            <td>
-                                                <button  class="btn-absen btn btn-warning" data-id="<?= $data['id_presensi']?>" data-id-mahasiswa="<?= $_SESSION['id']?>">Isi Kehadiran</button>
-                                            </td>
-                                        </tr>
+                                    <tr>
+                                        <td><?= $data['judul_presensi'] ?></td>
+                                        <td><?= $data['mata_kuliah']?></td>
+                                        <td><?= $data['jam_masuk'].'-'.$data['jam_keluar']?></td>
+                                        <td><?= $data['tgl_absen']?></td>
+                                        <td><?= $data['waktu_dispensasi']?></td>
+                                        <td>
+                                            <?php
+                                                    $jam = strtotime(date("H:i:s"));
+                                                    $jam_masuk = strtotime($data['jam_masuk']);
+                                                ?>
+                                            <button class="btn-absen btn btn-warning"
+                                                <?= $jam < $jam_masuk ? "disabled" : ""?>
+                                                data-id="<?= $data['id_presensi']?>"
+                                                data-id-mahasiswa="<?= $_SESSION['id']?>">Isi Kehadiran</button>
+                                        </td>
+                                    </tr>
                                     <?php endif;?>
-                                <?php endforeach;?>
+                                    <?php endforeach;?>
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                <?php endif;?>
+                    <?php endif;?>
+                </div>
+
+
             </div>
-
-
+            <!-- End of Content Wrapper -->
+            <?php include "footer.php"?>
         </div>
-        <!-- End of Content Wrapper -->
-        <?php include "footer.php"?>
-    </div>
-    <!-- End of Page Wrapper -->
+        <!-- End of Page Wrapper -->
 
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
+        <!-- Scroll to Top Button-->
+        <a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>
 
-    <?php include "logout_modal.php"?>
+        <?php include "logout_modal.php"?>
 
-    <?php include "js.php"?>
-    <script>
-        $(document).ready(function () {
+        <?php include "js.php"?>
+        <script>
+        $(document).ready(function() {
             let tableDataAbsensi = $("#table-absensi").DataTable()
             let tableMataKuliah = $("#table-mata-kuliah").DataTable()
-            $('.btn-absen').on('click', function () {
+            $('.btn-absen').on('click', function() {
                 let idAbsensi = $(this).attr('data-id');
                 let idMahasiswa = $(this).attr('data-id-mahasiswa');
                 Swal.fire({
@@ -214,7 +228,10 @@ foreach (ambil_kehadiran_mahasiswa($_SESSION['id']) as $data) {
                         $("#photo").hide()
 
                         // akses kamera
-                        navigator.mediaDevices.getUserMedia({video:true, audio: false}).then(function (stream) {
+                        navigator.mediaDevices.getUserMedia({
+                            video: true,
+                            audio: false
+                        }).then(function(stream) {
                             $("#video").show();
                             video.srcObject = stream;
                             video.play();
@@ -222,21 +239,24 @@ foreach (ambil_kehadiran_mahasiswa($_SESSION['id']) as $data) {
                         }).catch((error) => {
                             $("#video").hide();
                             $(".take-photo").hide();
-                            swal.showValidationMessage("*Silahkan izinkan akses kamera pada browser")
+                            swal.showValidationMessage(
+                                "*Silahkan izinkan akses kamera pada browser")
                         })
 
                         // akses lokasi
                         navigator.geolocation.getCurrentPosition(
-                            function (position) {
-                            $('[name=coordinate]').val(position.coords.latitude + "," + position.coords.longitude)
+                            function(position) {
+                                $('[name=coordinate]').val(position.coords.latitude +
+                                    "," + position.coords.longitude)
                             },
-                            function () {
-                                swal.showValidationMessage("*Silahkan izinkan akses lokasi pada browser")
+                            function() {
+                                swal.showValidationMessage(
+                                    "*Silahkan izinkan akses lokasi pada browser")
                             }
                         );
 
                         //ambil photo
-                        $(document).on('click', '.take-photo', function () {
+                        $(document).on('click', '.take-photo', function() {
                             let canvas = $("#canvas").get(0);
                             const context = canvas.getContext('2d');
                             canvas.width = 512;
@@ -255,7 +275,7 @@ foreach (ambil_kehadiran_mahasiswa($_SESSION['id']) as $data) {
                         })
 
                         // retake photo
-                        $(document).on('click', '.retake-photo', function () {
+                        $(document).on('click', '.retake-photo', function() {
                             $("#photo").hide();
                             $("#video").show();
                             $(this).removeClass("btn-danger")
@@ -265,8 +285,8 @@ foreach (ambil_kehadiran_mahasiswa($_SESSION['id']) as $data) {
                             $(this).text("Ambil photo")
                         })
                     },
-                    preConfirm: function () {
-                        return new Promise(function (resolve) {
+                    preConfirm: function() {
+                        return new Promise(function(resolve) {
                             let status = $("[name=status]:checked").val()
 
                             if (status === undefined) {
@@ -275,14 +295,16 @@ foreach (ambil_kehadiran_mahasiswa($_SESSION['id']) as $data) {
                                 return 0;
                             }
 
-                            if ($('[name=coordinate]').val().length === 0 ) {
-                                swal.showValidationMessage("Silahkan enable location pada browser")
+                            if ($('[name=coordinate]').val().length === 0) {
+                                swal.showValidationMessage(
+                                    "Silahkan enable location pada browser")
                                 swal.enableButtons();
                                 return 0;
                             }
 
                             if ($("#photo").attr('src').length === 0) {
-                                swal.showValidationMessage("Silahkan ambil photo terlebih dahulu")
+                                swal.showValidationMessage(
+                                    "Silahkan ambil photo terlebih dahulu")
                                 swal.enableButtons();
                                 return 0;
                             }
@@ -331,9 +353,9 @@ foreach (ambil_kehadiran_mahasiswa($_SESSION['id']) as $data) {
                            </div>`,
                     showCancelButton: true,
                     reverseButtons: true,
-                    preConfirm: function () {
-                        return new Promise(function (resolve) {
-                            if($('[name=enroll-code]').val() === '') {
+                    preConfirm: function() {
+                        return new Promise(function(resolve) {
+                            if ($('[name=enroll-code]').val() === '') {
                                 swal.showValidationMessage("Masukan Kode Kelas")
                                 swal.enableButtons();
                                 return 0;
@@ -342,7 +364,8 @@ foreach (ambil_kehadiran_mahasiswa($_SESSION['id']) as $data) {
                             if ($('[name=enroll-code]').val() != '') {
                                 swal.resetValidationMessage();
                                 resolve({
-                                    "enrollCode" : $("[name=enroll-code]").val(),
+                                    "enrollCode": $("[name=enroll-code]")
+                                        .val(),
                                 });
                             }
                         })
@@ -350,7 +373,7 @@ foreach (ambil_kehadiran_mahasiswa($_SESSION['id']) as $data) {
                 }).then((result) => {
                     let enrollCode = result.value.enrollCode;
                     $.ajax({
-                        url: "enroll-kelas.php?enroll-code="+enrollCode + "&id=" + id,
+                        url: "enroll-kelas.php?enroll-code=" + enrollCode + "&id=" + id,
                         method: "GET",
                         success: function(data) {
                             let response = JSON.parse(data);
@@ -364,7 +387,7 @@ foreach (ambil_kehadiran_mahasiswa($_SESSION['id']) as $data) {
                 })
             })
         })
-    </script>
+        </script>
 
 </body>
 

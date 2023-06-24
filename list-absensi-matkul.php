@@ -123,7 +123,12 @@ foreach (ambil_kehadiran_mahasiswa($_SESSION['id']) as $data) {
                                             <td><?= $data['tgl_absen']?></td>
                                             <td><?= $data['waktu_dispensasi']?></td>
                                             <td>
+                                                <?php
+                                                    $jam = strtotime(date("H:i:s"));
+                                                    $jam_masuk = strtotime($data['jam_masuk']);
+                                                ?>
                                                 <button class="btn-absen btn btn-warning"
+                                                    <?= $jam < $jam_masuk ? "disabled" : ""?>
                                                     data-id="<?= $data['presensi_id']?>"
                                                     data-id-mahasiswa="<?= $_SESSION['id']?>">Isi Kehadiran</button>
                                             </td>
