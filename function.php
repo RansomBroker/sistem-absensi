@@ -473,11 +473,13 @@ function ambil_data_mata_kuliah() {
     global $connection;
     return $connection->query("
     SELECT
-	    *,
-	    users.nama AS dosen_pengampu,
-	    mata_kuliah.id AS id_mata_kuliah,
-	    mata_kuliah.kelas AS kelas_mata_kuliah,
-        mata_kuliah.waktu_absen AS jam_masuk
+        users.id AS id_dosen_pengampu, 
+        users.nama AS dosen_pengampu,
+        mata_kuliah.name AS matkul,
+        mata_kuliah.id AS id_mata_kuliah,
+        mata_kuliah.kelas AS kelas_mata_kuliah,
+        mata_kuliah.waktu_absen AS waktu_absen,
+        mata_kuliah.enroll_code AS enroll_code
     FROM
 	    mata_kuliah
 	INNER JOIN
@@ -486,7 +488,7 @@ function ambil_data_mata_kuliah() {
 		mata_kuliah.user_id = users.id")->fetch_all(MYSQLI_ASSOC);
 }
 
-function ambil_data_mata_kuliah_dosen()
+function ambil_data_mata_kuliah_dosen($id)
 {
     global $connection;
     return $connection->query("
@@ -496,13 +498,15 @@ function ambil_data_mata_kuliah_dosen()
         mata_kuliah.name AS matkul,
 	    mata_kuliah.id AS id_mata_kuliah,
         mata_kuliah.kelas AS kelas_mata_kuliah,
-        mata_kuliah.waktu_absen AS jam_masuk
+        mata_kuliah.waktu_absen AS waktu_absen,
+        mata_kuliah.enroll_code AS enroll_code
     FROM
 	    mata_kuliah
 	INNER JOIN
 	    users
 	ON 
 		mata_kuliah.user_id = users.id
+    WHERE mata_kuliah.user_id = '$id'
     ")->fetch_all(MYSQLI_ASSOC);
 }
 

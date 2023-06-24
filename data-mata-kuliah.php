@@ -72,7 +72,7 @@ $data_mata_kuliah = ambil_data_mata_kuliah() ;
                                     <tbody>
                                         <?php foreach ($data_mata_kuliah as $mata_kuliah):?>
                                         <tr>
-                                            <td><?= $mata_kuliah['name']?></td>
+                                            <td><?= $mata_kuliah['matkul']?></td>
                                             <td><?= $mata_kuliah['dosen_pengampu']?></td>
                                             <td><?= $mata_kuliah['kelas_mata_kuliah']?></td>
                                             <td><?= $mata_kuliah['waktu_absen']?></td>
@@ -97,24 +97,26 @@ $data_mata_kuliah = ambil_data_mata_kuliah() ;
                                     <thead>
                                         <tr>
                                             <th>Nama Mata Kuliah</th>
-                                            <th>Kode Enroll</th>
+                                            <th>Dosen Pengampu</th>
                                             <th>Kelas</th>
                                             <th>Waktu Absensi</th>
+                                            <th>Kode Enroll</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php foreach (ambil_data_mata_kuliah_dosen($_SESSION['id']) as $mata_kuliah):?>
                                         <tr>
-                                            <td><?= $mata_kuliah['name']?></td>
-                                            <td><?= $mata_kuliah['enroll_code']?></td>
+                                            <td><?= $mata_kuliah['matkul']?></td>
+                                            <td><?= $mata_kuliah['dosen_pengampu']?></td>
                                             <td><?= $mata_kuliah['kelas_mata_kuliah']?></td>
                                             <td><?= $mata_kuliah['waktu_absen']?></td>
+                                            <td><?= $mata_kuliah['enroll_code']?></td>
                                             <td>
                                                 <a href="list-data-matkul-mahasiswa.php?id=<?= $mata_kuliah['id_mata_kuliah']?>"
                                                     class="btn btn-warning">Lihat Data</a>
                                                 <a href="list-absensi-matkul.php?id=<?= $mata_kuliah['id_mata_kuliah']?>"
-                                                    class="btn btn-warning">Lihat List Absensi</a>
+                                                    class="btn btn-success">Lihat List Absensi</a>
                                             </td>
                                         </tr>
                                         <?php endforeach;?>
