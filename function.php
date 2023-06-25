@@ -993,7 +993,11 @@ function hitung_kompen($id) {
     $data_kompen = $connection->query("
     SELECT
         SUM( presensi_mahasiswa.waktu_telat ) AS akumulasi_telat,
-        presensi_mahasiswa.tgl_presensi
+        presensi_mahasiswa.tgl_presensi,
+        users.nama AS nama, 
+	    users.nomor_induk AS npm, 
+	    users.alamat AS alamat, 
+	    users.kelas AS kelas
     FROM
         presensi_mahasiswa
         INNER JOIN users ON presensi_mahasiswa.id_mahasiswa = users.id 
