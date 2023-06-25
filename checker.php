@@ -72,7 +72,7 @@ foreach ($data_matkul as $matkul) {
                     $jam_keluar_store = $presensi_selesai['jam_keluar'];
                     $jam_keluar = strtotime($presensi_selesai['jam_keluar']);
                     $dispensasi = $presensi_selesai['waktu_dispensasi'];
-                    $total_waktu_alpa = (($jam_keluar - $jam_masuk) / 60) - $dispensasi;
+                    $total_waktu_alpa = (($jam_keluar - $jam_masuk) / 60);
                     $tgl_presensi = $presensi_selesai['tgl_absen'];
                     $id_presensi = $presensi_selesai['id_presensi'];
                     $id_mahasiswa = $mahasiswa['id_user'];

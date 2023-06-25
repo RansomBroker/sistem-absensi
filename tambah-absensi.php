@@ -38,13 +38,55 @@ $image_name = time();
 $image_name_db = $image_name.'.png';
 file_put_contents('img/absensi/'.$image_name.'.png', $image);
 
+if ($status == "Sakit") {
+    $jam_masuk = strtotime($data_absen['jam_masuk']) + $data_absen['waktu_dispensasi'];
+    $jam_keluar = strtotime($data_absen['jam_keluar']);
+    $waktu_sakit = floor(($jam_keluar - $jam_masuk)) / 60 ;
+    $waktu_telat = 0;
 
-$connection->query("
+    $connection->query("
+        INSERT INTO presensi_mahasiswa
+        (id_jadwal_presensi, id_mahasiswa, jam_presensi, tgl_presensi, waktu_telat, status, img, geo_coordinate, waktu_sakit)
+        VALUES
+        ('$id_absensi', '$id_mahasiswa', '$jam_presensi', '$tgl_presensi', '$waktu_telat', '$status', '$image_name_db', '$coordinate', '$waktu_sakit')
+    ");
+}
+
+if ($status == "Izin") {
+    $jam_masuk = strtotime($data_absen['jam_masuk']) + $data_absen['waktu_dispensasi'];
+    $jam_keluar = strtotime($data_absen['jam_keluar']);
+    $waktu_izin = floor(($jam_keluar - $jam_masuk)) / 60 ;
+    $waktu_telat = 0;
+
+    $connection->query("
+        INSERT INTO presensi_mahasiswa
+        (id_jadwal_presensi, id_mahasiswa, jam_presensi, tgl_presensi, waktu_telat, status, img, geo_coordinate, waktu_izin)
+        VALUES
+        ('$id_absensi', '$id_mahasiswa', '$jam_presensi', '$tgl_presensi', '$waktu_telat', '$status', '$image_name_db', '$coordinate', '$waktu_izin')
+    ");
+}
+
+if($status == "Alpha") {
+    $jam_masuk = strtotime($data_absen['jam_masuk']) + $data_absen['waktu_dispensasi'];
+    $jam_keluar = strtotime($data_absen['jam_keluar']);
+    $waktu_telat = floor(($jam_keluar - $jam_masuk)) / 60 ;
+
+    $connection->query("
     INSERT INTO presensi_mahasiswa
     (id_jadwal_presensi, id_mahasiswa, jam_presensi, tgl_presensi, waktu_telat, status, img, geo_coordinate)
     VALUES
     ('$id_absensi', '$id_mahasiswa', '$jam_presensi', '$tgl_presensi', '$waktu_telat', '$status', '$image_name_db', '$coordinate')
-");
+    ");
+}
+
+if ($status == "Hadir") {
+    $connection->query("
+    INSERT INTO presensi_mahasiswa
+    (id_jadwal_presensi, id_mahasiswa, jam_presensi, tgl_presensi, waktu_telat, status, img, geo_coordinate)
+    VALUES
+    ('$id_absensi', '$id_mahasiswa', '$jam_presensi', '$tgl_presensi', '$waktu_telat', '$status', '$image_name_db', '$coordinate')
+    ");
+}
 
 if ($connection->affected_rows > 0) {
     $response[] = [
@@ -63,8 +105,3 @@ if ($connection->affected_rows > 0) {
 
     echo json_encode($response);
 }
-
-
-
-
-

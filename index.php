@@ -72,7 +72,7 @@ foreach (ambil_kehadiran_mahasiswa($_SESSION['id']) as $data) {
                         <h5 class="card-title">HI <?=$_SESSION['nama']?></h5>
                         <div class="card card-body">
                             <div class=" row justify-content-start">
-                                <div class="col-lg-4 col-12 border-right">
+                                <div class="col-lg-3 col-12 border-right">
                                     <h5 class=card-title>Akumulasi Menit Alpha</h5>
                                     <?php if ($akumulasi_telat != null):?>
                                     <?php if ($akumulasi_telat['akumulasi'] > 5):?>
@@ -90,10 +90,33 @@ foreach (ambil_kehadiran_mahasiswa($_SESSION['id']) as $data) {
                                     </h4>
                                     <?php endif;?>
                                     <?php else:?>
-                                    <h4 class="text-primary font-weight-bold">-</h4>
+                                    <h4 class="text-primary font-weight-bold">0 (menit)</h4>
                                     <?php endif;?>
                                 </div>
-                                <div class="col-lg-4 col-12">
+                                <div class="col-lg-3 col-12 border-right">
+                                    <h5 class=card-title>Waktu Kompensasi</h5>
+                                </div>
+                                <?php $akumulasi_sakit = ambil_akumulasi_sakit_mahasiswa($_SESSION['id']);?>
+                                <div class="col-lg-2 col-12 border-right">
+                                    <h5 class=card-title>Akumulasi Menit Sakit</h5>
+                                    <?php if($akumulasi_sakit != null):?>
+                                    <h4 class="text-primary font-weight-bold"><?= $akumulasi_sakit['akumulasi_sakit']?>
+                                        (menit)</h4>
+                                    <?php else:?>
+                                    <h4 class="text-primary font-weight-bold">0 (menit)</h4>
+                                    <?php endif;?>
+                                </div>
+                                <?php $akumulasi_izin = ambil_akumulasi_izin_mahasiswa($_SESSION['id']);?>
+                                <div class="col-lg-2 col-12 border-right">
+                                    <h5 class=card-title>Akumulasi Menit Izin</h5>
+                                    <?php if($akumulasi_izin != null):?>
+                                    <h4 class="text-primary font-weight-bold"><?= $akumulasi_izin['akumulasi_izin']?>
+                                        (menit)</h4>
+                                    <?php else:?>
+                                    <h4 class="text-primary font-weight-bold">0 (menit)</h4>
+                                    <?php endif;?>
+                                </div>
+                                <div class="col-lg-2 col-12">
                                     <h5 class=card-title>Status</h5>
                                     <?php if ($akumulasi_telat != null):?>
                                     <?php if ($akumulasi_telat['akumulasi'] > 5):?>

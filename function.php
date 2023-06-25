@@ -810,6 +810,50 @@ function ambil_akumulasi_mahasiswa($id_mahasiswa) {
     ")->fetch_assoc();
 }
 
+function ambil_akumulasi_sakit_mahasiswa($id_mahasiswa) {
+    global $connection;
+    return $connection->query("
+    SELECT
+	    SUM(presensi_mahasiswa.waktu_sakit) AS akumulasi_sakit, 
+	    users.nama AS nama, 
+	    users.nomor_induk AS npm, 
+	    users.alamat AS alamat, 
+	    users.kelas AS kelas
+    FROM
+	    presensi_mahasiswa
+	INNER JOIN
+	    users
+	ON 
+		presensi_mahasiswa.id_mahasiswa = users.id
+    WHERE
+	    presensi_mahasiswa.id_mahasiswa = '$id_mahasiswa'
+    GROUP BY
+	    presensi_mahasiswa.id_mahasiswa
+    ")->fetch_assoc();
+}
+
+function ambil_akumulasi_izin_mahasiswa($id_mahasiswa) {
+    global $connection;
+    return $connection->query("
+    SELECT
+	    SUM(presensi_mahasiswa.waktu_izin) AS akumulasi_izin, 
+	    users.nama AS nama, 
+	    users.nomor_induk AS npm, 
+	    users.alamat AS alamat, 
+	    users.kelas AS kelas
+    FROM
+	    presensi_mahasiswa
+	INNER JOIN
+	    users
+	ON 
+		presensi_mahasiswa.id_mahasiswa = users.id
+    WHERE
+	    presensi_mahasiswa.id_mahasiswa = '$id_mahasiswa'
+    GROUP BY
+	    presensi_mahasiswa.id_mahasiswa
+    ")->fetch_assoc();
+}
+
 function ambil_list_akumulasi_keterlambatan()
 {
     global $connection;
