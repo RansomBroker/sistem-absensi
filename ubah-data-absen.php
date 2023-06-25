@@ -48,7 +48,7 @@ $data_absen = ambil_data_absen_by_id($_GET['id']);
                                 <select name="id-mata-kuliah" class="form-control" required>
                                     <?php foreach (ambil_data_mata_kuliah() as $data):?>
                                     <option value="<?= $data['id_mata_kuliah']?>||<?=$data['id_dosen_pengampu']?>"
-                                        <?= $_GET['id-dosen'] == $data['id_dosen_pengampu'] ? "selected" :""?>>
+                                        <?= $_GET['id-dosen'] == $data['id_dosen_pengampu'] && $_GET['id-matkul'] == $data['id_mata_kuliah'] ? "selected" :""?>>
                                         <?= $data['matkul']?> - <?= $data['dosen_pengampu']?></option>
                                     <?php endforeach;?>
                                 </select>

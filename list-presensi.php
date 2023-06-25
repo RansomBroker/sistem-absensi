@@ -106,6 +106,21 @@ include "function.php";
                                         </tr>
                                         <?php $i++;?>
                                         <?php endforeach;?>
+                                        <!-- data belum absen -->
+                                        <?php $judul = ambil_judul_presensi($_GET['id-presensi'])['judul_presensi']?>
+                                        <?php foreach(ambil_mahasiswa_belum_absen($_GET['id-presensi']) as $mahasiswa):?>
+                                        <tr class="table-danger">
+                                            <td><?= $judul ?></td>
+                                            <td><?= $mahasiswa['nama']?></td>
+                                            <td><?= $mahasiswa['kelas']?></td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                        </tr>
+                                        <?php endforeach;?>
                                     </tbody>
                                 </table>
                             </div>

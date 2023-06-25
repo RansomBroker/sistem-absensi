@@ -69,7 +69,7 @@ foreach (ambil_kehadiran_mahasiswa($_SESSION['id']) as $data) {
                                             <td>
                                                 <a href="list-presensi.php?id-presensi=<?= $data['presensi_id']?>"
                                                     class="btn btn-success">Lihat Presensi</a>
-                                                <a href="ubah-data-absen.php?id=<?= $data['presensi_id']?>&id-dosen=<?= $data['id_dosen']?>"
+                                                <a href="ubah-data-absen.php?id-matkul=<?= $_GET['id']?>&id=<?= $data['presensi_id']?>&id-dosen=<?= $data['id_dosen']?>"
                                                     class="btn-edit btn btn-warning">Edit</a>
                                                 <a href="hapus-data-absen.php?id=<?=$data['presensi_id']?>"
                                                     class="btn btn-danger">Hapus</a>
@@ -160,7 +160,7 @@ foreach (ambil_kehadiran_mahasiswa($_SESSION['id']) as $data) {
         <?php include "js.php"?>
         <script>
         $(document).ready(function() {
-            let tableListPresensi = $("#table-list-presensi").DataTable();
+            let tableListPresensi = $("#table-absensi").DataTable();
             $('.btn-absen').on('click', function() {
                 let idAbsensi = $(this).attr('data-id');
                 let idMahasiswa = $(this).attr('data-id-mahasiswa');

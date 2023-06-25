@@ -378,6 +378,7 @@ function ambil_data_absen_dosen($id) {
     return $connection->query("
     SELECT
         jadwal_presensi.id AS presensi_id, 
+        mata_kuliah.id AS id_matkul,
         mata_kuliah.`name` AS nama_matkul, 
         jadwal_presensi.nama AS nama_presensi, 
         jadwal_presensi.jam_masuk AS jam_masuk, 
@@ -606,15 +607,16 @@ function ambil_data_absen_by_id($id) {
 
 }
 function update_data_absen($form){
-	global $connection;
-	$id = $form['id'];
-	$nama_mata_kuliah = htmlspecialchars(stripcslashes($form['judul-presensi']));
-	$id_mata_kuliah = $form['id-mata-kuliah'];
-	$user_id = $form['user-id'];
-	$waktu_masuk = $form['waktu-masuk'];
-	$waktu_keluar = $form['waktu-keluar'];
-	$tanggal_absensi = $form['tanggal-absensi'];
-	$waktu_dispensasi = $form['waktu-dispensasi'];
+	global  $connection;
+    $id = $form['id'];
+    $data_matkul = explode('||', $form['id-mata-kuliah']);
+    $nama_mata_kuliah = htmlspecialchars(stripcslashes($form['judul-presensi']));
+    $id_mata_kuliah = $data_matkul[0];
+    $user_id = $data_matkul[1];
+    $waktu_masuk = $form['waktu-masuk'];
+    $waktu_keluar = $form['waktu-keluar'];
+    $tanggal_absensi = $form['tanggal-absensi'];
+    $waktu_dispensasi = $form['waktu-dispensasi'];
     $timestamp_akhir_presensi = $tanggal_absensi .' '. $waktu_keluar;
 	$connection->query("
 		UPDATE jadwal_presensi
@@ -1023,4 +1025,70 @@ function hitung_kompen($id) {
     }
     return $waktu_kompen;
 
+}
+
+function ambil_mahasiswa_belum_absen($id_presensi) {
+    global $connection;
+
+    $jadwal_presensi = $connection->query("
+    SELECT
+        jadwal_presensi.mata_kuliah_id AS id_mata_kuliah, 
+        jadwal_presensi.id AS id_presensi
+    FROM
+        jadwal_presensi
+    WHERE
+        jadwal_presensi.id = '$id_presensi'
+    ")->fetch_assoc();
+
+    $presensi_mahasiswa = $connection->query("
+    SELECT
+	    presensi_mahasiswa.id_mahasiswa AS id_mahasiswa
+    FROM
+	    presensi_mahasiswa
+    WHERE presensi_mahasiswa.id_jadwal_presensi = '$id_presensi'
+    ")->fetch_all();
+
+    $id_matkul = $jadwal_presensi['id_mata_kuliah'];
+    $id_mahasiswa_sudah_absen = implode(',',array_column($presensi_mahasiswa,'0'));
+
+    if ($id_mahasiswa_sudah_absen != "" ) {
+        # code...
+        $mahasiswa_enroll = $connection->query("
+        SELECT
+            users.nama AS nama, 
+            users.kelas AS kelas
+        FROM
+	        mahasiswa_enroll
+	    INNER JOIN
+	        users
+	    ON 
+		    mahasiswa_enroll.user_id = users.id
+        WHERE
+            mahasiswa_enroll.mata_kuliah_id = '$id_matkul' 
+            AND
+            mahasiswa_enroll.user_id NOT IN (".$id_mahasiswa_sudah_absen.")
+        ")->fetch_all(MYSQLI_ASSOC);
+    }else {
+        $mahasiswa_enroll = $connection->query("
+        SELECT
+            users.nama AS nama, 
+            users.kelas AS kelas
+        FROM
+	        mahasiswa_enroll
+	    INNER JOIN
+	        users
+	    ON 
+		    mahasiswa_enroll.user_id = users.id
+        WHERE
+            mahasiswa_enroll.mata_kuliah_id = '$id_matkul' 
+        ")->fetch_all(MYSQLI_ASSOC);
+    }
+
+    return $mahasiswa_enroll;
+}
+
+function ambil_judul_presensi($id_presensi) {
+    global $connection;
+
+    return $connection->query("SELECT jadwal_presensi.nama AS judul_presensi FROM jadwal_presensi WHERE jadwal_presensi.id = '$id_presensi'")->fetch_assoc();
 }
