@@ -11,7 +11,7 @@
  Target Server Version : 50722
  File Encoding         : 65001
 
- Date: 08/05/2023 14:33:49
+ Date: 25/06/2023 19:27:55
 */
 
 SET NAMES utf8mb4;
@@ -75,6 +75,8 @@ CREATE TABLE `mata_kuliah` (
   `user_id` bigint(20) NOT NULL,
   `name` varchar(255) NOT NULL,
   `enroll_code` varchar(255) NOT NULL,
+  `kelas` varchar(255) NOT NULL,
+  `waktu_absen` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `mata_kuliah_user_id_foreign` (`user_id`),
   CONSTRAINT `mata_kuliah_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -100,6 +102,8 @@ CREATE TABLE `presensi_mahasiswa` (
   `status` varchar(255) NOT NULL,
   `img` varchar(255) NOT NULL,
   `geo_coordinate` varchar(255) NOT NULL,
+  `waktu_izin` int(255) NOT NULL DEFAULT '0',
+  `waktu_sakit` int(255) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `id_mahasiswa_foreign` (`id_mahasiswa`),
   KEY `id_jadwal_presensi_foreign` (`id_jadwal_presensi`),
@@ -155,13 +159,13 @@ CREATE TABLE `users` (
   `prodi` varchar(255) DEFAULT NULL,
   `jurusan` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of users
 -- ----------------------------
 BEGIN;
-INSERT INTO `users` VALUES (1, NULL, 'admin', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '$2y$10$QHwST/QZ1JzlyqLY5dER6e/ZQCsMO24jmsjWpITodeHPekiEYA5ka', 'admin');
+INSERT INTO `users` VALUES (1, NULL, 'admin', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '$2y$10$QHwST/QZ1JzlyqLY5dER6e/ZQCsMO24jmsjWpITodeHPekiEYA5ka', 'admin', NULL, NULL);
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;
