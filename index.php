@@ -68,6 +68,7 @@ foreach (ambil_kehadiran_mahasiswa($_SESSION['id']) as $data) {
                     <?php endif;?>
                     <?php if($_SESSION['role'] == 3):?>
                     <?php $akumulasi_telat = ambil_akumulasi_mahasiswa($_SESSION['id']);?>
+                    <?php $waktu_kompen = hitung_kompen($_SESSION['id']);?>
                     <div class="card card-body">
                         <h5 class="card-title">HI <?=$_SESSION['nama']?></h5>
                         <div class="card card-body">
@@ -102,6 +103,9 @@ foreach (ambil_kehadiran_mahasiswa($_SESSION['id']) as $data) {
                                 </div>
                                 <div class="col-lg-3 col-12 border-right">
                                     <h5 class=card-title>Waktu Kompensasi</h5>
+                                    <h4 class="text-primary font-weight-bold">
+                                        <?= $waktu_kompen?> Jam
+                                    </h4>
                                 </div>
                                 <?php $akumulasi_sakit = ambil_akumulasi_sakit_mahasiswa($_SESSION['id']);?>
                                 <div class="col-lg-2 col-12 border-right">

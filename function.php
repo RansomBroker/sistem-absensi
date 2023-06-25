@@ -984,3 +984,39 @@ function ambil_mahasiswa_enroll($id) {
 
     return $data;
 }
+
+function hitung_kompen($id) {
+    global $connection;
+    $waktu_kompen = 0;
+
+    // ambil data group by date
+    $data_kompen = $connection->query("
+    SELECT
+        SUM( presensi_mahasiswa.waktu_telat ) AS akumulasi_telat,
+        presensi_mahasiswa.tgl_presensi
+    FROM
+        presensi_mahasiswa
+        INNER JOIN users ON presensi_mahasiswa.id_mahasiswa = users.id 
+    WHERE
+        presensi_mahasiswa.id_mahasiswa = 4 
+    GROUP BY
+        presensi_mahasiswa.tgl_presensi
+    ")->fetch_all(MYSQLI_ASSOC);
+
+    // hitung waktu kompen
+    foreach ($data_kompen as $kompen) {
+        if ($kompen['akumulasi_telat'] >= 250 || $kompen['akumulasi_telat'] >= 300) {
+            $waktu_kompen += 10;
+        }
+
+        if ($kompen['akumulasi_telat'] >= 150) {
+            $waktu_kompen += round((($kompen['akumulasi_telat'] - 150) * 4) / 50, 1) + 9;
+        }
+
+        if ($kompen['akumulasi_telat'] < 150) {
+            $waktu_kompen+= round(($kompen['akumulasi_telat'] * 4) / 50, 1);
+        }
+    }
+    return $waktu_kompen;
+
+}
