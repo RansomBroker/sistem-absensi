@@ -75,19 +75,26 @@ foreach (ambil_kehadiran_mahasiswa($_SESSION['id']) as $data) {
                                 <div class="col-lg-3 col-12 border-right">
                                     <h5 class=card-title>Akumulasi Menit Alpha</h5>
                                     <?php if ($akumulasi_telat != null):?>
-                                    <?php if ($akumulasi_telat['akumulasi'] > 5):?>
+                                    <?php if ($akumulasi_telat['akumulasi'] >= 0 && $akumulasi_telat['akumulasi'] < 600):?>
                                     <h4 class="text-primary font-weight-bold"><?= $akumulasi_telat['akumulasi']?>
                                         (menit)</h4>
                                     <?php endif;?>
-
-                                    <?php if ($akumulasi_telat['akumulasi'] >= 480 && $akumulasi_telat['akumulasi'] <= 960):?>
+                                    <?php if ($akumulasi_telat['akumulasi'] >= 600 && $akumulasi_telat['akumulasi'] < 960):?>
+                                    <h4 class="text-primary font-weight-bold"><?= $akumulasi_telat['akumulasi']?>
+                                        (menit)</h4>
+                                    <?php endif;?>
+                                    <?php if ($akumulasi_telat['akumulasi'] >= 900 && $akumulasi_telat['akumulasi'] < 1200):?>
                                     <h4 class="text-warning font-weight-bold"><?= $akumulasi_telat['akumulasi']?>
                                         (menit)</h4>
                                     <?php endif;?>
 
-                                    <?php if ($akumulasi_telat['akumulasi'] > 960):?>
+                                    <?php if ($akumulasi_telat['akumulasi'] >= 1200 && $akumulasi_telat['akumulasi'] < 1450):?>
                                     <h4 class="text-danger font-weight-bold"><?= $akumulasi_telat['akumulasi']?> (menit)
                                     </h4>
+                                    <?php endif;?>
+                                    <?php if ($akumulasi_telat['akumulasi'] >= 1450):?>
+                                    <h4 class="text-danger font-weight-bold"><?= $akumulasi_telat['akumulasi']?>
+                                        (menit)</h4>
                                     <?php endif;?>
                                     <?php else:?>
                                     <h4 class="text-primary font-weight-bold">0 (menit)</h4>
@@ -119,20 +126,29 @@ foreach (ambil_kehadiran_mahasiswa($_SESSION['id']) as $data) {
                                 <div class="col-lg-2 col-12">
                                     <h5 class=card-title>Status</h5>
                                     <?php if ($akumulasi_telat != null):?>
-                                    <?php if ($akumulasi_telat['akumulasi'] > 5):?>
+                                    <?php if ($akumulasi_telat['akumulasi'] >= 0 && $akumulasi_telat['akumulasi'] < 600):?>
+                                    <h4 class="text-primary font-weight-bold">-</h4>
+                                    <?php endif;?>
+                                    <?php if ($akumulasi_telat['akumulasi'] >= 600 && $akumulasi_telat['akumulasi'] < 960):?>
                                     <a href="cetak-sp-1.php?id=<?=$_SESSION['id']?>&sp=SURAT%20PERINGATAN%201%20%28Pertama%29"
                                         class="btn btn-primary">SP1 / Klik untuk mengunduh surat</a>
                                     <?php endif;?>
 
-                                    <?php if ($akumulasi_telat['akumulasi'] >= 480 && $akumulasi_telat['akumulasi'] <= 960):?>
+                                    <?php if ($akumulasi_telat['akumulasi'] >= 900 && $akumulasi_telat['akumulasi'] < 1200):?>
                                     <a href="cetak-sp-2.php?id=<?=$_SESSION['id']?>&sp=SURAT%20PERINGATAN%202%20%28Kedua%29"
                                         class="btn btn-warning">SP2 / Klik untuk mengunduh surat</a>
                                     <?php endif;?>
 
-                                    <?php if ($akumulasi_telat['akumulasi'] > 960):?>
+                                    <?php if ($akumulasi_telat['akumulasi'] >= 1200 && $akumulasi_telat['akumulasi'] < 1450):?>
                                     <a href="cetak-sp-3.php?id=<?=$_SESSION['id']?>&sp=SURAT%20PERINGATAN%203%20%28Ketiga%29"
                                         class="btn btn-danger">SP3 / Klik untuk mengunduh surat</a>
                                     <?php endif;?>
+
+                                    <?php if ($akumulasi_telat['akumulasi'] >= 1450):?>
+                                    <a href="cetak-do.php?id=<?=$_SESSION['id']?>&sp=SURAT%20DROP%20OUT"
+                                        class="btn btn-danger">DO / Klik untuk mengunduh surat</a>
+                                    <?php endif;?>
+
                                     <?php else:?>
                                     <h4 class="text-primary font-weight-bold">-</h4>
                                     <?php endif;?>
