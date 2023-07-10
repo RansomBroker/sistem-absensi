@@ -66,7 +66,7 @@ include "function.php";
                                         </td>
                                         <td><?= $data['kelas']?></td>
                                         <td><?= $data['akumulasi']?></td>
-                                        <td><?= $jam_kompen;?></td>
+                                        <td><?= $jam_kompen;?> Jam</td>
                                         <?php if ($data['akumulasi'] >= 0 && $data['akumulasi'] < 600):?>
                                         <td>-</td>
                                         <?php endif;?>
