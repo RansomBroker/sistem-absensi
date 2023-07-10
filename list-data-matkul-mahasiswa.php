@@ -39,6 +39,17 @@ if(!isset($_SESSION['login'])){
                     <h1 class="h3 mb-0 text-gray-800">Data Mahasiswa</h1>
                 </div>
 
+                <?php if (get_flash_name('berhasil_tambah_mata_kuliah') != ""):?>
+                    <div class="alert alert-success my-3">
+                        <?= get_flash_message('berhasil_tambah_mata_kuliah')?>
+                    </div>
+                <?php endif;?>
+                <?php if (get_flash_name('gagal_tambah_mata_kuliah') != ""):?>
+                    <div class="alert alert-danger my-3">
+                        <?= get_flash_message('gagal_tambah_mata_kuliah')?>
+                    </div>
+                <?php endif;?>
+
                 <div class="card card-body w-100 table-responsive">
                     <table class="table table-striped" id="table-enroll-mahasiswa">
                         <thead>
@@ -48,6 +59,7 @@ if(!isset($_SESSION['login'])){
                                 <th>Kelas</th>
                                 <th>Prodi</th>
                                 <th>Jurusan</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -58,6 +70,9 @@ if(!isset($_SESSION['login'])){
                                     <td><?= $data['kelas']?></td>
                                     <td><?= $data['prodi']?></td>
                                     <td><?= $data['jurusan']?></td>
+                                    <td>
+                                        <button class="btn-remove btn btn-danger" data-id="<?=$data['id_mahasiswa']?>" data-id-matkul="<?= $_GET['id']?>">Hapus</button>
+                                    </td>
                                 </tr>
                             <?php endforeach;?>
                         </tbody>
@@ -82,6 +97,21 @@ if(!isset($_SESSION['login'])){
     <?php include "js.php"?>
     <script>
         $("#table-enroll-mahasiswa").DataTable();
+
+        $(document).on("click", ".btn-remove", function () {
+            let idMahasiswa = $(this).attr('data-id')
+            let idMatkul = $(this).attr('data-id-matkul')
+            Swal.fire({
+                title: 'question',
+                text: 'Yakin ingin menghapus ?',
+                showCancelButton: true,
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = 'hapus-enroll-mahasiswa.php?id=' + idMahasiswa + '&mata_kuliah_id=' + idMatkul
+                }
+            })
+        })
     </script>
 
 </body>

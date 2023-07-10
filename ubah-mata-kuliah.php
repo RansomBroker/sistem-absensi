@@ -45,6 +45,7 @@ $mata_kuliah = ambil_data_mata_kuliah_by_id($_GET['id']);
                     <div class="card card-body row">
                         <form action="" method="POST" id="form">
                             <input type="hidden" name="id" value="<?= $mata_kuliah['id_mata_kuliah']?>">
+                            <input type="hidden" name="waktu-absen" value="<?= $mata_kuliah['waktu_absen']?>">
                             <input type="hidden" name="submit-mata-kuliah">
                             <div class="form-group mb-3">
                                 <label class="form-label">Nama Kuliah <sup class="text-danger">*</sup></label>
@@ -70,7 +71,7 @@ $mata_kuliah = ambil_data_mata_kuliah_by_id($_GET['id']);
                             </div>
                             <div class="form-group mb-3">
                                 <label class="form-label">Kelas <sup class="text-danger">*</sup></label>
-                                <input type="text" class="form-control" name="kelas" required>
+                                <input type="text" class="form-control" name="kelas" value="<?= $mata_kuliah['kelas_mata_kuliah']?>" required>
                             </div>
                             <div class="form-group">
                                 <label for="" class="form-label">Waktu Masuk <sup class="text-danger">*</sup></label>
@@ -78,7 +79,7 @@ $mata_kuliah = ambil_data_mata_kuliah_by_id($_GET['id']);
                             </div>
                             <div class="form-group">
                                 <label for="" class="form-label">Waktu Keluar <sup class="text-danger">*</sup></label>
-                                <input name="waktu-keluar" class="time form-control" required>
+                                <input name="waktu-keluar" class="time-exit form-control" required>
                             </div>
                             <button class="btn btn-warning w-100">Ubah Mata Kuliah</button>
                         </form>
@@ -118,13 +119,24 @@ $mata_kuliah = ambil_data_mata_kuliah_by_id($_GET['id']);
             })
 
         })
+        let waktuAbsen = $("[name=waktu-absen]").val().split("-")
+        console.log(waktuAbsen)
         $('.time').timepicker({
             timeFormat: 'HH:mm:ss ',
             interval: 1,
             minTime: '6',
             maxTime: '11:59pm',
-            defaultTime: '06:00',
-            startTime: '00:00',
+            defaultTime: waktuAbsen[0],
+            dynamic: false,
+            dropdown: true,
+            scrollbar: true
+        });
+        $('.time-exit').timepicker({
+            timeFormat: 'HH:mm:ss ',
+            interval: 1,
+            minTime: '6',
+            maxTime: '11:59pm',
+            defaultTime: waktuAbsen[1],
             dynamic: false,
             dropdown: true,
             scrollbar: true

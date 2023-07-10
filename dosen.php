@@ -81,7 +81,7 @@ include "function.php";
     <?php include "js.php"?>
     <script>
         $(document).ready(function () {
-            $(".btn-remove").click(function () {
+            $(document).on("click", ".btn-remove", function(() {
                 let idUser = $(this).attr('data-id')
                 Swal.fire({
                     title: 'question',
@@ -93,7 +93,8 @@ include "function.php";
                         window.location.href = 'hapus-user.php?id='+ idUser +'&role=2'
                     }
                 })
-            })
+
+            }))
         })
     </script>
 </body>

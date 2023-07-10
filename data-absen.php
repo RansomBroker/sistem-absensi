@@ -80,6 +80,8 @@ $data_absen = $_SESSION['role'] == 2 ? ambil_data_absen_dosen($_SESSION['id']): 
                                             <td>
                                                 <a href="list-presensi.php?id-presensi=<?= $data['presensi_id']?>"
                                                     class="btn btn-success">Lihat Presensi</a>
+                                                <button data-id="<?=$data['presensi_id']?>"
+                                                        class="btn-remove btn btn-danger">Hapus</button>
                                             </td>
                                         </tr>
                                         <?php endforeach;?>
@@ -140,7 +142,7 @@ $data_absen = $_SESSION['role'] == 2 ? ambil_data_absen_dosen($_SESSION['id']): 
         <script>
         $(document).ready(function() {
             let tableDataAbsensi = $("#table-absensi").DataTable()
-            $(".btn-remove").click(function() {
+            $(document).on("click", ".btn-remove", function () {
                 let idMataKuliah = $(this).attr('data-id')
                 Swal.fire({
                     title: 'question',

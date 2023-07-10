@@ -51,6 +51,7 @@ include "function.php";
                                             <th>Jam Presensi</th>
                                             <th>Tgl Presensi</th>
                                             <th>Waktu Telat (menit)</th>
+                                            <th>Tambah Kompen</th>
                                             <th>Koordinat</th>
                                             <th>Gambar</th>
                                             <th>Status</th>
@@ -66,6 +67,7 @@ include "function.php";
                                             <td><?= $presensi['jam_presensi']?></td>
                                             <td><?= $presensi['tgl_presensi']?></td>
                                             <td class="waktu-telat"><?= $presensi['waktu_telat']?></td>
+                                            <td><input type="number" value="<?=$presensi['waktu_telat']?>" class="form-telat form-control" data-id="<?= $presensi['id_mahasiswa']?>" data-id-presensi="<?= $presensi['id_presensi']?>"></td>
                                             <td><button class="map-popup btn btn-warning"
                                                     data-coordinate="<?= $presensi['coordinate']?>">Lihat Map</button>
                                             </td>
@@ -159,7 +161,7 @@ include "function.php";
                                             <td><?= $data_presensi_mahasiswa['tgl_presensi']?></td>
                                             <td><?= $data_presensi_mahasiswa['waktu_telat']?></td>
                                             <td><button class="map-popup btn btn-warning"
-                                                    data-coordinate="<?= $presensi['coordinate']?>">Lihat Map</button>
+                                                    data-coordinate="<?= $data_presensi_mahasiswa['coordinate']?>">Lihat Map</button>
                                             </td>
                                             <td>
                                                 <img src="/img/absensi/<?= $data_presensi_mahasiswa['img']?>"
@@ -248,6 +250,23 @@ include "function.php";
                         L.marker(coordinate).addTo(map)
                     }
                 })
+            })
+            $(document).on("keyup", ".form-telat", function () {
+                let idMahasiswa = $(this).attr('data-id') ;
+                let idPresensi = $(this).attr('data-id-presensi') ;
+                let waktu = $(this).val();
+
+                $.ajax({
+                    url: 'update-keterlambatan.php',
+                    method: 'POST',
+                    data: {
+                        idMahasiswa: idMahasiswa,
+                        idPresensi: idPresensi,
+                        waktu: waktu
+                    }
+                })
+
+
             })
         })
         </script>

@@ -149,7 +149,7 @@ $data_mata_kuliah = ambil_data_mata_kuliah() ;
         $(document).ready(function() {
             let tableDataMataKuliah = $("#table-mata-kuliah").DataTable()
 
-            $(".btn-remove").click(function() {
+            $(document).on("click", ".btn-remove", function () {
                 let idMataKuliah = $(this).attr('data-id')
                 Swal.fire({
                     title: 'question',

@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 include "connection.php";
 include "helper.php";
 
@@ -20,3 +20,5 @@ if ($role  == 3) {
 if ($role == null) {
     redirect('user.php');
 }
+
+set_flash_message('berhasil_tambah_mata_kuliah', "Berhasil Hapus");

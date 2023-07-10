@@ -42,6 +42,8 @@ $data_absen = ambil_data_absen_by_id($_GET['id']);
                             <input type="hidden" name="id" value=<?= $_GET['id']?>>
                             <input type="hidden" name="user-id" value="<?= $_SESSION['id']?>">
                             <input type="hidden" name="ubah-absensi">
+                            <input type="hidden" name="jam-masuk" value="<?= $data_absen['jam_masuk']?>">
+                            <input type="hidden" name="jam-keluar" value="<?= $data_absen['jam_keluar']?>">
                             <div class="form-group">
                                 <label for="" class="form-label">Nama Mata Kuliah <sup
                                         class="text-danger">*</sup></label>
@@ -66,7 +68,7 @@ $data_absen = ambil_data_absen_by_id($_GET['id']);
                             <div class="form-group">
                                 <label for="" class="form-label">Waktu Keluar <sup class="text-danger">*</sup></label>
                                 <input name="waktu-keluar" value="<?= $data_absen['jam_keluar']?>"
-                                    class="time form-control" required>
+                                    class="time-exit form-control" required>
                             </div>
                             <div class="form-group">
                                 <label for="" class="form-label">Tanggal Absensi<sup class="text-danger">*</sup></label>
@@ -125,8 +127,17 @@ $data_absen = ambil_data_absen_by_id($_GET['id']);
                 interval: 1,
                 minTime: '6',
                 maxTime: '11:59pm',
-                defaultTime: '06:00',
-                startTime: '00:00',
+                defaultTime: $("[name=jam-masuk]").val(),
+                dynamic: false,
+                dropdown: true,
+                scrollbar: true
+            });
+            $('.time-exit').timepicker({
+                timeFormat: 'HH:mm:ss ',
+                interval: 1,
+                minTime: '6',
+                maxTime: '11:59pm',
+                defaultTime: $("[name=jam-keluar]").val(),
                 dynamic: false,
                 dropdown: true,
                 scrollbar: true

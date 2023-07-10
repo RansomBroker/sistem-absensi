@@ -93,8 +93,7 @@ include "function.php";
     <script>
         $(document).ready(function () {
             let tabeluser = $("#table-user").DataTable();
-
-            $(".btn-remove").click(function () {
+            $(document).on("click", ".btn-remove", function () {
                 let idUser = $(this).attr('data-id')
                 Swal.fire({
                     title: 'question',

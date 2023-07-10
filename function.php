@@ -969,6 +969,7 @@ function ambil_mahasiswa_enroll($id) {
 
     $data = $connection->query("
         SELECT
+            users.id AS id_mahasiswa,
             users.nama AS nama, 
             users.nomor_induk AS nim, 
             users.kelas AS kelas, 
