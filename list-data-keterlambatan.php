@@ -48,11 +48,13 @@ include "function.php";
                                         <th>Photo</th>
                                         <th>Kelas</th>
                                         <th>Akumulasi Keterlambatan (menit)</th>
+                                        <th>Jam Kompen</th>
                                         <th>Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php foreach (ambil_list_akumulasi_keterlambatan() as $data):?>
+                                    <?php $jam_kompen = hitung_kompen($data['id']);?>
                                     <tr>
                                         <td><?= $data['nama_mahasiswa']?></td>
                                         <td><?= $data['nim']?></td>
@@ -64,6 +66,7 @@ include "function.php";
                                         </td>
                                         <td><?= $data['kelas']?></td>
                                         <td><?= $data['akumulasi']?></td>
+                                        <td><?= $jam_kompen;?></td>
                                         <?php if ($data['akumulasi'] >= 0 && $data['akumulasi'] < 600):?>
                                         <td>-</td>
                                         <?php endif;?>
